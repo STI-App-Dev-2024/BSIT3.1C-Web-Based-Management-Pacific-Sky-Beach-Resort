@@ -1,0 +1,27 @@
+{
+  "name": "pacific-sky-beach-api",
+  "version": "1.0.0",
+  "description": "An API for Pacific Sky Beach Resort built with Node Js",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server"
+  },
+  "keywords": [
+    "Resort",
+    "API",
+    "Pacific"
+  ],
+  "author": "Darryle Miles Bacay",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-async-handler": "^1.2.0",
+    "mysql2": "^3.11.3",
+    "nodemon": "^3.1.7"
+  }
+}
