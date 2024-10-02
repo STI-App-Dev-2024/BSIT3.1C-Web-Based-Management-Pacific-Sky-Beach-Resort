@@ -23,30 +23,30 @@ const MainRoutes = {
       element: <DashboardDefault />
     },
     {
-      path: 'color',
-      element: <Color />
-    },
-    {
-      path: 'dashboard',
+      path: 'portal',
       children: [
         {
-          path: 'default',
+          path: 'dashboard',
           element: <DashboardDefault />
-        }
+        },
+        {
+          path: 'sample-page',
+          element: <SamplePage />
+        },
+        {
+          path: 'shadow',
+          element: <Shadow />
+        },
+        {
+          path: 'typography',
+          element: <Typography />
+        },
+        {
+          path: 'color',
+          element: <Color />
+        },
       ]
     },
-    {
-      path: 'sample-page',
-      element: <SamplePage />
-    },
-    {
-      path: 'shadow',
-      element: <Shadow />
-    },
-    {
-      path: 'typography',
-      element: <Typography />
-    }
   ]
 };
 
