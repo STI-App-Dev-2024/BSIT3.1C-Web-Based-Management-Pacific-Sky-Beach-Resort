@@ -1,9 +1,10 @@
 import React from 'react';
 import { Box, Container, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { HomeOutlined, SearchOutlined } from '@ant-design/icons/lib/icons';
+
 // assets
 import logo from 'src/assets/images/logo/logo.jpg';
-import { HomeOutlined, SearchOutlined } from '@ant-design/icons/lib/icons';
 import navItems from './nav-items/navItems';
 
 const Navbar = () => {
@@ -18,7 +19,7 @@ const Navbar = () => {
       <Container>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Box
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/')} 
             component="img"
             src={logo}
             sx={{
