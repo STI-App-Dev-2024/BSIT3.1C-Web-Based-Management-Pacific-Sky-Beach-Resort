@@ -15,7 +15,6 @@ const registerUser = expressAsync(async (req, res, next) => {
     const response = await usersService.registerUser(req.body)
     res.json(response)
   } catch (error) {
-    console.error('Error in usersService:', error);
     throw new Error(error)
   }
 })

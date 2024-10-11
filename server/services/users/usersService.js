@@ -1,31 +1,68 @@
 import conn from "../../config/db.js";
+import { v4 as uuidv4 } from 'uuid';
 
 const pool = await conn()
 
 const getAllUsers = async () => {
-  const [rows] = await pool.query('SELECT * FROM usersManagement');
+  const query = `
+    SELECT 
+      u.userId,
+      u.firstName,
+      u.lastName,
+      u.emailAddress,
+      u.avatar,
+      u.mobileNumber,
+      p.positionID,
+      p.label,
+      p.value
+    FROM 
+      users AS u
+    LEFT JOIN 
+      userpositions AS up ON u.userId = up.userId
+    LEFT JOIN 
+      positions AS p ON up.positionID = p.positionID
+  `;
 
+  const [rows] = await pool.query(query);
   return rows;
-}
+};
 
 const registerUser = async (payload) => {
   const {
-    userId,
     firstName,
     lastName,
     emailAddress,
     password,
-    thumbnail
-  } = payload || {}
+    avatar,
+    mobileNumber,
+    label,
+    value
+  } = payload || {};
 
-  const query = `
-  INSERT INTO usersManagement (userId, firstName, lastName, emailAddress, password, thumbnail) 
-  VALUES (?, ?, ?, ?, ?, ?)
-`;
+  const userId = uuidv4();
+  const positionId = uuidv4();
 
-  await pool.query(query, [userId, firstName, lastName, emailAddress, password, thumbnail]);
-  return `User registered successfully`
-}
+  const userQuery = `
+    INSERT INTO users (userId, firstName, lastName, emailAddress, password, avatar, mobileNumber) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `;
+  await pool.query(userQuery, [userId, firstName, lastName, emailAddress, password, avatar, mobileNumber]);
+
+  const positionQuery = `
+    INSERT INTO positions (positionID, label, value) 
+    VALUES (?, ?, ?)
+  `;
+  await pool.query(positionQuery, [positionId, label, value]);
+
+  const userPositionQuery = `
+    INSERT INTO userPositions (userId, positionID) 
+    VALUES (?, ?)
+  `;
+  await pool.query(userPositionQuery, [userId, positionId]);
+
+  return `User registered successfully`;
+};
+
 
 export default {
   getAllUsers,
