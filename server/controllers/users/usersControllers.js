@@ -19,7 +19,18 @@ const registerUser = expressAsync(async (req, res, next) => {
   }
 })
 
+const deleteUser = expressAsync(async (req, res, next) => {
+  try {
+    const response = await usersService.deleteUser(req.params.userID)
+    res.json(response)
+  } catch (error) {
+    console.error('Error in usersService:', error);
+    throw new Error(error)
+  }
+})
+
 export {
   getAllUsers,
-  registerUser
+  registerUser,
+  deleteUser
 }

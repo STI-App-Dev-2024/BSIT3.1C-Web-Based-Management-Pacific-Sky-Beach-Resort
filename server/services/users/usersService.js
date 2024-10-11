@@ -64,7 +64,16 @@ const registerUser = async (payload) => {
 };
 
 
+const deleteUser = async(userID) =>{
+  const query = `DELETE FROM users WHERE userId = ?`;
+
+  await pool.query(query, [userID]);
+  return `User deleted`
+  }
+
+
 export default {
   getAllUsers,
-  registerUser
+  registerUser,
+  deleteUser
 }
