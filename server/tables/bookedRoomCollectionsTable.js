@@ -11,5 +11,5 @@ const bookedRoomCollectionsTable = `CREATE TABLE IF NOT EXISTS bookedRoomCollect
     );`;
 
 export default {
-  bookedRoomCollectionsTableQuery,
+  bookedRoomCollectionsTable,
 };

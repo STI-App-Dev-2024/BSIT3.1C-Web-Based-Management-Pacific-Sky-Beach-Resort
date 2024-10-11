@@ -10,5 +10,5 @@ const activitiesTable = `CREATE TABLE IF NOT EXISTS activities(
     );`;
 
 export default {
-  activitiesTableQuery
+  activitiesTable
 };

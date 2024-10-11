@@ -7,5 +7,5 @@ const roomsPicturesTable =`CREATE TABLE IF NOT EXISTS roomsPictures(
     );`
 
     export default{
-        roomsPicturesTableQuery
+        roomsPicturesTable
     }

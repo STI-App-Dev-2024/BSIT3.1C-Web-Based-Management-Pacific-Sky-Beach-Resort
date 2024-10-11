@@ -13,5 +13,5 @@ const roomCollectionsTable = `CREATE TABLE IF NOT EXISTS roomCollections(
     );`;
 
 export default {
-  roomCollectionsTableQuery,
+  roomCollectionsTable,
 };
