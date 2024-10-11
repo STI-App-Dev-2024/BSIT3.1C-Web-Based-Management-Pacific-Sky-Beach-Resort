@@ -9,6 +9,4 @@ const activitiesTable = `CREATE TABLE IF NOT EXISTS activities(
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );`;
 
-export default {
-  activitiesTable
-};
+export default activitiesTable

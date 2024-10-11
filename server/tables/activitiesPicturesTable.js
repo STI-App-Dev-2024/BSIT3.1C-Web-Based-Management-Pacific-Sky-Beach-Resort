@@ -1,4 +1,4 @@
-const activitiesPicturesTable= `CREATE TABLE IF NOT EXISTS activitiesPictures(
+const activitiesPicturesTable = `CREATE TABLE IF NOT EXISTS activitiesPictures(
     activityPictureID BIGINT PRIMARY KEY,
     pictureName VARCHAR(100),
     pictureLink VARCHAR(100),
@@ -6,6 +6,4 @@ const activitiesPicturesTable= `CREATE TABLE IF NOT EXISTS activitiesPictures(
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );`;
 
-export default {
-  activitiesPicturesTable,
-};
+export default activitiesPicturesTable

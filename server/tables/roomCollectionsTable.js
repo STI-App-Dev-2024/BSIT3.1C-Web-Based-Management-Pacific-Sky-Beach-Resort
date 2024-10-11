@@ -12,6 +12,4 @@ const roomCollectionsTable = `CREATE TABLE IF NOT EXISTS roomCollections(
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );`;
 
-export default {
-  roomCollectionsTable,
-};
+export default roomCollectionsTable
