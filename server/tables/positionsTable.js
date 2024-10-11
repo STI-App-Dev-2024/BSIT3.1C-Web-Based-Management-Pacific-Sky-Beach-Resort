@@ -1,4 +1,4 @@
-const positionsTableQuery = `CREATE TABLE IF NOT EXISTS positions(
+const positionsTable = `CREATE TABLE IF NOT EXISTS positions(
 positionID BIGINT PRIMARY KEY,
 label VARCHAR(100) NOT NULL,
 value VARCHAR(100) NOT NULL,

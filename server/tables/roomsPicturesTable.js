@@ -1,4 +1,4 @@
-const roomsPicturesTableQuery =`CREATE TABLE IF NOT EXISTS roomsPictures(
+const roomsPicturesTable =`CREATE TABLE IF NOT EXISTS roomsPictures(
     roomPictureID BIGINT PRIMARY KEY,
     pictureName VARCHAR(100),
     pictureLink VARCHAR(100),

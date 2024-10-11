@@ -1,4 +1,4 @@
-const usersManagementTableQuery = `CREATE TABLE IF NOT EXISTS usersManagement (
+const usersManagementTable = `CREATE TABLE IF NOT EXISTS usersManagement (
     userId BIGINT AUTO_INCREMENT PRIMARY KEY,
     firstName VARCHAR(100) NOT NULL,
     lastName VARCHAR(100) NOT NULL,

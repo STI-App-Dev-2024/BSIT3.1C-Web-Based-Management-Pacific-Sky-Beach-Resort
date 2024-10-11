@@ -1,4 +1,4 @@
-const roomCollectionsTableQuery = `CREATE TABLE IF NOT EXISTS roomCollections(
+const roomCollectionsTable = `CREATE TABLE IF NOT EXISTS roomCollections(
     roomID BIGINT PRIMARY KEY, -- can be varchar
     roomName VARCHAR(100) NOT NULL,
     bedType VARCHAR(100) NOT NULL,

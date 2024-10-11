@@ -1,4 +1,4 @@
-const bookedRoomCollectionsTableQuery = `CREATE TABLE IF NOT EXISTS bookedRoomCollections(
+const bookedRoomCollectionsTable = `CREATE TABLE IF NOT EXISTS bookedRoomCollections(
     bookedRoomID BIGINT PRIMARY KEY,
     roomID BIGINT,
     customerID BIGINT,

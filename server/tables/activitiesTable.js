@@ -1,4 +1,4 @@
-const activitiesTableQuery = `CREATE TABLE IF NOT EXISTS activities(
+const activitiesTable = `CREATE TABLE IF NOT EXISTS activities(
     activityID BIGINT PRIMARY KEY,
     userID BIGINT,
     activityName VARCHAR(100) NOT NULL,
