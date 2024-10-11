@@ -13,5 +13,5 @@ const usersManagementTable = `CREATE TABLE IF NOT EXISTS usersManagement (
     );`;
 
 export default {
-  usersManagementTableQuery,
+  usersManagementTable
 };

@@ -7,5 +7,5 @@ updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );`;
 
 export default {
-  positionsTableQuery,
+  positionsTable,
 };
