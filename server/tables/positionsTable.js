@@ -1,0 +1,11 @@
+const positionsTable = `CREATE TABLE IF NOT EXISTS positions(
+positionID BIGINT PRIMARY KEY,
+label VARCHAR(100) NOT NULL,
+value VARCHAR(100) NOT NULL,
+createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);`;
+
+export default {
+  positionsTableQuery,
+};
