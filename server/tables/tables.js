@@ -4,18 +4,18 @@ import userPositionsTable from './userPositionsTable.js'
 import activitiesPicturesTable from './activitiesPicturesTable.js';
 import activitiesTable from './activitiesTable.js';
 import bookedRoomCollectionsTable from './bookedRoomCollectionsTable.js';
-import roomCollectionsTable from './roomCollectionsTable.js';
+import roomsTable from './roomsTable.js';
 import roomsPicturesTable from './roomsPicturesTable.js';
 
 const tables = async (dbConnection) => {
   const queries = [
     positionsTable,
     usersTable,
-    userPositionsTable
+    userPositionsTable,
+    roomsTable
     // activitiesPicturesTable,
     // activitiesTable,
     // bookedRoomCollectionsTable,
-    // roomCollectionsTable,
     // roomsPicturesTable,
   ];
 
