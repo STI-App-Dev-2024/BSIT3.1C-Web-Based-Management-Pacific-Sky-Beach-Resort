@@ -21,9 +21,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions)); // Use this after the variable declaration
 app.use(express.json());
-app.use(
-  express.urlencoded({ limit: "100mb", extended: true, parameterLimit: 50000 })
-);
+app.use(express.urlencoded({ limit: "100mb", extended: true, parameterLimit: 50000 }));
 
 // Routes
 app.use('/users', usersRoutes);
@@ -40,10 +38,7 @@ app.use(errorHandler);
 const startServer = async () => {
   try {
     app.listen(PORT, () => {
-      console.log(
-        `API is running in ${process.env.NODE_ENV} mode on port ${PORT}`.bold
-          .blue
-      );
+      console.log(`API is running in ${process.env.NODE_ENV} mode on port ${PORT}`.bold.blue);
       connectDB(); // Connect to the database after the server starts
     });
   } catch (error) {
