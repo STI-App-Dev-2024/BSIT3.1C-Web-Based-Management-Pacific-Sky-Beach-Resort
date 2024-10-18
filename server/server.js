@@ -1,29 +1,32 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import colors from 'colors';
-import connectDB from './config/db.js';
-import usersRoutes from './routes/users/usersRoutes.js';
-import tables from './tables/tables.js';
-import conn from './config/db.js';
-import { errorHandler } from './middleware/errorMiddleware.js';
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import colors from "colors";
+import connectDB from "./config/db.js";
+import usersRoutes from "./routes/users/usersRoutes.js";
+import roomsRoutes from "./routes/rooms/roomsRoutes.js";
+import tables from "./tables/tables.js";
+import conn from "./config/db.js";
+import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 const corsOptions = {
-  origin: '*',
+  origin: "*",
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions)); // Use this after the variable declaration
 app.use(express.json());
-app.use(express.urlencoded({ limit: '100mb', extended: true, parameterLimit: 50000 }));
+app.use(express.urlencoded({ limit: "100mb", extended: true, parameterLimit: 50000 }));
 
 // Routes
 app.use('/users', usersRoutes);
+
+app.use('/rooms', roomsRoutes);
 
 app.get(`/`, (req, res) => {
   res.send(`Server is running on Port ${PORT}...`);

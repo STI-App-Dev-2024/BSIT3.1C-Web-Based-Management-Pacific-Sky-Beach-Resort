@@ -1,5 +1,5 @@
-const roomCollectionsTable = `CREATE TABLE IF NOT EXISTS roomCollections(
-    roomID BIGINT PRIMARY KEY, -- can be varchar
+const roomsTable = `CREATE TABLE IF NOT EXISTS rooms(
+    roomID VARCHAR(250) PRIMARY KEY, -- can be varchar
     roomName VARCHAR(100) NOT NULL,
     bedType VARCHAR(100) NOT NULL,
     bedQuantity INT NOT NULL,
@@ -12,4 +12,4 @@ const roomCollectionsTable = `CREATE TABLE IF NOT EXISTS roomCollections(
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );`;
 
-export default roomCollectionsTable
+export default roomsTable
