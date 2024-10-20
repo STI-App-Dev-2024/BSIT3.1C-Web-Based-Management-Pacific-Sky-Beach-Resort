@@ -1473,7 +1473,7 @@
     clsx "^2.1.0"
     prop-types "^15.8.1"
 
-"@mui/material@^5.15.12", "@mui/material@>=5.15.0":
+"@mui/material@^5.0.0 || ^6.0.0", "@mui/material@^5.15.12", "@mui/material@>=5.15.0":
   version "5.15.16"
   resolved "https://registry.npmjs.org/@mui/material/-/material-5.15.16.tgz"
   integrity sha512-ery2hFReewko9gpDBqOr2VmXwQG9ifXofPhGzIx09/b9JqCQC/06kZXZDGGrOTpIddK9HlIf4yrS+G70jPAzUQ==
@@ -3772,6 +3772,11 @@ lru-cache@^6.0.0:
   integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   dependencies:
     yallist "^4.0.0"
+
+mdi-material-ui@^7.9.2:
+  version "7.9.2"
+  resolved "https://registry.npmjs.org/mdi-material-ui/-/mdi-material-ui-7.9.2.tgz"
+  integrity sha512-MZ5zxN7W6yqtHwNYtV/Ezt6nQtMPsA3UtHcNpHwSDbFdvWgspTKyxh4gS63G8e49qyJAPdq0JMjxV3SEnXu4yQ==
 
 mdn-data@2.0.28:
   version "2.0.28"

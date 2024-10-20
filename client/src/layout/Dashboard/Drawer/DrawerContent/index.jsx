@@ -1,4 +1,5 @@
 // project import
+import { Divider } from '@mui/material';
 import NavCard from './NavCard';
 import Navigation from './Navigation';
 import SimpleBar from 'components/third-party/SimpleBar';
@@ -10,6 +11,7 @@ export default function DrawerContent() {
     <>
       <SimpleBar sx={{ '& .simplebar-content': { display: 'flex', flexDirection: 'column' } }}>
         <Navigation />
+        <Divider />
         <NavCard />
       </SimpleBar>
     </>
