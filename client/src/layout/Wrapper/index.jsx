@@ -7,7 +7,7 @@ const PageWrapper = ({ children }) => {
   return (
     <React.Fragment>
       <Navbar />
-      <Box sx={{ minHeight: '100vh' }}>{children}</Box>
+      <Box sx={{ minHeight: '100vh', my: 2 }}>{children}</Box>
       <Footer />
     </React.Fragment>
   );
