@@ -23,6 +23,10 @@ const MainRoutes = {
           path: 'dashboard',
           element: <DashboardDefault />
         },
+        {
+          path: 'staffs',
+          element: <DashboardDefault />
+        },
       ]
     },
   ]

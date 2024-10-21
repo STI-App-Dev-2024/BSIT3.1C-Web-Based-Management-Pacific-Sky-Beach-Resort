@@ -6,6 +6,7 @@ import { HomeOutlined, SearchOutlined } from '@ant-design/icons/lib/icons';
 // assets
 import logo from 'src/assets/images/logo/logo.png';
 import navItems from './nav-items/navItems';
+import Logo from 'components/logo/LogoMain';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -18,17 +19,9 @@ const Navbar = () => {
     >
       <Container>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Box
-            onClick={() => navigate('/')}
-            component="img"
-            src={logo}
-            sx={{
-              width: 50,
-              height: 50,
-              borderRadius: 50,
-              objectFit: 'cover'
-            }}
-          />
+          <Box>
+            <Logo />
+          </Box>
           <Stack direction="row" alignItems="center" spacing={2}>
             <HomeOutlined />
             {navItems.map((nav) => (

@@ -1,13 +1,17 @@
 // assets
 import {
   DashboardOutlined,
-  CalendarOutlined
+  CalendarOutlined,
 } from '@ant-design/icons';
 import {
   BedKingOutline,
   Swim,
-  CalendarMonthOutline
+  CalendarMonthOutline,
+  AccountGroup
 } from 'mdi-material-ui'
+
+// constants
+import { POSITIONS } from '../constants/constants'
 
 // icons
 const ant_icons = {
@@ -18,7 +22,8 @@ const ant_icons = {
 const mdi_icons = {
   BedKingOutline,
   Swim,
-  CalendarMonthOutline
+  CalendarMonthOutline,
+  AccountGroup
 }
 
 const icons = {
@@ -33,7 +38,7 @@ const modules = [
     id: 'group-dashboard',
     title: 'Dashboard',
     type: 'group',
-    access: ['POSITIONS_STAFF', 'POSITIONS_MASTER_ADMIN'],
+    access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN],
     children: [
       {
         id: 'dashboard',
@@ -42,7 +47,7 @@ const modules = [
         url: '/portal/dashboard',
         icon: icons.DashboardOutlined,
         breadcrumbs: false,
-        access: ['POSITIONS_STAFF', 'POSITIONS_MASTER_ADMIN'],
+        access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN],
       }
     ]
   },
@@ -50,7 +55,7 @@ const modules = [
     id: 'group-calendar',
     title: 'Calendar',
     type: 'group',
-    access: ['POSITIONS_STAFF', 'POSITIONS_MASTER_ADMIN'],
+    access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN],
     children: [
       {
         id: 'appointments',
@@ -59,7 +64,7 @@ const modules = [
         url: '/portal/appointments',
         icon: icons.CalendarOutlined,
         breadcrumbs: false,
-        access: ['POSITIONS_STAFF', 'POSITIONS_MASTER_ADMIN']
+        access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN]
       },
       {
         id: 'calendar',
@@ -68,7 +73,7 @@ const modules = [
         url: '/portal/calendar',
         icon: icons.CalendarMonthOutline,
         breadcrumbs: false,
-        access: ['POSITIONS_MASTER_ADMIN']
+        access: [POSITIONS.POSITIONS_MASTER_ADMIN]
       }
     ]
   },
@@ -76,7 +81,7 @@ const modules = [
     id: 'group-offers',
     title: 'Offers',
     type: 'group',
-    access: ['POSITIONS_STAFF', 'POSITIONS_MASTER_ADMIN'],
+    access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN],
     children: [
       {
         id: 'rooms-list',
@@ -85,7 +90,7 @@ const modules = [
         url: '/portal/rooms',
         icon: icons.BedKingOutline,
         breadcrumbs: false,
-        access: ['POSITIONS_STAFF', 'POSITIONS_MASTER_ADMIN']
+        access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN]
       },
       {
         id: 'activities-list',
@@ -94,11 +99,28 @@ const modules = [
         url: '/portal/activities',
         icon: icons.Swim,
         breadcrumbs: false,
-        access: ['POSITIONS_STAFF', 'POSITIONS_MASTER_ADMIN']
+        access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN]
       },
     ]
   },
-
+  // For Human Resource
+  {
+    id: 'human-resource',
+    title: 'Human Resource',
+    type: 'group',
+    access: [POSITIONS.POSITIONS_HUMAN_RESOURCE, POSITIONS.POSITIONS_MASTER_ADMIN],
+    children: [
+      {
+        id: 'human-resource-list',
+        title: 'Staffs',
+        type: 'item',
+        url: '/portal/staffs',
+        icon: icons.AccountGroup,
+        breadcrumbs: false,
+        access: [POSITIONS.POSITIONS_HUMAN_RESOURCE, POSITIONS.POSITIONS_MASTER_ADMIN]
+      },
+    ]
+  },
 ]
 
 export default modules;
