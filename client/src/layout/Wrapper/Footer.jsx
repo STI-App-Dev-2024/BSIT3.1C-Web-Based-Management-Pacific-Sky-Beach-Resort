@@ -1,7 +1,11 @@
 import React from 'react';
+import Icon from '@mdi/react';
 import { useTheme } from '@mui/material/styles';
-import { Box, Container, Divider, Stack, Typography } from '@mui/material';
+import { Grid, Box, Typography, Stack } from '@mui/material';
+import { CopyrightOutlined } from '@ant-design/icons';
 
+import address from 'layout/footer-items/address';
+import quickLinks from 'layout/footer-items/quickLinks';
 
 const Footer = () => {
   const theme = useTheme();
@@ -9,92 +13,64 @@ const Footer = () => {
   const currentYear = date.getFullYear();
   return (
     <React.Fragment>
-      <Box
+      <Grid
+        container
         sx={{
-          backgroundColor: theme.palette.primary.dark,
-          padding: 2,
-          mt: 2
+          backgroundColor: theme.palette.primary.main,
+          p: 3
         }}
       >
-        <Container>
-          <Stack spacing={5} direction="row" justifyContent="center">
-            <Box>
-              <Typography marginBlock="1em .5em" variant="h5" color="white">
-                Company Info
+        <Grid item md={4} sm={12}>
+          <Typography  mb={2}variant="h4" color="#ffffff">
+            Our Office
+          </Typography>
+          {address.map((ad) => (
+            <Stack key={ad.name} direction="row" alignItems="center" spacing={2} mb={1.5} >
+              <Icon path={ad.icon} color={ad.color} size={0.8} />
+              <Typography variant="subtitle2" color="#ffffff">
+                {ad.name}
               </Typography>
-              <Typography variant="body2" color="white">
-                About Us
-                <br />
-                Our Mission
-                <br />
-                Our Vission
-              </Typography>
-            </Box>
+            </Stack>
+          ))}
+        </Grid>
 
-            <Box>
-              <Typography marginBlock="1em .5em" variant="h5" color="white">
-                Solutions
+        <Grid item md={4} sm={12}>
+          <Typography  mb={2}variant="h4" color="#ffffff">
+           Quick Links
+          </Typography>
+          {quickLinks.map((ql) => (
+            <Stack key={ql.name} direction="row" alignItems="center" spacing={2} mb={1.5} >
+              <Icon path={ql.icon} color={ql.color} size={0.8} />
+              <Typography variant="subtitle2" color="#ffffff">
+                {ql.name}
               </Typography>
-              <Typography variant="body2" color="white">
-                For Families
-                <br />
-                For Individuals
-                <br />
-                For Agents
-              </Typography>
-            </Box>
+            </Stack>
+          ))}
+        </Grid>
 
-            <Box>
-              <Typography marginBlock="1em .5em" variant="h5" color="white">
-                Features
-              </Typography>
-              <Typography variant="body2" color="white">
-                CFS Edge
-                <br />
-                CFS Advantage
-              </Typography>
-            </Box>
+        <Grid item md={4} sm={12}>
+          <Typography  mb={2}variant="h4" color="#ffffff">
+           Come join us!
+          </Typography>
+          <Typography  mb={1}variant="subtitle2" color="#ffffff">
+           Experience unrivated support, cutting-edge technology, and game-changing tools to thrive
+           in the industry. Join us today and elevate your real estate career reach new heights
+          </Typography>
+        </Grid>
 
-            <Box>
-              <Typography marginBlock="1em .5em" variant="h5" color="white">
-                Resources
-              </Typography>
-              <Typography variant="body2" color="white">
-                Free Agent Training
-                <br />
-                Blog
-              </Typography>
-            </Box>
-
-            <Box>
-              <Typography marginBlock="1em .5em" variant="h5" color="white">
-                Get In Touch
-              </Typography>
-              <Typography variant="body2" color="white">
-                +1(702) 900-5666
-                <br />
-                Las Vegas, NV
-              </Typography>
-            </Box>
-          </Stack>
-        </Container>
-        <Divider
-          sx={{
-            mx: 30,
-            marginTop: 10
-          }}
-        />
-        <Typography marginInline="5em" paddingBlock="3em 1em" variant="body1" color="white">
-          Copyright  {currentYear} | Pacific Sky Beach
-        </Typography>
-      </Box>
-
+        
+      </Grid>
       <Box
         sx={{
-          backgroundColor: theme.palette.error.main,
-          padding: 2
+          backgroundColor: theme.palette.secondary.dark,
+          pl: 5,
+          paddingBlock: 1
         }}
-      ></Box>
+      >
+        <Typography variant="subtitle2" color="#ffffff">
+          <CopyrightOutlined /> Pacific Sky Beach, All Rights Reserved {currentYear}
+        </Typography>
+      </Box>
     </React.Fragment>
   );
 };
