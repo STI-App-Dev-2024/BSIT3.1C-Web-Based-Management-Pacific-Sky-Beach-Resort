@@ -24,9 +24,9 @@ app.use(express.json());
 app.use(express.urlencoded({ limit: "100mb", extended: true, parameterLimit: 50000 }));
 
 // Routes
-app.use('/users', usersRoutes);
+app.use(`/api/${process.env.API_VERSION}/users`, usersRoutes);
 
-app.use('/rooms', roomsRoutes);
+app.use(`/api/${process.env.API_VERSION}/rooms`, roomsRoutes);
 
 app.get(`/`, (req, res) => {
   res.send(`Server is running on Port ${PORT}...`);
