@@ -20,18 +20,37 @@ const getAllUsers = expressAsync(async (req, res) => {
   }
 })
 
-const registerUser = expressAsync(async (req, res) => {
+const getSingleUserById = expressAsync(async (req, res) => {
   try {
-    const response = await usersService.registerUser(req.body)
+    const response = await usersService.getSingleUserById(req.params.userId)
     res.json(response)
   } catch (error) {
     throw new Error(error)
   }
 })
 
+const registerUser = expressAsync(async (req, res) => {
+  try {
+    const response = await usersService.registerUser(req)
+    res.json(response)
+  } catch (error) {
+    throw new Error(error)
+  }
+})
+
+const updateUser = expressAsync(async (req, res) => {
+  try {
+    const response = await usersService.updateUser(req)
+    res.json(response)
+  } catch (error) {
+    console.error('Error in usersService:', error);
+    throw new Error(error)
+  }
+})
+
 const deleteUser = expressAsync(async (req, res) => {
   try {
-    const response = await usersService.deleteUser(req.params.userID)
+    const response = await usersService.deleteUser(req.params.userId)
     res.json(response)
   } catch (error) {
     console.error('Error in usersService:', error);
@@ -42,6 +61,8 @@ const deleteUser = expressAsync(async (req, res) => {
 export {
   authUser,
   getAllUsers,
+  getSingleUserById,
   registerUser,
+  updateUser,
   deleteUser
 }

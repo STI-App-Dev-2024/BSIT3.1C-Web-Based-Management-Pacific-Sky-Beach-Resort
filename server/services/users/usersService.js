@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import conn from "../../config/db.js";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import undefinedValidator from '../../utils/undefinedValidator.js'
 
 const pool = await conn()
 
@@ -13,6 +14,19 @@ const getAllUsers = async () => {
   const [rows] = await pool.query(query);
   return rows;
 };
+
+const getSingleUserById = async (userId) => {
+  const query = `
+SELECT * FROM users WHERE userId = ?
+`
+  const [user] = await pool.query(query, [userId])
+
+  if (user.length === 0) {
+    throw new Error('No user found!.')
+  }
+
+  return user[0]
+}
 
 const authUser = async (email, password) => {
   const pool = await conn();
@@ -44,20 +58,21 @@ const authUser = async (email, password) => {
 };
 
 
-const registerUser = async (payload) => {
+const registerUser = async (req) => {
   const {
     firstName,
     lastName,
     emailAddress,
     password,
-    avatar,
     mobileNumber,
     position,
-  } = payload || {};
+  } = req.body || {};
 
   const userId = uuidv4();
 
   const hashedPassword = await bcrypt.hash(password, 10);
+
+  const avatar = req.file ? req.file.path : null;
 
   const userQuery = `
     INSERT INTO users (userId, firstName, lastName, emailAddress, password, avatar, mobileNumber, position) 
@@ -78,10 +93,58 @@ const registerUser = async (payload) => {
   return `User registered successfully`;
 };
 
-const deleteUser = async (userID) => {
+const updateUser = async (req) => {
+  const { params, body } = req;
+  const user = await getSingleUserById(params.userId);
+
+  const {
+    firstName,
+    lastName,
+    emailAddress,
+    mobileNumber
+  } = body || {};
+
+  let avatar;
+  if (req.file) {
+    avatar = req.file.path;
+  } else {
+    avatar = user.avatar;
+  }
+
+  user.firstName = undefinedValidator(user.firstName, firstName);
+  user.lastName = undefinedValidator(user.lastName, lastName);
+  user.emailAddress = undefinedValidator(user.emailAddress, emailAddress);
+  user.mobileNumber = undefinedValidator(user.mobileNumber, mobileNumber);
+  user.avatar = undefinedValidator(user.avatar, avatar);
+
+  const query = `
+    UPDATE users
+    SET 
+      firstName = ?,
+      lastName = ?,
+      emailAddress = ?,
+      avatar = ?,
+      mobileNumber = ?,
+      updatedAt = CURRENT_TIMESTAMP
+    WHERE userId = ?
+  `;
+
+  const values = [user.firstName, user.lastName, user.emailAddress, user.avatar, user.mobileNumber, params.userId];
+
+  const [result] = await pool.query(query, values);
+
+  if (result.affectedRows === 0) {
+    throw new Error('User update failed, no rows affected.');
+  }
+
+  return `${params.userId} has been updated successfully.`;
+};
+
+
+const deleteUser = async (userId) => {
   const query = `DELETE FROM users WHERE userId = ?`;
 
-  await pool.query(query, [userID]);
+  await pool.query(query, [userId]);
   return `User deleted`
 }
 
@@ -89,6 +152,8 @@ const deleteUser = async (userID) => {
 export default {
   authUser,
   getAllUsers,
+  getSingleUserById,
   registerUser,
+  updateUser,
   deleteUser
 }
