@@ -71,8 +71,6 @@ export default function Profile() {
 
   const { user } = useAuth();
 
-  console.log(user);
-
   const fullName = user && user?.firstName?.concat(' ', user?.lastName)
 
   const iconBackColorOpen = 'grey.100';

@@ -36,13 +36,10 @@ const authUser = async (email, password) => {
     WHERE emailAddress = ?
   `;
 
-  // Get user by email
   const [users] = await pool.query(query, [email]);
   const user = users[0];
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-
-  if (!isPasswordValid || !user) {
+  if (!user || !(await bcrypt.compare(password, user.password))) {
     throw new Error('Invalid Credentials.');
   }
 
@@ -51,7 +48,7 @@ const authUser = async (email, password) => {
       ...user
     },
     process.env.JWT_SECRET,
-    { expiresIn: '1h' }
+    { expiresIn: '24h' }
   );
 
   return { user, token };
@@ -137,7 +134,7 @@ const updateUser = async (req) => {
     throw new Error('User update failed, no rows affected.');
   }
 
-  return `${params.userId} has been updated successfully.`;
+  return `${user.userId} has been updated successfully.`;
 };
 
 

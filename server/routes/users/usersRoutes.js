@@ -16,7 +16,7 @@ import createUploadMiddleware from '../../middleware/multer/uploadMiddleware.js'
 
 const router = express.Router()
 
-router.get('/', getAllUsers)
+router.get('/', authToManageUsers, getAllUsers)
 router.get('/:userId', getSingleUserById)
 router.delete('/:userId', authToManageUsers, deleteUser)
 router.post('/login', authUser)

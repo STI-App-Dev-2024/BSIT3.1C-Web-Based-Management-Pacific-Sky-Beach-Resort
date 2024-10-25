@@ -52,6 +52,7 @@ export const JWTProvider = ({ children }) => {
     if (token && verifyToken(token)) {
       const decodedUser = jwtDecode(token);
       dispatch({ type: LOGIN, payload: { isLoggedIn: true, user: decodedUser } });
+      setSession(token)
     } else {
       dispatch({ type: LOGOUT });
     }

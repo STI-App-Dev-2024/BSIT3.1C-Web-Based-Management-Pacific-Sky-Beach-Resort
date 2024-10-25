@@ -4,6 +4,9 @@ import { lazy } from 'react';
 import Loadable from 'components/Loadable';
 import Dashboard from 'layout/Dashboard';
 
+// modules
+import Staffs from 'pages/portal/staffs/index'
+
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
 
 // ==============================|| MAIN ROUTING ||============================== //
@@ -25,7 +28,7 @@ const MainRoutes = {
         },
         {
           path: 'staffs',
-          element: <DashboardDefault />
+          element: <Staffs />
         },
       ]
     },
