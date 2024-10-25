@@ -10,6 +10,17 @@ const getAllRooms = async () => {
   return rows;
 };
 
+const getSingleRoomById = async (roomID) => {
+  const query = `SELECT r.*, JSON_ARRAYAGG(p.picture) as pictures
+                FROM rooms r 
+                JOIN roomsPictures p 
+                ON r.roomID = p.roomID 
+                WHERE r.roomID = ?`;
+
+  const [rows] = await pool.query(query, [roomID]);
+  return rows;
+}
+
 const createRoom = async (payload) => {
   const {
     roomName,
@@ -52,6 +63,7 @@ const deleteRoom = async(roomID) =>{
 
 export default {
   getAllRooms,
+  getSingleRoomById,
   createRoom,
   deleteRoom,
 };
