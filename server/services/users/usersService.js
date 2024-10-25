@@ -26,13 +26,9 @@ const authUser = async (email, password) => {
   const [users] = await pool.query(query, [email]);
   const user = users[0];
 
-  if (!user) {
-    throw new Error('Invalid Credentials.');
-  }
-
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
-  if (!isPasswordValid) {
+  if (!isPasswordValid || !user) {
     throw new Error('Invalid Credentials.');
   }
 

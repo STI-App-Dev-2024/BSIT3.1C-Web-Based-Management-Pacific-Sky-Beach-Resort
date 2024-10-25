@@ -33,7 +33,7 @@ export const JWTProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('/users/login', { email, password });
+      const response = await axios.post('/api/v1/users/login', { email, password });
       const { token, user } = response.data;
       setSession(token);
       dispatch({ type: LOGIN, payload: { isLoggedIn: true, user } });

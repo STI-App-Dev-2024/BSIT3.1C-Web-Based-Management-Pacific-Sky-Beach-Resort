@@ -25,7 +25,6 @@ app.use(express.urlencoded({ limit: "100mb", extended: true, parameterLimit: 500
 
 // Routes
 app.use(`/api/${process.env.API_VERSION}/users`, usersRoutes);
-
 app.use(`/api/${process.env.API_VERSION}/rooms`, roomsRoutes);
 
 app.get(`/`, (req, res) => {
