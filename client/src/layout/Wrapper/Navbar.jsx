@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { HomeOutlined, SearchOutlined } from '@ant-design/icons/lib/icons';
 
 // assets
-import logo from 'src/assets/images/logo/logo.png';
+
 import navItems from './nav-items/navItems';
 import Logo from 'components/logo/LogoMain';
 
