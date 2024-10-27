@@ -60,7 +60,7 @@ const registerUser = async (req) => {
     firstName,
     lastName,
     emailAddress,
-    password,
+    password = '@D123123d@',
     mobileNumber,
     position,
   } = req.body || {};

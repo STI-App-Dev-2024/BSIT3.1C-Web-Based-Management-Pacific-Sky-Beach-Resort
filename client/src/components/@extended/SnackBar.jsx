@@ -1,8 +1,8 @@
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, Snackbar, Typography } from '@mui/material';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const SnackBar = ({ open, onClose, message, anchorOrigin, alert }) => {
+const SnackBar = ({ open, onClose, message, anchorOrigin, alert, duration }) => {
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -13,7 +13,7 @@ const SnackBar = ({ open, onClose, message, anchorOrigin, alert }) => {
   return (
     <Snackbar
       open={open}
-      autoHideDuration={6000}
+      autoHideDuration={duration}
       onClose={handleClose}
       anchorOrigin={anchorOrigin}
     >
@@ -21,9 +21,11 @@ const SnackBar = ({ open, onClose, message, anchorOrigin, alert }) => {
         onClose={handleClose}
         severity={alert.color}
         variant="filled"
-        sx={{ width: '100%' }}
+        sx={{ width: '100%', color: '#fff' }}
       >
-        {message}
+        <Typography>
+          {message}
+        </Typography>
       </Alert>
     </Snackbar>
   );

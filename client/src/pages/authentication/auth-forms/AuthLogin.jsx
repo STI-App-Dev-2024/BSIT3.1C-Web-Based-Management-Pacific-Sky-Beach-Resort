@@ -73,7 +73,7 @@ export default function AuthLogin() {
             setStatus({ success: false });
             setSubmitting(false);
             openSnackbar({
-              message: `Invalid Credentials.`,
+              message: error?.message,
               anchorOrigin: { vertical: 'top', horizontal: 'right' },
               alert: { color: 'error' },
             });

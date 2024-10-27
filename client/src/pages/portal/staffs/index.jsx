@@ -1,6 +1,6 @@
 import React from 'react'
 import PageTitle from 'components/PageTitle'
-import StaffsTable from 'sections/portal/staffs/StaffsTable'
+import StaffsTable from 'sections/portal/modules/staffs/StaffsTable'
 import { APP_DEFAULT_PATH } from 'config/cofig';
 import Breadcrumbs from 'components/@extended/Breadcrumbs';
 

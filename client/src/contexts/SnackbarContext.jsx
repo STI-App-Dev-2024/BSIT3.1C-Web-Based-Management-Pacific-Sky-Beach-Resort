@@ -9,14 +9,16 @@ export const SnackbarProvider = ({ children }) => {
     message: '',
     anchorOrigin: { vertical: 'top', horizontal: 'right' },
     alert: { color: 'success' },
+    duration: 3000,
   });
 
-  const openSnackbar = ({ message, anchorOrigin = { vertical: 'top', horizontal: 'right' }, alert = { color: 'success' } }) => {
+  const openSnackbar = ({ message, anchorOrigin = { vertical: 'top', horizontal: 'right' }, alert = { color: 'success' }, duration = 3000 }) => {
     setSnackbar({
       open: true,
       message,
       anchorOrigin,
       alert,
+      duration,
     });
   };
 
@@ -33,6 +35,7 @@ export const SnackbarProvider = ({ children }) => {
         message={snackbar.message}
         anchorOrigin={snackbar.anchorOrigin}
         alert={snackbar.alert}
+        duration={snackbar.duration}
       />
     </SnackbarContext.Provider>
   );

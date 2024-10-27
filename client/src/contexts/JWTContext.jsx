@@ -38,7 +38,7 @@ export const JWTProvider = ({ children }) => {
       setSession(token);
       dispatch({ type: LOGIN, payload: { isLoggedIn: true, user } });
     } catch (error) {
-      throw new Error('Login failed');
+      throw new Error(error?.response?.data?.message);
     }
   };
 
