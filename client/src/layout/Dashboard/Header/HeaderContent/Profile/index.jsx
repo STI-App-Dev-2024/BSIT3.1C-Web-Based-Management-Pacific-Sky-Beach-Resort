@@ -28,6 +28,7 @@ import UserOutlined from '@ant-design/icons/UserOutlined';
 import avatar1 from 'assets/images/users/avatar-1.png';
 import useAuth from 'hooks/useAuth';
 import { getPositionLabel } from 'utils/getPositionLabel';
+import { useGetSingleUser } from 'api/users';
 
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
@@ -69,7 +70,8 @@ export default function Profile() {
     setValue(newValue);
   };
 
-  const { user } = useAuth();
+  const { user: loggedInUser } = useAuth();
+  const { user } = useGetSingleUser(loggedInUser?.userId)
 
   const fullName = user && user?.firstName?.concat(' ', user?.lastName)
 
@@ -136,8 +138,10 @@ export default function Profile() {
                       </Grid>
                     </Grid>
                   </CardContent>
-
-                  <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                  <TabPanel value={value} index={0} dir={theme.direction}>
+                    <ProfileTab />
+                  </TabPanel>
+                  {/* <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="profile tabs">
                       <Tab
                         sx={{
@@ -165,12 +169,9 @@ export default function Profile() {
                       />
                     </Tabs>
                   </Box>
-                  <TabPanel value={value} index={0} dir={theme.direction}>
-                    <ProfileTab />
-                  </TabPanel>
                   <TabPanel value={value} index={1} dir={theme.direction}>
                     <SettingTab />
-                  </TabPanel>
+                  </TabPanel> */}
                 </MainCard>
               </ClickAwayListener>
             </Paper>

@@ -54,7 +54,7 @@ const PlaceholderWrapper = styled('div')(({ theme }) => ({
 
 // ==============================|| UPLOAD - AVATAR ||============================== //
 
-const AvatarUpload = ({ error, file, setFieldValue, sx }) => {
+const AvatarUpload = ({ error, file, setFieldValue, initialFile, sx }) => {
   const theme = useTheme();
 
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
@@ -74,14 +74,22 @@ const AvatarUpload = ({ error, file, setFieldValue, sx }) => {
     }
   });
 
-  const thumbs = file && file.length > 0 && file.map((item) => (
-    <img
-      key={item.name}
-      alt={item.name}
-      src={item.preview}
-      onLoad={() => URL.revokeObjectURL(item.preview)}
-    />
-  ));
+  const thumbs = (file && file.length && Array.isArray(file)) > 0
+    ? file?.map((item) => (
+      <img
+        key={item.name}
+        alt={item.name}
+        src={item.preview}
+        onLoad={() => URL.revokeObjectURL(item.preview)}
+      />
+    ))
+    : initialFile && (
+      <img
+        alt="Initial Upload"
+        src={initialFile}
+        style={{ width: '100%', height: '100%', borderRadius: '50%' }}
+      />
+    );
 
   return (
     <>
@@ -125,6 +133,7 @@ AvatarUpload.propTypes = {
   error: PropTypes.bool,
   file: PropTypes.array,
   setFieldValue: PropTypes.func,
+  initialFile: PropTypes.string,
   sx: PropTypes.object
 };
 

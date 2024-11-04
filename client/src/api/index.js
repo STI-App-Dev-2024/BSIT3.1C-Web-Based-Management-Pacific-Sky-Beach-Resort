@@ -1,6 +1,9 @@
 import Users from "./users"
+import Profile from "./profile"
+
 const agent = {
-  ...Users
+  ...Users,
+  ...Profile,
 }
 
 export default agent

@@ -9,6 +9,9 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
 // human-resource
 const Staffs = Loadable(lazy(() => import('pages/portal/staffs/index')));
 
+// profile
+const EditProfile = Loadable(lazy(() => import('pages/portal/profile/EditProfile')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -29,6 +32,15 @@ const MainRoutes = {
         {
           path: 'staffs',
           element: <Staffs />
+        },
+        {
+          path: 'profile',
+          children: [
+            {
+              path: 'edit',
+              element: <EditProfile />
+            },
+          ]
         },
       ]
     },

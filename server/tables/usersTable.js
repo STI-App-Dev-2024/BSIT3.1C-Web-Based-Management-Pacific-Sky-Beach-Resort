@@ -7,6 +7,7 @@ const usersTable = `CREATE TABLE IF NOT EXISTS users (
     avatar VARCHAR(255) NOT NULL,
     position VARCHAR(100) NOT NULL,
     mobileNumber BIGINT,
+    bio TEXT,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   );`;

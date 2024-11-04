@@ -98,7 +98,8 @@ const updateUser = async (req) => {
     firstName,
     lastName,
     emailAddress,
-    mobileNumber
+    mobileNumber,
+    bio
   } = body || {};
 
   let avatar;
@@ -113,6 +114,7 @@ const updateUser = async (req) => {
   user.emailAddress = undefinedValidator(user.emailAddress, emailAddress);
   user.mobileNumber = undefinedValidator(user.mobileNumber, mobileNumber);
   user.avatar = undefinedValidator(user.avatar, avatar);
+  user.bio = undefinedValidator(user.bio, bio);
 
   const query = `
     UPDATE users
@@ -122,11 +124,12 @@ const updateUser = async (req) => {
       emailAddress = ?,
       avatar = ?,
       mobileNumber = ?,
+      bio = ?,
       updatedAt = CURRENT_TIMESTAMP
     WHERE userId = ?
   `;
 
-  const values = [user.firstName, user.lastName, user.emailAddress, user.avatar, user.mobileNumber, params.userId];
+  const values = [user.firstName, user.lastName, user.emailAddress, user.avatar, user.mobileNumber, user.bio, params.userId];
 
   const [result] = await pool.query(query, values);
 

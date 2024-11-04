@@ -16,14 +16,13 @@ import { useNavigate } from 'react-router';
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
 export default function ProfileTab() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const { logout } = useAuth();
 
   const navigate = useNavigate()
 
-  const handleListItemClick = (index) => {
-    setSelectedIndex(index);
-  };
+  const handleClickItem = (route) => {
+    navigate(`/portal/${route}`)
+  }
 
   const handleLogout = async () => {
     try {
@@ -40,13 +39,19 @@ export default function ProfileTab() {
 
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
-      <ListItemButton selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1, '/apps/profiles/account/basic')}>
+      <ListItemButton onClick={() => handleClickItem('profile/edit')} >
+        <ListItemIcon>
+          <EditOutlined />
+        </ListItemIcon>
+        <ListItemText primary="Edit Profile" />
+      </ListItemButton>
+      <ListItemButton onClick={() => handleClickItem('profile/view')} >
         <ListItemIcon>
           <UserOutlined />
         </ListItemIcon>
         <ListItemText primary="View Profile" />
       </ListItemButton>
-      <ListItemButton selected={selectedIndex === 2} onClick={handleLogout}>
+      <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
           <LogoutOutlined />
         </ListItemIcon>

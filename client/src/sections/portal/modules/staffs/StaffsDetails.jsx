@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { CloseOutlined, DeleteOutlined, MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons'
 import { Box, Dialog, Grid, Stack } from '@mui/material'
 import { useGetSingleUser } from 'api/users'
-import { CardAccountDetailsOutline } from 'mdi-material-ui'
+import { CardAccountDetailsOutline, MessageBulleted } from 'mdi-material-ui'
 import { getPositionLabel } from 'utils/getPositionLabel'
 import { useSnackbar } from 'contexts/SnackbarContext'
 import LabeledValue from 'components/LabeledValue'
@@ -27,7 +27,8 @@ const Details = ({ open, handleClose, userId, mutate }) => {
     lastName,
     emailAddress,
     mobileNumber,
-    position
+    position,
+    bio
   } = user || {}
 
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
@@ -121,6 +122,13 @@ const Details = ({ open, handleClose, userId, mutate }) => {
                     title='Position'
                     subTitle={getPositionLabel(position)}
                     icon={<CardAccountDetailsOutline />}
+                  />
+                </Box>
+                <Box marginBottom={4}>
+                  <LabeledValue
+                    title='Bio'
+                    subTitle={bio}
+                    icon={<MessageBulleted />}
                   />
                 </Box>
               </Grid>
