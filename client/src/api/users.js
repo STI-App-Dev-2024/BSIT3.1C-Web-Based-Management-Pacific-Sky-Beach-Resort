@@ -7,9 +7,9 @@ export const endpoints = {
 };
 
 const options = {
-  revalidateIfStale: false,
-  revalidateOnFocus: false,
-  revalidateOnReconnect: false,
+  revalidateIfStale: true,
+  revalidateOnFocus: true,
+  revalidateOnReconnect: true,
   onSuccess: (data, key, config) => data
 };
 
@@ -19,6 +19,23 @@ export const useGetAllUsers = () => {
   const memoizedValue = useMemo(
     () => ({
       users: data,
+      isLoading,
+      mutate,
+      error
+    }),
+
+    [data, error, isLoading, mutate]
+  );
+
+  return memoizedValue
+}
+
+export const useGetSingleUser = (userId) => {
+  const { data, isLoading, error, mutate } = useSWR(`/${endpoints.key}/${userId}`, fetcher, options)
+
+  const memoizedValue = useMemo(
+    () => ({
+      user: data,
       isLoading,
       mutate,
       error

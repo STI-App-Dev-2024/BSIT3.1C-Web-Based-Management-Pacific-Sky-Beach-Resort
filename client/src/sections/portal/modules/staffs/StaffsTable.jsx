@@ -4,13 +4,14 @@ import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-de
 import { Button, Stack, Tooltip, Typography } from '@mui/material'
 import { useGetAllUsers } from 'api/users'
 import { useSnackbar } from 'contexts/SnackbarContext'
+import { POSITIONS } from 'constants/constants'
 import agent from 'api'
 import Table from 'components/Table'
 import useAuth from 'hooks/useAuth'
 import IconButton from 'components/@extended/IconButton'
 import ConfirmationDialog from 'components/ConfirmationDialog'
-import Form from './Form'
-import { POSITIONS } from 'constants/constants'
+import StaffsForm from './StaffsForm'
+import StaffsDetails from './StaffsDetails'
 
 const StaffsTable = () => {
   const { users, isLoading, mutate } = useGetAllUsers()
@@ -23,6 +24,10 @@ const StaffsTable = () => {
     userId: ''
   })
   const [isOpenAddDialog, setIsOpenAddDialog] = useState(false)
+  const [viewConfigs, setViewConfigs] = useState({
+    open: false,
+    userId: ''
+  })
 
   const handleOpen = (userId) => {
     setDeleteConfigs({ open, userId })
@@ -114,7 +119,12 @@ const StaffsTable = () => {
         return (
           <Stack direction='row' spacing={2} alignItems='center'>
             <Tooltip title='View'>
-              <IconButton color='primary' >
+              <IconButton color='primary' onClick={() => {
+                setViewConfigs({
+                  open: true,
+                  userId: row.userId
+                })
+              }}>
                 <EyeOutlined />
               </IconButton>
             </Tooltip>
@@ -159,9 +169,15 @@ const StaffsTable = () => {
           )
         }}
       />
-      <Form
+      <StaffsForm
         open={isOpenAddDialog}
         handleClose={() => setIsOpenAddDialog(false)}
+        mutate={mutate}
+      />
+      <StaffsDetails
+        open={viewConfigs.open}
+        handleClose={() => setViewConfigs({ ...viewConfigs, open: false })}
+        userId={viewConfigs.userId}
         mutate={mutate}
       />
       <ConfirmationDialog

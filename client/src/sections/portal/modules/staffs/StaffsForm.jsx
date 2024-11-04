@@ -70,7 +70,10 @@ const Form = ({ open, handleClose, mutate }) => {
     <Dialog fullWidth maxWidth='sm' open={open} onClose={handleClose}>
       <DialogTitle>
         <Stack direction='row' justifyContent='space-between' alignItems='center' paddingBlock={2}>
-          <Typography variant='h2'>Add a user</Typography>
+          <Box>
+            <Typography variant='h2'>Add a user</Typography>
+            <Typography variant='body' color='secondary'>Expand your team by adding a user!</Typography>
+          </Box>
           <IconButton color='text' onClick={handleClose}>
             <CloseOutlined />
           </IconButton>
