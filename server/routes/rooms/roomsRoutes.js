@@ -9,8 +9,8 @@ import {
 const router = express.Router();
 
 router.get("/", getAllRooms);
-router.get("/:roomID", getSingleRoomById);
-router.delete("/:roomID", deleteRoom)
+router.get("/:roomId", getSingleRoomById);
+router.delete("/:roomId", deleteRoom)
 router.post("/create-room", createRoom);
 
 export default router;
