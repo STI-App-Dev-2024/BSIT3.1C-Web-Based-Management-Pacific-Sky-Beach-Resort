@@ -8,10 +8,10 @@ const conn = async () => {
   try {
     // Create the connection pool
     const pool = mysql.createPool({
-      host: process.env.MY_SQL_HOST,
-      user: process.env.MY_SQL_USERNAME,
-      password: process.env.MY_SQL_PASSWORD,
-      database: process.env.MY_SQL_DATABASE,
+      host: process.env.NODE_ENV === 'development' ? process.env.MY_SQL_HOST : process.env.MY_SQL_HOST_PROD,
+      user: process.env.NODE_ENV === 'development' ? process.env.MY_SQL_USERNAME : process.env.MY_SQL_USERNAME_PROD,
+      password: process.env.NODE_ENV === 'development' ? process.env.MY_SQL_PASSWORD : process.env.MY_SQL_PASSWORD_PROD,
+      database: process.env.NODE_ENV === 'development' ? process.env.MY_SQL_DATABASE : process.env.MY_SQL_DATABASE_PROD,
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0
