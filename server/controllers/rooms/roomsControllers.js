@@ -12,7 +12,7 @@ const getAllRooms = expressAsync(async (req, res, next) => {
 
 const getSingleRoomById = expressAsync(async (req, res, next) => {
   try {
-    const response = await roomsService.getSingleRoomById(req.params.roomID);
+    const response = await roomsService.getSingleRoomById(req.params.roomId);
     res.json(response);
   } catch (error) {
     throw new Error(error);
@@ -30,7 +30,7 @@ const createRoom = expressAsync(async (req, res, next) => {
 
 const deleteRoom = expressAsync(async (req, res, next) => {
   try {
-    const response = await roomsService.deleteRoom(req.params.roomID);
+    const response = await roomsService.deleteRoom(req.params.roomId);
     res.json(response);
   } catch (error) {
     console.error("Error in usersService:", error);
