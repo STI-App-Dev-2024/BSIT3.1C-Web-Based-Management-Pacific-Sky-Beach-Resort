@@ -31,7 +31,11 @@ export const useGetAllUsers = () => {
 }
 
 export const useGetSingleUser = (userId) => {
-  const { data, isLoading, error, mutate } = useSWR(`/${endpoints.key}/${userId}`, fetcher, options)
+  const { data, isLoading, error, mutate } = useSWR(
+    userId ? `/${endpoints.key}/${userId}` : null,
+    fetcher,
+    options
+  );
 
   const memoizedValue = useMemo(
     () => ({

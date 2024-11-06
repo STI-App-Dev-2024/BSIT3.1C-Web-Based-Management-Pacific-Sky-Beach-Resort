@@ -1,10 +1,11 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { getPositionLabel } from 'utils/getPositionLabel'
 import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Stack, Tooltip, Typography } from '@mui/material'
+import { Box, Button, Stack, Tooltip, Typography } from '@mui/material'
 import { useGetAllUsers } from 'api/users'
 import { useSnackbar } from 'contexts/SnackbarContext'
 import { POSITIONS } from 'constants/constants'
+import { useLocation, useNavigate } from 'react-router'
 import agent from 'api'
 import Table from 'components/Table'
 import useAuth from 'hooks/useAuth'
@@ -12,22 +13,34 @@ import IconButton from 'components/@extended/IconButton'
 import ConfirmationDialog from 'components/ConfirmationDialog'
 import StaffsForm from './StaffsForm'
 import StaffsDetails from './StaffsDetails'
+import Avatar from 'components/@extended/Avatar'
 
 const StaffsTable = () => {
   const { users, isLoading, mutate } = useGetAllUsers()
   const { user } = useAuth()
   const { openSnackbar } = useSnackbar();
+  const location = useLocation()
 
   const [loading, setLoading] = useState(false)
   const [deleteConfigs, setDeleteConfigs] = useState({
     open: false,
     userId: ''
   })
-  const [isOpenAddDialog, setIsOpenAddDialog] = useState(false)
+  const [isOpenDialog, setIsOpenDialog] = useState(false)
   const [viewConfigs, setViewConfigs] = useState({
     open: false,
     userId: ''
   })
+
+  const searchParams = new URLSearchParams(location.search)
+  const isEditMode = searchParams.get('action')?.toLocaleLowerCase() === 'edit'
+  const userId = searchParams.get('userId')
+
+  useEffect(() => {
+    if (isEditMode) {
+      setIsOpenDialog(true)
+    }
+  }, [isEditMode])
 
   const handleOpen = (userId) => {
     setDeleteConfigs({ open, userId })
@@ -65,7 +78,27 @@ const StaffsTable = () => {
     }
   }
 
+  const navigate = useNavigate()
+
+  const handleClickEdit = (userId) => {
+    navigate(`/portal/staffs?action=edit&userId=${userId}`)
+  }
+
   const columns = useMemo(() => [
+    {
+      id: 'avatar',
+      align: 'left',
+      disablePadding: true,
+      label: 'Avatar',
+      renderCell: (row) => (
+        <Box>
+          <Avatar
+            size='lg'
+            src={row?.avatar}
+          />
+        </Box>
+      )
+    },
     {
       id: 'fullName',
       align: 'left',
@@ -130,7 +163,7 @@ const StaffsTable = () => {
             </Tooltip>
             <Tooltip title={hasNoAccess ? 'You have no access to edit the position of this user' : 'Edit'}>
               <span>
-                <IconButton color='info' disabled={hasNoAccess} >
+                <IconButton onClick={() => handleClickEdit(row.userId)} color='info' disabled={hasNoAccess} >
                   <EditOutlined />
                 </IconButton>
               </span>
@@ -161,7 +194,7 @@ const StaffsTable = () => {
             <Button
               variant='contained'
               startIcon={<PlusOutlined />}
-              onClick={() => setIsOpenAddDialog(true)}
+              onClick={() => setIsOpenDialog(true)}
               sx={{ width: '150px' }}
             >
               Add User
@@ -170,9 +203,14 @@ const StaffsTable = () => {
         }}
       />
       <StaffsForm
-        open={isOpenAddDialog}
-        handleClose={() => setIsOpenAddDialog(false)}
+        open={isOpenDialog}
+        handleClose={() => {
+          setIsOpenDialog(false)
+          navigate('/portal/staffs')
+        }}
         mutate={mutate}
+        userId={userId}
+        isEditMode={isEditMode}
       />
       <StaffsDetails
         open={viewConfigs.open}
