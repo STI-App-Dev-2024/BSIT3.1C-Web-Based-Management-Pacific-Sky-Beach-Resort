@@ -6,6 +6,9 @@ import Dashboard from 'layout/Dashboard';
 
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
 
+// rooms
+const Rooms = Loadable(lazy(() => import('pages/portal/rooms/index')));
+
 // human-resource
 const Staffs = Loadable(lazy(() => import('pages/portal/staffs/index')));
 
@@ -28,6 +31,10 @@ const MainRoutes = {
         {
           path: 'dashboard',
           element: <DashboardDefault />
+        },
+        {
+          path: 'rooms',
+          element: <Rooms />
         },
         {
           path: 'staffs',
