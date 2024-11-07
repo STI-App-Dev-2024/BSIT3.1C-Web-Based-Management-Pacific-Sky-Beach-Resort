@@ -4,133 +4,167 @@ import { v4 as uuidv4 } from "uuid";
 const pool = await conn();
 
 const getAllRooms = async () => {
-  const query = `SELECT 
-    r.*,
-    (SELECT JSON_ARRAYAGG(
-      JSON_OBJECT(
-        'bedId', rb.bedTypeId,
-        'count', rb.count
-      )
-    ) 
-    FROM roomBed rb 
-    WHERE rb.roomId = r.roomId) AS bedDetails,
-    (SELECT JSON_ARRAYAGG(
-      JSON_OBJECT(
-        'bathroomId', rbth.bathroomTypeId,
-        'count', rbth.count
-      )
-    ) 
-    FROM roomBathroom rbth 
-    WHERE rbth.roomId = r.roomId) AS bathroomDetails
-  FROM 
-    rooms r
-  GROUP BY r.roomId; `;
+  try {
+    const roomsQuery = `
+  SELECT r.roomId, r.roomName, r.userId, r.capacity, r.price, r.thumbnail, r.isOccupied
+  FROM rooms r
+`;
 
-  const [rows] = await pool.query(query);
-  return rows;
+    const [rooms] = await pool.query(roomsQuery);
+
+    const bedQuery = `
+  SELECT bedType, count FROM roomBed WHERE roomId = ?
+`;
+
+    const bathroomQuery = `
+  SELECT bathRoomType, count FROM roomBathroom WHERE roomId = ?
+`;
+
+    const picturesQuery = `
+  SELECT picture FROM roomsPictures WHERE roomId = ?
+`;
+
+    const __rooms = await Promise.all(rooms.map(async (room) => {
+      const [bedDetails] = await pool.query(bedQuery, [room.roomId]);
+      const [bathroomDetails] = await pool.query(bathroomQuery, [room.roomId]);
+      const [pictures] = await pool.query(picturesQuery, [room.roomId]);
+
+      return {
+        ...room,
+        bedDetails,
+        bathroomDetails,
+        pictures: pictures.map(picture => picture.picture),
+      };
+    }));
+
+    return __rooms;
+  } catch (error) {
+    throw new Error(error)
+  }
 };
 
 const getSingleRoomById = async (roomId) => {
-  const query =`SELECT 
-    r.*,
-    (SELECT JSON_ARRAYAGG(
-      JSON_OBJECT(
-        'bedId', rb.bedTypeId,
-        'count', rb.count
-      )
-    ) 
-    FROM roomBed rb 
-    WHERE rb.roomId = r.roomId) AS bedDetails,
-    (SELECT JSON_ARRAYAGG(
-      JSON_OBJECT(
-        'bathroomId', rbth.bathroomTypeId,
-        'count', rbth.count
-      )
-    ) 
-    FROM roomBathroom rbth 
-    WHERE rbth.roomId = r.roomId) AS bathroomDetails,
-    (SELECT JSON_ARRAYAGG(
-      JSON_OBJECT(
-        'picture', rp.picture
-      )
-    ) 
-    FROM roomsPictures rp 
-    WHERE rp.roomId = r.roomId) AS roomPictures
-  FROM 
-    rooms r
-  WHERE roomId = ?
-  GROUP BY r.roomId; `;
+  try {
+    const roomQuery = `
+      SELECT roomId, roomName, userId, capacity, price, thumbnail, isOccupied
+      FROM rooms
+      WHERE roomId = ?
+    `;
 
-  const [rows] = await pool.query(query, [roomId]);
-  return rows;
+    const [room] = await pool.query(roomQuery, [roomId]);
+
+    if (!room.length) {
+      throw new Error('Room not found');
+    }
+
+    const bedQuery = `
+      SELECT bedType, count FROM roomBed WHERE roomId = ?
+    `;
+
+    const [bedDetails] = await pool.query(bedQuery, [roomId]);
+
+    const bathroomQuery = `
+      SELECT bathRoomType, count FROM roomBathroom WHERE roomId = ?
+    `;
+
+    const [bathroomDetails] = await pool.query(bathroomQuery, [roomId]);
+
+    const picturesQuery = `
+      SELECT picture FROM roomsPictures WHERE roomId = ?
+    `;
+
+    const [pictures] = await pool.query(picturesQuery, [roomId]);
+
+    return {
+      ...room[0],
+      bedDetails,
+      bathroomDetails,
+      pictures: pictures.map(picture => picture.picture),
+    };
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 const createRoom = async (payload) => {
-  const {
-    roomName,
-    capacity,
-    rate,
-    thumbnail,
-    status,
-    bedDetails=[],
-    bathroomDetails=[],
-    pictures=[],
-  } = payload || {};
+  try {
+    const {
+      roomName,
+      userId,
+      capacity,
+      price,
+      thumbnail,
+      bedDetails = [],
+      bathroomDetails = [],
+      pictures = [],
+    } = payload || {};
 
-  const roomId = uuidv4();
+    const roomId = uuidv4();
 
-  const roomQuery = `
-  INSERT INTO rooms(roomId,roomName,capacity,rate,thumbnail,status)
-  VALUES (?,?,?,?,?,?)
-  `;
+    const roomQuery = `
+  INSERT INTO rooms(roomId, userId, roomName, capacity, price, thumbnail, isOccupied)
+  VALUES (?, ?, ?, ?, ?, ?, ?)
+`;
 
-  const room = await pool.query(roomQuery, [
-    roomId,
-    roomName,
-    capacity,
-    rate,
-    thumbnail,
-    status,
-  ]);
+    await pool.query(roomQuery, [
+      roomId,
+      userId,
+      roomName,
+      capacity,
+      price,
+      thumbnail,
+      false,
+    ]);
 
-  const roomBedQuery = `INSERT INTO roomBed(roomId,bedTypeId,count) VALUES (?, ?, ?)`;
+    const roomBedQuery = `INSERT INTO roomBed(roomId, bedType, count) VALUES (?, ?, ?)`;
+    for (const bed of bedDetails) {
+      const { bedType, bedCount } = bed;
+      await pool.query(roomBedQuery, [roomId, bedType, bedCount]);
+    }
 
-  for (const bed of bedDetails) {
-    const { bedTypeId, bedCount } = bed;
-    await pool.query(roomBedQuery, [roomId, bedTypeId, bedCount]);
+    const roomBathroomQuery = `INSERT INTO roomBathroom(roomId, bathRoomType, count) VALUES (?, ?, ?)`;
+    for (const bathroom of bathroomDetails) {
+      const { bathRoomType, bathRoomCount } = bathroom;
+      await pool.query(roomBathroomQuery, [roomId, bathRoomType, bathRoomCount]);
+    }
+
+    const roomPicturesQuery = `INSERT INTO roomsPictures(roomId, picture) VALUES (?, ?)`;
+    for (const picture of pictures) {
+      await pool.query(roomPicturesQuery, [roomId, picture]);
+    }
+
+    return { message: 'Room created successfully', roomId };
+  } catch (error) {
+    throw new Error(error)
   }
-  
-  const roomBathroomQuery = `INSERT INTO roomBathroom(roomId,bathroomTypeId,count) VALUES (?, ?, ?)`;
-
-  for (const bathroom of bathroomDetails) {
-    const { bathroomTypeId, bathroomCount } = bathroom;
-    await pool.query(roomBathroomQuery, [roomId, bathroomTypeId, bathroomCount]);
-  }
-
-  const roomPicturesQuery = `INSERT INTO roomsPictures(roomId,picture) VALUES (?, ?)`;
-
-  for (const picture of pictures) {
-    await pool.query(roomPicturesQuery, [roomId, picture]);
-  }
-
-  return `Room created successfully`;
 };
+
 
 const deleteRoom = async (roomId) => {
-  const query = `DELETE FROM rooms WHERE roomId = ?`;
+  try {
+    await pool.query('START TRANSACTION');
 
-  await pool.query(query, [roomId]);
+    const deleteRoomBedQuery = `DELETE FROM roomBed WHERE roomId = ?`;
+    await pool.query(deleteRoomBedQuery, [roomId]);
 
-  const roomBedQuery = `DELETE FROM roomBed WHERE roomId = ?`;
-  await pool.query(roomBedQuery, [roomId]);
+    const deleteRoomBathroomQuery = `DELETE FROM roomBathroom WHERE roomId = ?`;
+    await pool.query(deleteRoomBathroomQuery, [roomId]);
 
-  const roomBathroomQuery = `DELETE FROM roomBathroom WHERE roomId = ?`;
-  await pool.query(roomBathroomQuery, [roomId]);
+    const deleteRoomPicturesQuery = `DELETE FROM roomsPictures WHERE roomId = ?`;
+    await pool.query(deleteRoomPicturesQuery, [roomId]);
 
-  const roomPicturesQuery = `DELETE FROM roomsPictures WHERE roomId = ?`;
-  await pool.query(roomPicturesQuery, [roomId]);
-  return `Room deleted`;
+    const deleteRoomQuery = `DELETE FROM rooms WHERE roomId = ?`;
+    await pool.query(deleteRoomQuery, [roomId]);
+
+    await pool.query('COMMIT');
+
+    return 'Room deleted successfully'
+  } catch (error) {
+    await pool.query('ROLLBACK');
+    throw new Error('Error deleting room:', error);
+  }
 };
+
 
 export default {
   getAllRooms,
