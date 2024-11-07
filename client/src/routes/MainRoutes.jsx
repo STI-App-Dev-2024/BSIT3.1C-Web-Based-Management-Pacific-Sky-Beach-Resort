@@ -14,6 +14,7 @@ const Staffs = Loadable(lazy(() => import('pages/portal/staffs/index')));
 
 // profile
 const EditProfile = Loadable(lazy(() => import('pages/portal/profile/EditProfile')));
+const ViewProfile = Loadable(lazy(() => import('pages/portal/profile/ViewProfile')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -46,6 +47,10 @@ const MainRoutes = {
             {
               path: 'edit',
               element: <EditProfile />
+            },
+            {
+              path: 'view',
+              element: <ViewProfile />
             },
           ]
         },
