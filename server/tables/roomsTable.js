@@ -1,13 +1,11 @@
 const roomsTable = `CREATE TABLE IF NOT EXISTS rooms(
     roomId VARCHAR(250) PRIMARY KEY, -- can be varchar
+    userId VARCHAR(250) NOT NULL,
     roomName VARCHAR(100) NOT NULL,
-    -- bedType VARCHAR(100) NOT NULL,
-    -- bedQuantity INT NOT NULL,
-    -- bathroomCount INT NOT NULL,
     capacity INT NOT NULL,
-    rate DOUBLE NOT NULL,
+    price DOUBLE NOT NULL,
     thumbnail VARCHAR(100) NOT NULL,
-    status VARCHAR(100) NOT NULL CHECK(status='Draft'OR status ='Posted'),
+    isOccupied BOOLEAN NOT NULL DEFAULT false,
     description TEXT,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
