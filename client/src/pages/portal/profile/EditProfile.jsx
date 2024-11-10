@@ -16,7 +16,7 @@ import { useGetSingleUser } from 'api/users';
 const EditProfile = () => {
   const { openSnackbar } = useSnackbar()
   const { user: loggedInUser } = useAuth();
-  const { user } = useGetSingleUser(loggedInUser?.userId)
+  const { user, mutate } = useGetSingleUser(loggedInUser?.userId)
 
   const {
     firstName,
