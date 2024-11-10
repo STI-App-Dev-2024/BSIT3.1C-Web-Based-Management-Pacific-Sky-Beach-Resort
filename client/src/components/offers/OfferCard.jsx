@@ -1,18 +1,18 @@
-import { DeleteOutlined, EditOutlined, EyeOutlined, UserOutlined } from '@ant-design/icons'
-import { mdiBed, mdiShower } from '@mdi/js'
-import Icon from '@mdi/react'
-import { Box, Card, CardContent, Stack, Typography } from '@mui/material'
-import IconButton from 'components/@extended/IconButton'
 import React from 'react'
+import { DeleteOutlined, EditOutlined, EyeOutlined, UserOutlined } from '@ant-design/icons'
+import { Box, Card, Stack, Typography } from '@mui/material'
+import IconButton from 'components/@extended/IconButton'
 import Carousel from 'react-material-ui-carousel'
-
-
+import PropTypes from 'prop-types'
 
 const OfferCard = ({
   name,
-  pictures = [],
+  pictures,
   paxCount,
-  price
+  price,
+  handleView,
+  handleEdit,
+  handleDelete
 }) => {
 
   return (
@@ -39,26 +39,32 @@ const OfferCard = ({
           }}
         >
           <IconButton
+            title='View'
             style={{
               backgroundColor: `#fff`,
             }}
             color='primary'
+            onClick={handleView}
           >
             <EyeOutlined />
           </IconButton>
           <IconButton
+            title='Edit'
             style={{
               backgroundColor: `#fff`,
             }}
             color='info'
+            onClick={handleEdit}
           >
             <EditOutlined />
           </IconButton>
           <IconButton
+            title='Delete'
             style={{
               backgroundColor: `#fff`,
             }}
             color='error'
+            onClick={handleDelete}
           >
             <DeleteOutlined />
           </IconButton>
@@ -131,3 +137,13 @@ const OfferCard = ({
 }
 
 export default OfferCard
+
+OfferCard.propTypes = {
+  name: PropTypes.string.isRequired,
+  pictures: PropTypes.arrayOf(PropTypes.string),
+  paxCount: PropTypes.number.isRequired,
+  price: PropTypes.number.isRequired,
+  handleView: PropTypes.func.isRequired,
+  handleEdit: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired
+};

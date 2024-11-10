@@ -4,10 +4,14 @@ import LabeledValue from 'components/LabeledValue'
 import useAuth from 'hooks/useAuth'
 import { IdcardOutlined, UserOutlined, MailOutlined, PhoneOutlined, CopyOutlined } from '@ant-design/icons'
 import { Box, Divider, Grid, Stack, Typography } from '@mui/material'
+import { useGetSingleUser } from 'api/users'
 
 const ViewProfile = () => {
-  const { user } = useAuth()
+  const { user: loggedInUser } = useAuth();
+  const { user } = useGetSingleUser(loggedInUser?.userId)
+
   const {
+    avatar,
     userId,
     firstName,
     lastName,
@@ -33,7 +37,7 @@ const ViewProfile = () => {
                     borderStyle: 'dotted',
                     borderColor: '#0070ff'
                   }}
-                  src="https://scontent.fmnl19-1.fna.fbcdn.net/v/t39.30808-6/450548394_3755161084802321_2675326203838675255_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeFVumhKVn0bQkDiOkwE-wcOUHuPbiwLvMRQe49uLAu8xJauGGXxjuFFU2etXveXtHv9FjXpPaKd92c-9NiIUjuv&_nc_ohc=fBIBWnxpYQ8Q7kNvgGdyM3t&_nc_zt=23&_nc_ht=scontent.fmnl19-1.fna&_nc_gid=AqUXXe-w8TagNRGHCEgM7Qc&oh=00_AYAXvrB4GbWCGaNcUuJlVPn9WhVA8zor950Yw2AToQAlGA&oe=672FFDFE"
+                  src={avatar}
                   alt="Profile"
                 />
               </Box>

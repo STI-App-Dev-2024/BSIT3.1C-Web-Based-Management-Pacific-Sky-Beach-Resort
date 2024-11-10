@@ -71,7 +71,7 @@ const Details = ({ open, handleClose, userId, mutate }) => {
         onClose={handleClose}
       >
         <Stack direction='row' alignItems='center' justifyContent='flex-end' margin={2}>
-          <IconButton color='secondary' onClick={handleClose}>
+          <IconButton title='Close' color='secondary' onClick={handleClose}>
             <CloseOutlined />
           </IconButton>
         </Stack>

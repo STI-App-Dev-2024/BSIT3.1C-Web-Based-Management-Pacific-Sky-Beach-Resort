@@ -134,7 +134,7 @@ const Form = ({ open, handleClose, mutate, userId }) => {
               </Box>
             )}
           </Box>
-          <IconButton color='text' onClick={handleClose}>
+          <IconButton title='Close' color='text' onClick={handleClose}>
             <CloseOutlined />
           </IconButton>
         </Stack>
