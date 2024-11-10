@@ -9,6 +9,7 @@ import { alpha, styled, useTheme } from '@mui/material/styles';
 // project imports
 import getColors from 'utils/getColors';
 import getShadow from 'utils/getShadow';
+import { Tooltip } from '@mui/material';
 
 // ==============================|| ICON BUTTON - COLOR STYLE ||============================== //
 
@@ -140,17 +141,20 @@ const IconButtonStyle = styled(MuiIconButton, { shouldForwardProp: (prop) => pro
 
 // ==============================|| EXTENDED - ICON BUTTON ||============================== //
 
-const IconButton = forwardRef(({ variant = 'text', shape = 'square', children, color = 'primary', ...others }, ref) => {
+const IconButton = forwardRef(({ title, variant = 'text', shape = 'square', children, color = 'primary', ...others }, ref) => {
   const theme = useTheme();
 
   return (
-    <IconButtonStyle ref={ref} disableRipple variant={variant} shape={shape} theme={theme} color={color} {...others}>
-      {children}
-    </IconButtonStyle>
+    <Tooltip title={title}>
+      <IconButtonStyle ref={ref} disableRipple variant={variant} shape={shape} theme={theme} color={color} {...others}>
+        {children}
+      </IconButtonStyle>
+    </Tooltip>
   );
 });
 
 IconButton.propTypes = {
+  title: PropTypes.string,
   variant: PropTypes.string,
   shape: PropTypes.string,
   children: PropTypes.node,
