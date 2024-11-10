@@ -3,7 +3,7 @@ import multer from 'multer';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import cloudinary from './cloudinaryConfig.js';
 
-const createUploadMiddleware = ({ folder = 'uploads', fieldName = 'file', uploadType = 'single', fileLimit = 5 }) => {
+const createUploadMiddleware = ({ folder = 'uploads', fields = [] }) => {
   const allowedFormats = ['jpg', 'jpeg', 'png'];
 
   const storage = new CloudinaryStorage({
@@ -26,7 +26,7 @@ const createUploadMiddleware = ({ folder = 'uploads', fieldName = 'file', upload
   const upload = multer({ storage, fileFilter });
 
   return (req, res, next) => {
-    const handler = uploadType === 'multiple' ? upload.array(fieldName, fileLimit) : upload.single(fieldName);
+    const handler = upload.fields(fields);
 
     handler(req, res, (err) => {
       if (err) {
@@ -36,5 +36,6 @@ const createUploadMiddleware = ({ folder = 'uploads', fieldName = 'file', upload
     });
   };
 };
+
 
 export default createUploadMiddleware;

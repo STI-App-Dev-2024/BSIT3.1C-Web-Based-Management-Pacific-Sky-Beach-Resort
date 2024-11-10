@@ -22,12 +22,12 @@ router.delete('/:userId', authToManageUsers, deleteUser)
 router.post('/login', authUser)
 router.post(
   '/register',
-  authToManageUsers,
   checkIfEmailAddressExist,
   createUploadMiddleware({
     folder: 'user_avatars',
-    fieldName: 'avatar',
-    uploadType: 'single'
+    fields: [
+      { name: 'avatar', maxCount: 1 },
+    ],
   }),
   registerUser
 )
@@ -36,8 +36,9 @@ router.put(
   protect,
   createUploadMiddleware({
     folder: 'user_avatars',
-    fieldName: 'avatar',
-    uploadType: 'single'
+    fields: [
+      { name: 'avatar', maxCount: 1 },
+    ],
   }),
   updateUser
 )

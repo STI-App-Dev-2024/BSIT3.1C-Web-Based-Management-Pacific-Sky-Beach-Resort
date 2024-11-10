@@ -69,7 +69,7 @@ const registerUser = async (req) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const avatar = req.file ? req.file.path : null;
+  const avatar = req.files && req.files['avatar'] ? req.files['avatar'][0].path : null;
 
   const userQuery = `
     INSERT INTO users (userId, firstName, lastName, emailAddress, password, avatar, mobileNumber, position) 
@@ -86,6 +86,7 @@ const registerUser = async (req) => {
     mobileNumber,
     position,
   ]);
+
 
   return `User registered successfully`;
 };
