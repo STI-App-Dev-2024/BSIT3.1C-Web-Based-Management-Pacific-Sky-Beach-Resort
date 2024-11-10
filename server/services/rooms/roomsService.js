@@ -12,27 +12,15 @@ const getAllRooms = async () => {
 
     const [rooms] = await pool.query(roomsQuery);
 
-    const bedQuery = `
-  SELECT bedType, count FROM roomBed WHERE roomId = ?
-`;
-
-    const bathroomQuery = `
-  SELECT bathRoomType, count FROM roomBathroom WHERE roomId = ?
-`;
-
     const picturesQuery = `
   SELECT picture FROM roomsPictures WHERE roomId = ?
 `;
 
     const __rooms = await Promise.all(rooms.map(async (room) => {
-      const [bedDetails] = await pool.query(bedQuery, [room.roomId]);
-      const [bathroomDetails] = await pool.query(bathroomQuery, [room.roomId]);
       const [pictures] = await pool.query(picturesQuery, [room.roomId]);
 
       return {
         ...room,
-        bedDetails,
-        bathroomDetails,
         pictures: pictures.map(picture => picture.picture),
       };
     }));
@@ -86,25 +74,25 @@ const getSingleRoomById = async (roomId) => {
   }
 };
 
-const createRoom = async (payload) => {
+const createRoom = async (req) => {
   try {
     const {
       roomName,
       userId,
       capacity,
       price,
-      thumbnail,
       bedDetails = [],
       bathroomDetails = [],
-      pictures = [],
-    } = payload || {};
+    } = req.body || {};
 
     const roomId = uuidv4();
+    const pictures = req.files?.pictures ? req.files.pictures.map(file => file.path) : [];
+    const thumbnail = req.files?.thumbnail ? req.files.thumbnail[0].path : null;
 
     const roomQuery = `
-  INSERT INTO rooms(roomId, userId, roomName, capacity, price, thumbnail, isOccupied)
-  VALUES (?, ?, ?, ?, ?, ?, ?)
-`;
+      INSERT INTO rooms(roomId, userId, roomName, capacity, price, thumbnail, isOccupied)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
 
     await pool.query(roomQuery, [
       roomId,
@@ -118,13 +106,13 @@ const createRoom = async (payload) => {
 
     const roomBedQuery = `INSERT INTO roomBed(roomId, bedType, count) VALUES (?, ?, ?)`;
     for (const bed of bedDetails) {
-      const { bedType, bedCount } = bed;
+      const { bedType = 'big', bedCount = 1 } = bed;
       await pool.query(roomBedQuery, [roomId, bedType, bedCount]);
     }
 
     const roomBathroomQuery = `INSERT INTO roomBathroom(roomId, bathRoomType, count) VALUES (?, ?, ?)`;
     for (const bathroom of bathroomDetails) {
-      const { bathRoomType, bathRoomCount } = bathroom;
+      const { bathRoomType = 'big', bathRoomCount = 1 } = bathroom;
       await pool.query(roomBathroomQuery, [roomId, bathRoomType, bathRoomCount]);
     }
 
@@ -135,10 +123,9 @@ const createRoom = async (payload) => {
 
     return { message: 'Room created successfully', roomId };
   } catch (error) {
-    throw new Error(error)
+    throw new Error(error);
   }
 };
-
 
 const deleteRoom = async (roomId) => {
   try {

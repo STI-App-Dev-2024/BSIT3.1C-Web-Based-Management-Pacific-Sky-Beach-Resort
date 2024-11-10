@@ -21,7 +21,7 @@ const getSingleRoomById = expressAsync(async (req, res, next) => {
 
 const createRoom = expressAsync(async (req, res, next) => {
   try {
-    const response = await roomsService.createRoom(req.body);
+    const response = await roomsService.createRoom(req);
     res.json(response);
   } catch (error) {
     throw new Error(error);
@@ -38,9 +38,9 @@ const deleteRoom = expressAsync(async (req, res, next) => {
   }
 });
 
-export { 
-  getAllRooms, 
-  getSingleRoomById, 
-  createRoom, 
-  deleteRoom 
+export {
+  getAllRooms,
+  getSingleRoomById,
+  createRoom,
+  deleteRoom
 };
