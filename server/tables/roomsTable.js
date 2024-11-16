@@ -3,6 +3,7 @@ const roomsTable = `CREATE TABLE IF NOT EXISTS rooms(
     userId VARCHAR(250) NOT NULL,
     roomName VARCHAR(100) NOT NULL,
     capacity INT NOT NULL,
+    roomType VARCHAR(250) NOT NULL,
     price DOUBLE NOT NULL,
     thumbnail VARCHAR(100) NOT NULL,
     isOccupied BOOLEAN NOT NULL DEFAULT false,

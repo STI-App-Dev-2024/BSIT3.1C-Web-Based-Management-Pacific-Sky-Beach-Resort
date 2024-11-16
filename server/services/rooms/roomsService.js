@@ -1,5 +1,6 @@
 import conn from "../../config/db.js";
 import { v4 as uuidv4 } from "uuid";
+import undefinedValidator from '../../utils/undefinedValidator.js'
 
 const pool = await conn();
 
@@ -34,7 +35,7 @@ const getAllRooms = async () => {
 const getSingleRoomById = async (roomId) => {
   try {
     const roomQuery = `
-      SELECT roomId, roomName, userId, capacity, price, thumbnail, isOccupied
+      SELECT *
       FROM rooms
       WHERE roomId = ?
     `;
@@ -46,7 +47,7 @@ const getSingleRoomById = async (roomId) => {
     }
 
     const bedQuery = `
-      SELECT bedType, count FROM roomBed WHERE roomId = ?
+      SELECT bedType, count FROM roombed WHERE roomId = ?
     `;
 
     const [bedDetails] = await pool.query(bedQuery, [roomId]);
@@ -80,18 +81,21 @@ const createRoom = async (req) => {
       roomName,
       userId,
       capacity,
+      roomType,
       price,
-      bedDetails = [],
-      bathroomDetails = [],
+      bedDetails,
+      description
     } = req.body || {};
+
+    const parsedBedDetails = JSON.parse(bedDetails)
 
     const roomId = uuidv4();
     const pictures = req.files?.pictures ? req.files.pictures.map(file => file.path) : [];
     const thumbnail = req.files?.thumbnail ? req.files.thumbnail[0].path : null;
 
     const roomQuery = `
-      INSERT INTO rooms(roomId, userId, roomName, capacity, price, thumbnail, isOccupied)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO rooms(roomId, userId, roomName, capacity,description, roomType, price, thumbnail, isOccupied)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     await pool.query(roomQuery, [
@@ -99,31 +103,120 @@ const createRoom = async (req) => {
       userId,
       roomName,
       capacity,
+      description,
+      roomType,
       price,
       thumbnail,
       false,
     ]);
 
-    const roomBedQuery = `INSERT INTO roomBed(roomId, bedType, count) VALUES (?, ?, ?)`;
-    for (const bed of bedDetails) {
-      const { bedType = 'big', bedCount = 1 } = bed;
+    const roomBedQuery = `
+      INSERT INTO roombed(roomId, bedType, count) VALUES (?, ?, ?)
+    `;
+    for (const bed of parsedBedDetails) {
+      const { bedType, bedCount } = bed;
       await pool.query(roomBedQuery, [roomId, bedType, bedCount]);
     }
 
-    const roomBathroomQuery = `INSERT INTO roomBathroom(roomId, bathRoomType, count) VALUES (?, ?, ?)`;
-    for (const bathroom of bathroomDetails) {
-      const { bathRoomType = 'big', bathRoomCount = 1 } = bathroom;
-      await pool.query(roomBathroomQuery, [roomId, bathRoomType, bathRoomCount]);
-    }
-
-    const roomPicturesQuery = `INSERT INTO roomsPictures(roomId, picture) VALUES (?, ?)`;
+    const roomPicturesQuery = `
+      INSERT INTO roomsPictures(roomId, picture) VALUES (?, ?)
+    `;
     for (const picture of pictures) {
       await pool.query(roomPicturesQuery, [roomId, picture]);
     }
 
     return { message: 'Room created successfully', roomId };
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
+  }
+};
+
+const editRoom = async (req) => {
+  try {
+    const {
+      roomId,
+      roomName,
+      userId,
+      capacity,
+      roomType,
+      price,
+      bedDetails,
+      description,
+    } = req.body || {};
+
+    const room = await getSingleRoomById(req.params.roomId);
+
+    const pictures = req.files?.pictures ? req.files.pictures.map(file => file.path) : [];
+    const thumbnail = req.files?.thumbnail ? req.files.thumbnail[0].path : null;
+
+    const roomQuery = `
+      UPDATE rooms
+      SET 
+        roomName = ?, 
+        capacity = ?, 
+        description = ?, 
+        roomType = ?, 
+        price = ?, 
+        thumbnail = ?
+      WHERE roomId = ?
+    `;
+
+    room.roomName = undefinedValidator(room.roomName, roomName);
+    room.capacity = undefinedValidator(room.capacity, capacity);
+    room.description = undefinedValidator(room.description, description);
+    room.roomType = undefinedValidator(room.roomType, roomType);
+    room.price = undefinedValidator(room.price, price);
+
+    let __thumbnail;
+    if (req.files?.thumbnail) {
+      __thumbnail = thumbnail;
+    } else {
+      __thumbnail = room.thumbnail;
+    }
+
+    await pool.query(roomQuery, [
+      room.roomName,
+      room.capacity,
+      room.description,
+      room.roomType,
+      room.price,
+      __thumbnail,
+      room.roomId
+    ]);
+
+    const oldBedDetails = JSON.stringify(room.bedDetails)
+    const newBedDetails = JSON.stringify(bedDetails)
+
+    const __bedDetails = undefinedValidator(oldBedDetails, newBedDetails)
+    const parsedBedDetails = JSON.parse(__bedDetails)
+
+    const roomBedQuery = `
+    INSERT INTO roombed(roomId, bedType, count) VALUES (?, ?, ?)
+  `;
+    for (const bed of parsedBedDetails) {
+      const { bedType, count } = bed;
+      await pool.query(roomBedQuery, [roomId, bedType, count]);
+    }
+
+    // Update room pictures if provided
+    if (pictures.length > 0) {
+      const roomPicturesDeleteQuery = `
+        DELETE FROM roomsPictures WHERE roomId = ?
+      `;
+      await pool.query(roomPicturesDeleteQuery, [roomId]);
+
+      const roomPicturesQuery = `
+        INSERT INTO roomsPictures(roomId, picture) VALUES (?, ?)
+      `;
+      for (const picture of pictures) {
+        await pool.query(roomPicturesQuery, [roomId, picture]);
+      }
+    }
+
+    return { message: 'Room updated successfully', roomId };
+
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 
@@ -157,5 +250,6 @@ export default {
   getAllRooms,
   getSingleRoomById,
   createRoom,
+  editRoom,
   deleteRoom,
 };

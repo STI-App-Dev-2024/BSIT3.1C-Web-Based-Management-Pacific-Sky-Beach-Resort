@@ -8,7 +8,7 @@ import { Box, Button, Stack } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 
 // Project import
-import RejectionFiles from './third-party/dropzone/RejectionFiles';
+import RejectionFiles from './RejectionFiles';
 import PlaceholderContent from './PlaceholderContent';
 
 const DropzoneWrapper = styled('div')(({ theme, isRound }) => ({
@@ -60,8 +60,8 @@ const SingleFileUpload = ({
 
   const thumb = file && (
     <img
-      key={file.name || 'Photo'}
-      alt={file.name || 'Photo'}
+      key={file.name}
+      alt={file.name}
       src={file.preview || file}
       style={{
         top: 8,

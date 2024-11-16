@@ -28,6 +28,15 @@ const createRoom = expressAsync(async (req, res, next) => {
   }
 });
 
+const editRoom = expressAsync(async (req, res, next) => {
+  try {
+    const response = await roomsService.editRoom(req);
+    res.json(response);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 const deleteRoom = expressAsync(async (req, res, next) => {
   try {
     const response = await roomsService.deleteRoom(req.params.roomId);
@@ -42,5 +51,6 @@ export {
   getAllRooms,
   getSingleRoomById,
   createRoom,
+  editRoom,
   deleteRoom
 };

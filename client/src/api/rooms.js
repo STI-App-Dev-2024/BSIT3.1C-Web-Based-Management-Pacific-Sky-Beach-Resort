@@ -11,6 +11,7 @@ const options = {
 
 const endpoints = {
   key: `${import.meta.env.VITE_API_KEY_}/${import.meta.env.VITE_API_VER}/rooms`,
+  createRoom: `${import.meta.env.VITE_API_KEY_}/${import.meta.env.VITE_API_VER}/rooms/create-room`,
 };
 
 export const useGetAllRooms = () => {
@@ -31,6 +32,13 @@ export const useGetAllRooms = () => {
 }
 
 const Rooms = {
+  createRoom: async (payload) => {
+    try {
+      await axiosServices.post(`/${endpoints.createRoom}`, payload)
+    } catch (error) {
+      throw new Error(error?.response?.data?.message);
+    }
+  },
   deleteRoom: async (roomId) => {
     try {
       await axiosServices.delete(`/${endpoints.key}/${roomId}`)
