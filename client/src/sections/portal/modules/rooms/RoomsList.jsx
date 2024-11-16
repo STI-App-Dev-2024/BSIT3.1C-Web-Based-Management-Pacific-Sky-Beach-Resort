@@ -9,10 +9,12 @@ import EmptyUserCard from 'components/skeleton/EmptyUserCard';
 import ProductPlaceholder from 'components/skeleton/ProductPlaceholder';
 import OfferCard from 'components/offers/OfferCard';
 import MainCard from 'components/MainCard';
+import { useNavigate } from 'react-router';
 
 const RoomsList = () => {
   const { roomsLoading, rooms, mutate } = useGetAllRooms()
   const { openSnackbar } = useSnackbar()
+  const navigate = useNavigate()
 
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteConfigs, setDeleteConfigs] = useState({
@@ -101,6 +103,7 @@ const RoomsList = () => {
         <Button
           variant='contained'
           startIcon={<PlusOutlined />}
+          onClick={() => navigate('/portal/form?action=add')}
         >
           Add room
         </Button>
@@ -127,7 +130,7 @@ const RoomsList = () => {
                       price={price}
                       pictures={[thumbnail, ...pictures]}
                       handleView={() => alert(`view`)}
-                      handleEdit={() => alert(`edit`)}
+                      handleEdit={() => navigate(`/portal/form?action=edit&roomId=${roomId}`)}
                       handleDelete={() => handleOpenDelete(roomId)}
                     />
                   </Grid>
