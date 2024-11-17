@@ -3,6 +3,10 @@ import conn from "../../config/db.js";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import undefinedValidator from '../../utils/undefinedValidator.js'
+import { sendEmail } from '../../utils/sendNodeMail.js';
+import { COMPANY_NAME } from '../../constants/constants.js';
+import emailRegistrationNotification from '../../templates/emailRegistrationNotification.js';
+import { randomStringGenerator } from '../../utils/randomStringGenerator.js';
 
 const pool = await conn()
 
@@ -60,12 +64,12 @@ const registerUser = async (req) => {
     firstName,
     lastName,
     emailAddress,
-    password = '@D123123d@',
     mobileNumber,
     position,
   } = req.body || {};
 
   const userId = uuidv4();
+  const password = randomStringGenerator()
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -87,6 +91,16 @@ const registerUser = async (req) => {
     position,
   ]);
 
+
+  const subject = `Welcome to ${COMPANY_NAME} ${firstName} ${lastName}`
+  const content = emailRegistrationNotification({
+    firstName,
+    lastName,
+    emailAddress,
+    password
+  })
+
+  await sendEmail(emailAddress, subject, content)
 
   return `User registered successfully`;
 };
