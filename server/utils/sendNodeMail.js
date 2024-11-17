@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { COMPANY_NAME } from '../constants/constants.js';
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -12,7 +13,7 @@ const transporter = nodemailer.createTransport({
 
 export async function sendEmail(email, subject, content, attachments = [], bcc = [], options = {}) {
   const mailOptions = {
-    from: process.env.MAIL_CONFIGS_EMAIL,
+    from: `${COMPANY_NAME} (noreply) <${process.env.MAIL_CONFIGS_EMAIL}>`,
     to: email,
     subject: subject,
     html: content,
