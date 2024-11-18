@@ -58,11 +58,22 @@ const deleteUser = expressAsync(async (req, res) => {
   }
 })
 
+const changePassword = expressAsync(async (req, res) => {
+  try {
+    const response = await usersService.changePassword(req.body)
+    res.json(response)
+  } catch (error) {
+    console.error('Error in usersService:', error);
+    throw new Error(error)
+  }
+})
+
 export {
   authUser,
   getAllUsers,
   getSingleUserById,
   registerUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  changePassword
 }

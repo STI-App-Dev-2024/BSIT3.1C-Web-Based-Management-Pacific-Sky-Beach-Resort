@@ -163,6 +163,40 @@ const deleteUser = async (userId) => {
   return `User deleted`
 }
 
+const changePassword = async (body) => {
+  const { userId, oldPassword, newPassword, confirmPassword } = body || {};
+
+  if (newPassword !== confirmPassword) {
+    throw new Error('New password and confirm password do not match');
+  }
+
+  const userQuery = `SELECT * FROM users WHERE userId = ?`;
+  const [user] = await pool.query(userQuery, [userId]);
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const isOldPasswordValid = await bcrypt.compare(oldPassword, user[0]?.password);
+  if (!isOldPasswordValid) {
+    throw new Error('Old password is incorrect');
+  }
+
+  if (!newPassword) {
+    throw new Error('New password is required');
+  }
+
+  const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+  const updateQuery = `UPDATE users SET password = ?, updatedAt = CURRENT_TIMESTAMP WHERE userId = ?`;
+  const result = await pool.query(updateQuery, [hashedNewPassword, userId]);
+
+  if (result.affectedRows === 0) {
+    throw new Error('Password update failed');
+  }
+
+  return 'Password updated successfully';
+};
 
 export default {
   authUser,
@@ -170,5 +204,6 @@ export default {
   getSingleUserById,
   registerUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  changePassword
 }

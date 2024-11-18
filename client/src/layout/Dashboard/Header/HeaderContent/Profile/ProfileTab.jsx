@@ -12,6 +12,7 @@ import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import useAuth from 'hooks/useAuth';
 import { useNavigate } from 'react-router';
+import { LockOutlined } from '@ant-design/icons';
 
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
@@ -39,17 +40,23 @@ export default function ProfileTab() {
 
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
+      <ListItemButton onClick={() => handleClickItem('profile/view')} selected >
+        <ListItemIcon>
+          <UserOutlined />
+        </ListItemIcon>
+        <ListItemText primary="View Profile" />
+      </ListItemButton>
       <ListItemButton onClick={() => handleClickItem('profile/edit')} >
         <ListItemIcon>
           <EditOutlined />
         </ListItemIcon>
         <ListItemText primary="Edit Profile" />
       </ListItemButton>
-      <ListItemButton onClick={() => handleClickItem('profile/view')} >
+      <ListItemButton onClick={() => handleClickItem('account/change-password')} >
         <ListItemIcon>
-          <UserOutlined />
+          <LockOutlined />
         </ListItemIcon>
-        <ListItemText primary="View Profile" />
+        <ListItemText primary="Change Password" />
       </ListItemButton>
       <ListItemButton onClick={handleLogout}>
         <ListItemIcon>

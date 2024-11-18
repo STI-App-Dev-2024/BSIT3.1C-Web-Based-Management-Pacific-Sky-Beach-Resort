@@ -9,6 +9,16 @@ const Profile = {
     } catch (error) {
       throw new Error(error?.response?.data?.message);
     }
+  },
+  changePassword: async (payload) => {
+    {
+      try {
+        const response = await axiosServices.put(`/${endpoints.changePassword}`, payload)
+        return response
+      } catch (error) {
+        throw new Error(error?.response?.data?.message);
+      }
+    }
   }
 }
 
