@@ -5,7 +5,8 @@ import {
   registerUser,
   authUser,
   updateUser,
-  getSingleUserById
+  getSingleUserById,
+  changePassword
 } from '../../controllers/users/usersControllers.js'
 import {
   checkIfEmailAddressExist,
@@ -31,6 +32,9 @@ router.post(
   }),
   registerUser
 )
+
+router.put(`/change-password`, protect, changePassword)
+
 router.put(
   '/:userId',
   protect,

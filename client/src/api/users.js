@@ -4,6 +4,7 @@ import axiosServices, { fetcher } from 'utils/axios'
 
 export const endpoints = {
   key: `${import.meta.env.VITE_API_KEY_}/${import.meta.env.VITE_API_VER}/users`,
+  changePassword: `${import.meta.env.VITE_API_KEY_}/${import.meta.env.VITE_API_VER}/users/change-password`
 };
 
 const options = {
