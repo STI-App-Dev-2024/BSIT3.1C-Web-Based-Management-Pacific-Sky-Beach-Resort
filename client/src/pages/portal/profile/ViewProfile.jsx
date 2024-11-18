@@ -5,6 +5,7 @@ import useAuth from 'hooks/useAuth'
 import { IdcardOutlined, UserOutlined, MailOutlined, PhoneOutlined, CopyOutlined } from '@ant-design/icons'
 import { Box, Divider, Grid, Stack, Typography } from '@mui/material'
 import { useGetSingleUser } from 'api/users'
+import { getPositionLabel } from 'utils/getPositionLabel'
 
 const ViewProfile = () => {
   const { user: loggedInUser } = useAuth();
@@ -17,7 +18,8 @@ const ViewProfile = () => {
     lastName,
     emailAddress,
     mobileNumber,
-    bio
+    bio,
+    position
   } = user || {}
 
   return (
@@ -41,8 +43,8 @@ const ViewProfile = () => {
                   alt="Profile"
                 />
               </Box>
-              <Typography mb={1} variant='h5' color='#000000'>Master Admin</Typography>
-              <Typography variant='body1' color='#808080'>Agent</Typography>
+              <Typography mb={1} variant='h5'>{firstName} {lastName}</Typography>
+              <Typography variant='body1' color='#808080'>{getPositionLabel(position)}</Typography>
             </Stack>
           </MainCard>
         </Grid>

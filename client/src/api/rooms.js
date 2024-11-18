@@ -31,10 +31,34 @@ export const useGetAllRooms = () => {
   return memoizedValue
 }
 
+export const useGetSingleRoom = (roomId) => {
+  const { data, isLoading, error, mutate } = useSWR(roomId ? `/${endpoints.key}/${roomId}` : null, fetcher, options)
+
+  const memoizedValue = useMemo(
+    () => ({
+      room: data,
+      roomLoading: isLoading,
+      mutate,
+      error
+    }),
+
+    [data, error, isLoading, mutate]
+  );
+
+  return memoizedValue
+}
+
 const Rooms = {
   createRoom: async (payload) => {
     try {
       await axiosServices.post(`/${endpoints.createRoom}`, payload)
+    } catch (error) {
+      throw new Error(error?.response?.data?.message);
+    }
+  },
+  editRoom: async (roomId, payload) => {
+    try {
+      await axiosServices.put(`/${endpoints.key}/${roomId}`, payload)
     } catch (error) {
       throw new Error(error?.response?.data?.message);
     }

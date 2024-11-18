@@ -64,14 +64,27 @@ const getSingleRoomById = async (roomId) => {
 
     const [pictures] = await pool.query(picturesQuery, [roomId]);
 
+    // Extract amenities from the room data
+    const amenities = {
+      hasWifi: !!room[0].hasWifi,
+      hasKitchen: !!room[0].hasKitchen,
+      hasTV: !!room[0].hasTV,
+      hasShower: !!room[0].hasShower,
+      hasAircon: !!room[0].hasAircon,
+      hasGrill: !!room[0].hasGrill,
+      hasRefrigerator: !!room[0].hasRefrigerator,
+      hasHeater: !!room[0].hasHeater,
+    };
+
     return {
       ...room[0],
       bedDetails,
       bathroomDetails,
       pictures: pictures.map(picture => picture.picture),
+      amenities,
     };
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 
@@ -84,18 +97,29 @@ const createRoom = async (req) => {
       roomType,
       price,
       bedDetails,
-      description
+      description,
+      hasWifi = false,
+      hasKitchen = false,
+      hasTV = false,
+      hasShower = false,
+      hasAircon = false,
+      hasGrill = false,
+      hasRefrigerator = false,
+      hasHeater = false,
     } = req.body || {};
 
-    const parsedBedDetails = JSON.parse(bedDetails)
+    const parsedBedDetails = JSON.parse(bedDetails);
 
     const roomId = uuidv4();
     const pictures = req.files?.pictures ? req.files.pictures.map(file => file.path) : [];
     const thumbnail = req.files?.thumbnail ? req.files.thumbnail[0].path : null;
 
     const roomQuery = `
-      INSERT INTO rooms(roomId, userId, roomName, capacity,description, roomType, price, thumbnail, isOccupied)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO rooms(
+        roomId, userId, roomName, capacity, description, roomType, price, thumbnail, isOccupied,
+        hasWifi, hasKitchen, hasTV, hasShower, hasAircon, hasGrill, hasRefrigerator, hasHeater
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     await pool.query(roomQuery, [
@@ -108,6 +132,14 @@ const createRoom = async (req) => {
       price,
       thumbnail,
       false,
+      hasWifi,
+      hasKitchen,
+      hasTV,
+      hasShower,
+      hasAircon,
+      hasGrill,
+      hasRefrigerator,
+      hasHeater,
     ]);
 
     const roomBedQuery = `
@@ -131,6 +163,7 @@ const createRoom = async (req) => {
   }
 };
 
+
 const editRoom = async (req) => {
   try {
     const {
@@ -142,6 +175,14 @@ const editRoom = async (req) => {
       price,
       bedDetails,
       description,
+      hasWifi,
+      hasKitchen,
+      hasTV,
+      hasShower,
+      hasAircon,
+      hasGrill,
+      hasRefrigerator,
+      hasHeater,
     } = req.body || {};
 
     const room = await getSingleRoomById(req.params.roomId);
@@ -157,7 +198,15 @@ const editRoom = async (req) => {
         description = ?, 
         roomType = ?, 
         price = ?, 
-        thumbnail = ?
+        thumbnail = ?, 
+        hasWifi = ?, 
+        hasKitchen = ?, 
+        hasTV = ?, 
+        hasShower = ?, 
+        hasAircon = ?, 
+        hasGrill = ?, 
+        hasRefrigerator = ?, 
+        hasHeater = ?
       WHERE roomId = ?
     `;
 
@@ -167,12 +216,18 @@ const editRoom = async (req) => {
     room.roomType = undefinedValidator(room.roomType, roomType);
     room.price = undefinedValidator(room.price, price);
 
-    let __thumbnail;
-    if (req.files?.thumbnail) {
-      __thumbnail = thumbnail;
-    } else {
-      __thumbnail = room.thumbnail;
-    }
+    const amenities = {
+      hasWifi: undefinedValidator(room.hasWifi, hasWifi),
+      hasKitchen: undefinedValidator(room.hasKitchen, hasKitchen),
+      hasTV: undefinedValidator(room.hasTV, hasTV),
+      hasShower: undefinedValidator(room.hasShower, hasShower),
+      hasAircon: undefinedValidator(room.hasAircon, hasAircon),
+      hasGrill: undefinedValidator(room.hasGrill, hasGrill),
+      hasRefrigerator: undefinedValidator(room.hasRefrigerator, hasRefrigerator),
+      hasHeater: undefinedValidator(room.hasHeater, hasHeater),
+    };
+
+    let __thumbnail = req.files?.thumbnail ? thumbnail : room.thumbnail;
 
     await pool.query(roomQuery, [
       room.roomName,
@@ -181,24 +236,30 @@ const editRoom = async (req) => {
       room.roomType,
       room.price,
       __thumbnail,
-      room.roomId
+      amenities.hasWifi,
+      amenities.hasKitchen,
+      amenities.hasTV,
+      amenities.hasShower,
+      amenities.hasAircon,
+      amenities.hasGrill,
+      amenities.hasRefrigerator,
+      amenities.hasHeater,
+      room.roomId,
     ]);
 
-    const oldBedDetails = JSON.stringify(room.bedDetails)
-    const newBedDetails = JSON.stringify(bedDetails)
-
-    const __bedDetails = undefinedValidator(oldBedDetails, newBedDetails)
-    const parsedBedDetails = JSON.parse(__bedDetails)
+    const oldBedDetails = JSON.stringify(room.bedDetails);
+    const newBedDetails = JSON.stringify(bedDetails);
+    const __bedDetails = undefinedValidator(oldBedDetails, newBedDetails);
+    const parsedBedDetails = JSON.parse(__bedDetails);
 
     const roomBedQuery = `
-    INSERT INTO roombed(roomId, bedType, count) VALUES (?, ?, ?)
-  `;
+      INSERT INTO roombed(roomId, bedType, count) VALUES (?, ?, ?)
+    `;
     for (const bed of parsedBedDetails) {
       const { bedType, count } = bed;
       await pool.query(roomBedQuery, [roomId, bedType, count]);
     }
 
-    // Update room pictures if provided
     if (pictures.length > 0) {
       const roomPicturesDeleteQuery = `
         DELETE FROM roomsPictures WHERE roomId = ?
@@ -214,7 +275,6 @@ const editRoom = async (req) => {
     }
 
     return { message: 'Room updated successfully', roomId };
-
   } catch (error) {
     throw new Error(error.message);
   }
@@ -244,7 +304,6 @@ const deleteRoom = async (roomId) => {
     throw new Error('Error deleting room:', error);
   }
 };
-
 
 export default {
   getAllRooms,
