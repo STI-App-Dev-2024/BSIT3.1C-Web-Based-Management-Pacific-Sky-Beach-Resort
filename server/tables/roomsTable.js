@@ -8,8 +8,16 @@ const roomsTable = `CREATE TABLE IF NOT EXISTS rooms(
     thumbnail VARCHAR(100) NOT NULL,
     isOccupied BOOLEAN NOT NULL DEFAULT false,
     description TEXT,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    hasWifi BOOLEAN NOT NULL DEFAULT false,
+    hasKitchen BOOLEAN NOT NULL DEFAULT false,
+    hasTV BOOLEAN NOT NULL DEFAULT false,
+    hasShower BOOLEAN NOT NULL DEFAULT false,
+    hasAircon BOOLEAN NOT NULL DEFAULT false,
+    hasGrill BOOLEAN NOT NULL DEFAULT false,
+    hasRefrigerator BOOLEAN NOT NULL DEFAULT false,
+    hasHeater BOOLEAN NOT NULL DEFAULT false,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    );`;
+);`;
 
-export default roomsTable
+export default roomsTable;

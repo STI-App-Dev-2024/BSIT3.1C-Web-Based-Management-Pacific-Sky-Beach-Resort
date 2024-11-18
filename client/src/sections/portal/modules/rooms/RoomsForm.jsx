@@ -1,5 +1,5 @@
 import { CaretRightOutlined, GiftOutlined, PlusCircleOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
-import { Autocomplete, Box, Button, CardActions, Container, Grid, InputAdornment, List, ListItemAvatar, ListItemButton, ListItemSecondaryAction, ListItemText, OutlinedInput, Stack, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, CardActions, Checkbox, Container, FormControlLabel, Grid, InputAdornment, List, ListItemAvatar, ListItemButton, ListItemSecondaryAction, ListItemText, OutlinedInput, Stack, TextField, Typography } from '@mui/material';
 import FormWrapper from 'components/FormWrapper';
 import MainCard from 'components/MainCard';
 import SingleFileUpload from 'components/third-party/dropzone/FileUpload';
@@ -25,7 +25,15 @@ const initialValues = {
   description: '',
   bathRoomDetails: [],
   files: [],
-  thumbnail: []
+  thumbnail: [],
+  hasWifi: false,
+  hasShower: false,
+  hasGrill: false,
+  hasHeater: false,
+  hasKitchen: false,
+  hasTV: false,
+  hasAircon: false,
+  hasRefrigerator: false
 };
 
 const avatarSX = {
@@ -81,26 +89,51 @@ const RoomsForm = () => {
   const formik = useFormik({
     initialValues,
     onSubmit: async (values) => {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
         const formData = new FormData();
-        formData.append('roomName', values.roomName);
-        formData.append('userId', user?.userId);
-        formData.append('capacity', values.capacity);
-        formData.append('roomType', values.roomType);
-        formData.append('price', values.price);
-        formData.append('description', values.description);
+
+        const basicFields = [
+          'roomName',
+          'capacity',
+          'roomType',
+          'price',
+          'description',
+        ];
+
+        basicFields.forEach(field => {
+          if (values[field]) formData.append(field, values[field]);
+        });
+
         formData.append('bedDetails', JSON.stringify(bedDetails));
+        formData.append('userId', user?.userId)
+
+        const amenities = [
+          'hasWifi',
+          'hasShower',
+          'hasAircon',
+          'hasHeater',
+          'hasGrill',
+          'hasKitchen',
+          'hasTV',
+          'hasRefrigerator',
+        ];
+
+        amenities.forEach(amenity => {
+          formData.append(amenity, values[amenity] ? 1 : 0);
+        });
 
         if (values.thumbnail) {
           formData.append('thumbnail', values.thumbnail);
         }
 
-        values?.files?.forEach((file, index) => {
-          formData.append(`pictures`, file);
-        });
+        if (values?.files?.length) {
+          values.files.forEach((file) => {
+            formData.append('pictures', file);
+          });
+        }
 
-        await agent.Rooms.createRoom(formData)
+        await agent.Rooms.createRoom(formData);
 
         openSnackbar({
           message: 'Room successfully created.',
@@ -109,7 +142,7 @@ const RoomsForm = () => {
           duration: 3000,
         });
 
-        navigate(`/portal/rooms`)
+        navigate(`/portal/rooms`);
       } catch (error) {
         openSnackbar({
           message: error.message || 'An error occurred.',
@@ -119,9 +152,10 @@ const RoomsForm = () => {
         });
         console.log(error);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
+
   });
 
   const {
@@ -151,7 +185,7 @@ const RoomsForm = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sm={12} md={9}>
+      <Grid item xs={12} sm={12} md={12}>
         <FormWrapper title={`${pageTitle} Room`} caption="All fields are required.">
           <form onSubmit={handleSubmit}>
             <Box marginBottom={4}>
@@ -440,6 +474,93 @@ const RoomsForm = () => {
                 </Box>
               </Box>
             </Box>
+            <Box marginBottom={4}>
+              <Typography variant="h3" marginBottom={1}>
+                <CaretRightOutlined /> Amenities
+              </Typography>
+              <Box padding="0 1em">
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values.hasWifi}
+                      onChange={handleChange}
+                      name="hasWifi"
+                    />
+                  }
+                  label="Wifi"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values.hasShower}
+                      onChange={handleChange}
+                      name="hasShower"
+                    />
+                  }
+                  label="Shower"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values.hasAircon}
+                      onChange={handleChange}
+                      name="hasAircon"
+                    />
+                  }
+                  label="Air Conditioning"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values.hasHeater}
+                      onChange={handleChange}
+                      name="hasHeater"
+                    />
+                  }
+                  label="Heater"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values.hasGrill}
+                      onChange={handleChange}
+                      name="hasGrill"
+                    />
+                  }
+                  label="Grill"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values.hasKitchen}
+                      onChange={handleChange}
+                      name="hasKitchen"
+                    />
+                  }
+                  label="Kitchen"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values.hasTV}
+                      onChange={handleChange}
+                      name="hasTV"
+                    />
+                  }
+                  label="Television"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values.hasRefrigerator}
+                      onChange={handleChange}
+                      name="hasRefrigerator"
+                    />
+                  }
+                  label="Refrigerator"
+                />
+              </Box>
+            </Box>
             <Stack direction='row' justifyContent='flex-end' alignItems='center' spacing={2} margin={2} >
               <Button>
                 Back
@@ -460,13 +581,7 @@ const RoomsForm = () => {
               </AnimateButton>
             </Stack>
           </form>
-          {/* <pre>{JSON.stringify({ ...values, ...bedConfigs }, null, 2)}</pre> */}
         </FormWrapper>
-      </Grid>
-      <Grid item xs={12} sm={12} md={3}>
-        <MainCard style={{ height: '15vh' }}>
-          Results
-        </MainCard>
       </Grid>
     </Grid >
   );

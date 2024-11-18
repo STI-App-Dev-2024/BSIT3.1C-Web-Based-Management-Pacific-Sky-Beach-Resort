@@ -103,7 +103,7 @@ const RoomsList = () => {
         <Button
           variant='contained'
           startIcon={<PlusOutlined />}
-          onClick={() => navigate('/portal/form?action=add')}
+          onClick={() => navigate('/portal/rooms/form?action=add')}
         >
           Add room
         </Button>
@@ -129,8 +129,8 @@ const RoomsList = () => {
                       paxCount={capacity}
                       price={price}
                       pictures={[thumbnail, ...pictures]}
-                      handleView={() => alert(`view`)}
-                      handleEdit={() => navigate(`/portal/form?action=edit&roomId=${roomId}`)}
+                      handleView={() => navigate(`/portal/rooms/details/${roomId}`)}
+                      handleEdit={() => navigate(`/portal/rooms/form?action=edit&roomId=${roomId}`)}
                       handleDelete={() => handleOpenDelete(roomId)}
                     />
                   </Grid>

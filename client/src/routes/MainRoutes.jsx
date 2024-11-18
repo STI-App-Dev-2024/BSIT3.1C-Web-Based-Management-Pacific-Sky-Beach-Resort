@@ -9,6 +9,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
 // rooms
 const Rooms = Loadable(lazy(() => import('pages/portal/rooms/index')));
 const RoomsForm = Loadable(lazy(() => import('pages/portal/rooms/form')));
+const RoomDetails = Loadable(lazy(() => import('pages/portal/rooms/details')));
 
 // human-resource
 const Staffs = Loadable(lazy(() => import('pages/portal/staffs/index')));
@@ -36,11 +37,25 @@ const MainRoutes = {
         },
         {
           path: 'rooms',
-          element: <Rooms />,
-        },
-        {
-          path: 'form',
-          element: <RoomsForm />
+          children: [
+            {
+              index: true,
+              element: <Rooms />,
+            },
+            {
+              path: 'form',
+              element: <RoomsForm />,
+            },
+            {
+              path: 'details',
+              children: [
+                {
+                  path: ':roomId',
+                  element: <RoomDetails />,
+                }
+              ]
+            },
+          ]
         },
         {
           path: 'staffs',
