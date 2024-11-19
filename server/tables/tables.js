@@ -11,6 +11,9 @@ import roomBathroomTable from './rooms/roomBathroomTable.js';
 import appointmentsTable from './appointments/appointmentsTable.js';
 import appointmentsBlockedDatesTable from './appointments/appointmentsBlockedDatesTable.js';
 
+// press-release
+import pressReleaseTable from './press-release/pressReleaseTable.js';
+
 const tables = async (dbConnection) => {
   const queries = [
     // users
@@ -24,7 +27,10 @@ const tables = async (dbConnection) => {
 
     // appointments
     appointmentsTable,
-    appointmentsBlockedDatesTable
+    appointmentsBlockedDatesTable,
+
+    // press-release
+    pressReleaseTable
   ];
 
   for (const query of queries) {
