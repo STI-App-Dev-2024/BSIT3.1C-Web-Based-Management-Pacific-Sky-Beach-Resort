@@ -1,0 +1,18 @@
+const appointmentsTable = `
+CREATE TABLE IF NOT EXISTS appointments (
+  appointmentId VARCHAR(250) PRIMARY KEY,
+  userId VARCHAR(250) NOT NULL,
+  title VARCHAR(250) NOT NULL,
+  duration DECIMAL(2,1) NOT NULL,
+  startDate VARCHAR(250) NOT NULL,
+  endDate VARCHAR(250) NOT NULL,
+  startTime VARCHAR(250) NOT NULL,
+  endTime VARCHAR(250) NOT NULL,
+  meetingLink VARCHAR(250) NOT NULL,
+  description VARCHAR(250) NOT NULL,
+  timezone VARCHAR(250) NOT NULL,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);`;
+
+export default appointmentsTable

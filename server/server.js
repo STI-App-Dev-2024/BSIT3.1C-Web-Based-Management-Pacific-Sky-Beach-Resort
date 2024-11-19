@@ -5,6 +5,7 @@ import colors from "colors";
 import connectDB from "./config/db.js";
 import usersRoutes from "./routes/users/usersRoutes.js";
 import roomsRoutes from "./routes/rooms/roomsRoutes.js";
+import appointmentsRoutes from "./routes/appointments/appointmentsRoutes.js";
 import tables from "./tables/tables.js";
 import conn from "./config/db.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ limit: "100mb", extended: true, parameterLimit: 500
 // Routes
 app.use(`/api/${process.env.API_VERSION}/users`, usersRoutes);
 app.use(`/api/${process.env.API_VERSION}/rooms`, roomsRoutes);
+app.use(`/api/${process.env.API_VERSION}/appointments`, appointmentsRoutes);
 
 app.get(`/`, (req, res) => {
   res.send(`Server is running on Port ${PORT}...`);
