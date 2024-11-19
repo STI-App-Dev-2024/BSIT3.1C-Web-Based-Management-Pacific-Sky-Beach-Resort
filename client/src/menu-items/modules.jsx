@@ -2,12 +2,15 @@
 import {
   DashboardOutlined,
   CalendarOutlined,
+  ContactsOutlined,
+  BookOutlined,
 } from '@ant-design/icons';
 import {
   BedKingOutline,
   Swim,
   CalendarMonthOutline,
-  AccountGroup
+  AccountGroup,
+  TicketOutline
 } from 'mdi-material-ui'
 
 // constants
@@ -16,14 +19,17 @@ import { POSITIONS } from '../constants/constants'
 // icons
 const ant_icons = {
   DashboardOutlined,
-  CalendarOutlined
+  CalendarOutlined,
+  ContactsOutlined,
+  BookOutlined
 }
 
 const mdi_icons = {
   BedKingOutline,
   Swim,
   CalendarMonthOutline,
-  AccountGroup
+  AccountGroup,
+  TicketOutline
 }
 
 const icons = {
@@ -49,6 +55,66 @@ const modules = [
         breadcrumbs: false,
         access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN],
       }
+    ]
+  },
+  {
+    id: 'human-resource',
+    title: 'Human Resource',
+    type: 'group',
+    access: [POSITIONS.POSITIONS_HUMAN_RESOURCE, POSITIONS.POSITIONS_MASTER_ADMIN],
+    children: [
+      {
+        id: 'human-resource-list',
+        title: 'Staffs',
+        type: 'item',
+        url: '/portal/staffs',
+        icon: icons.AccountGroup,
+        breadcrumbs: false,
+        access: [POSITIONS.POSITIONS_HUMAN_RESOURCE, POSITIONS.POSITIONS_MASTER_ADMIN]
+      },
+    ]
+  },
+  {
+    id: 'group-services',
+    title: 'Services',
+    type: 'group',
+    access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN],
+    children: [
+      {
+        id: 'rooms-list',
+        title: 'Rooms',
+        type: 'item',
+        url: '/portal/rooms',
+        icon: icons.BedKingOutline,
+        breadcrumbs: false,
+        access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN]
+      },
+      {
+        id: 'activities-list',
+        title: 'Activities',
+        type: 'item',
+        url: '/portal/activities',
+        icon: icons.Swim,
+        breadcrumbs: false,
+        access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN]
+      },
+    ]
+  },
+  {
+    id: 'group-content-hub',
+    title: 'Content Hub',
+    type: 'group',
+    access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN],
+    children: [
+      {
+        id: 'press-release-list',
+        title: 'Press Release',
+        type: 'item',
+        url: '/portal/press-release',
+        icon: icons.BookOutlined,
+        breadcrumbs: false,
+        access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN]
+      },
     ]
   },
   {
@@ -78,46 +144,36 @@ const modules = [
     ]
   },
   {
-    id: 'group-offers',
-    title: 'Offers',
+    id: 'group-resources',
+    title: 'Resources',
     type: 'group',
-    access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN],
+    access: [POSITIONS.POSITIONS_HUMAN_RESOURCE, POSITIONS.POSITIONS_MASTER_ADMIN, POSITIONS.POSITIONS_STAFF],
     children: [
       {
-        id: 'rooms-list',
-        title: 'Rooms',
+        id: 'contacts-list',
+        title: 'Contacts',
         type: 'item',
-        url: '/portal/rooms',
-        icon: icons.BedKingOutline,
+        url: '/portal/contacts',
+        icon: icons.ContactsOutlined,
         breadcrumbs: false,
-        access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN]
-      },
-      {
-        id: 'activities-list',
-        title: 'Activities',
-        type: 'item',
-        url: '/portal/activities',
-        icon: icons.Swim,
-        breadcrumbs: false,
-        access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN]
+        access: [POSITIONS.POSITIONS_HUMAN_RESOURCE, POSITIONS.POSITIONS_MASTER_ADMIN]
       },
     ]
   },
-  // For Human Resource
   {
-    id: 'human-resource',
-    title: 'Human Resource',
+    id: 'web-tickets',
+    title: 'Maintenance',
     type: 'group',
-    access: [POSITIONS.POSITIONS_HUMAN_RESOURCE, POSITIONS.POSITIONS_MASTER_ADMIN],
+    access: [POSITIONS.POSITIONS_HUMAN_RESOURCE, POSITIONS.POSITIONS_MASTER_ADMIN, POSITIONS.POSITIONS_STAFF],
     children: [
       {
-        id: 'human-resource-list',
-        title: 'Staffs',
+        id: 'website-tickets',
+        title: 'Website Tickets',
         type: 'item',
-        url: '/portal/staffs',
-        icon: icons.AccountGroup,
+        url: '/portal/website-tickets',
+        icon: icons.TicketOutline,
         breadcrumbs: false,
-        access: [POSITIONS.POSITIONS_HUMAN_RESOURCE, POSITIONS.POSITIONS_MASTER_ADMIN]
+        access: [POSITIONS.POSITIONS_HUMAN_RESOURCE, POSITIONS.POSITIONS_MASTER_ADMIN, POSITIONS.POSITIONS_STAFF]
       },
     ]
   },
