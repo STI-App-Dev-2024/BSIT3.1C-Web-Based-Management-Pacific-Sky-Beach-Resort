@@ -13,27 +13,33 @@ const Navbar = () => {
   return (
     <Box
       sx={{
-        backgroundColor: '#fff',
-        p: 2
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        position: 'absolute',
+        zIndex: 1,
+        width: '100%'
+
+
+
       }}
     >
-      <Container>
+      <Container >
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Box>
             <Logo />
           </Box>
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <HomeOutlined />
+          <Stack direction="row" alignItems="center" spacing={5}>
+            <HomeOutlined style={{ color: '#ffff' }} />
             {navItems.map((nav) => (
               <Box onClick={() => navigate(nav.link)} key={nav._id} sx={{ cursor: 'pointer' }}>
-                <Typography variant="caption">{nav.name}</Typography>
+                <Typography variant="body1" color='#ffff'>{nav.name}</Typography>
               </Box>
             ))}
-            <SearchOutlined />
+            <SearchOutlined style={{ color: '#ffff' }} />
           </Stack>
         </Stack>
       </Container>
-    </Box>
+    </Box >
+
   );
 };
 
