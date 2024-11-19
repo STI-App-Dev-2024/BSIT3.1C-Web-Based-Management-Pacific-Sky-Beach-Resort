@@ -30,6 +30,11 @@ import avatar2 from 'assets/images/users/avatar-2.png';
 import avatar3 from 'assets/images/users/avatar-3.png';
 import avatar4 from 'assets/images/users/avatar-4.png';
 
+import useAuth from 'hooks/useAuth';
+import { useEffect } from 'react';
+import { POSITIONS } from 'constants/constants';
+import { useNavigate } from 'react-router';
+
 // avatar style
 const avatarSX = {
   width: 36,
@@ -50,6 +55,16 @@ const actionSX = {
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 export default function DashboardDefault() {
+
+  const { user } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (user?.position === POSITIONS.POSITIONS_HUMAN_RESOURCE) {
+      navigate(`/portal/staffs`)
+    }
+  }, [user])
+
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       {/* row 1 */}
