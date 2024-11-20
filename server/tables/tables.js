@@ -14,6 +14,10 @@ import appointmentsBlockedDatesTable from './appointments/appointmentsBlockedDat
 // press-release
 import pressReleaseTable from './press-release/pressReleaseTable.js';
 
+// contacts
+import contactsTable from './contacts/contactsTable.js'
+import contactPhoneNumberTable from './contacts/contactPhoneNumberTable.js'
+
 const tables = async (dbConnection) => {
   const queries = [
     // users
@@ -30,7 +34,11 @@ const tables = async (dbConnection) => {
     appointmentsBlockedDatesTable,
 
     // press-release
-    pressReleaseTable
+    pressReleaseTable,
+
+    // contacts
+    contactsTable,
+    contactPhoneNumberTable
   ];
 
   for (const query of queries) {
