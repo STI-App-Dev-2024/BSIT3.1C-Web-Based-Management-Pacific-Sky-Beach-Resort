@@ -1,0 +1,12 @@
+const contactsTable = `
+CREATE TABLE IF NOT EXISTS contacts (
+  contactId VARCHAR(250) PRIMARY KEY,
+  userId VARCHAR(250) NOT NULL,
+  emailAddress VARCHAR(250) NOT NULL,
+  name VARCHAR(250) DEFAULT '-',
+  avatar VARCHAR(250),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);`;
+
+export default contactsTable
