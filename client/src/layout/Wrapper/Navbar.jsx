@@ -14,10 +14,8 @@ const Navbar = () => {
     <Box
       sx={{
         backgroundColor: 'rgba(0, 0, 0, 0.4)',
-        position: 'absolute',
-        zIndex: 1,
-        width: '100%'
-
+        position: 'sticky',
+        top: 0
 
 
       }}
