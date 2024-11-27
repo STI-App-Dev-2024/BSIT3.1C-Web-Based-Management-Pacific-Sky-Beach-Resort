@@ -18,6 +18,13 @@ import pressReleaseTable from './press-release/pressReleaseTable.js';
 import contactsTable from './contacts/contactsTable.js'
 import contactPhoneNumberTable from './contacts/contactPhoneNumberTable.js'
 
+// bookings
+import bookedRoomsTable from './bookings/bookedRoomsTable.js';
+import bookedRoomsArchiveTable from './bookings/bookedRoomsArchiveTable.js';
+
+//customers
+import customersTable from './customers/customersTable.js'
+
 const tables = async (dbConnection) => {
   const queries = [
     // users
@@ -38,7 +45,14 @@ const tables = async (dbConnection) => {
 
     // contacts
     contactsTable,
-    contactPhoneNumberTable
+    contactPhoneNumberTable,
+
+    // customers
+    customersTable,
+
+    // bookings
+    bookedRoomsTable,
+    bookedRoomsArchiveTable,
   ];
 
   for (const query of queries) {
