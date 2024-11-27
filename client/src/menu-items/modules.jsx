@@ -10,7 +10,8 @@ import {
   Swim,
   CalendarMonthOutline,
   AccountGroup,
-  TicketOutline
+  TicketOutline,
+  ArchiveArrowDownOutline
 } from 'mdi-material-ui'
 
 // constants
@@ -29,7 +30,8 @@ const mdi_icons = {
   Swim,
   CalendarMonthOutline,
   AccountGroup,
-  TicketOutline
+  TicketOutline,
+  ArchiveArrowDownOutline
 }
 
 const icons = {
@@ -144,19 +146,19 @@ const modules = [
     ]
   },
   {
-    id: 'group-resources',
-    title: 'Resources',
+    id: 'archive',
+    title: 'Archives',
     type: 'group',
     access: [POSITIONS.POSITIONS_HUMAN_RESOURCE, POSITIONS.POSITIONS_MASTER_ADMIN, POSITIONS.POSITIONS_STAFF],
     children: [
       {
-        id: 'contacts-list',
-        title: 'Contacts',
+        id: 'archives',
+        title: 'Archives',
         type: 'item',
-        url: '/portal/contacts',
-        icon: icons.ContactsOutlined,
+        url: '/portal/archives',
+        icon: icons.ArchiveArrowDownOutline,
         breadcrumbs: false,
-        access: [POSITIONS.POSITIONS_HUMAN_RESOURCE, POSITIONS.POSITIONS_MASTER_ADMIN]
+        access: [POSITIONS.POSITIONS_HUMAN_RESOURCE, POSITIONS.POSITIONS_MASTER_ADMIN, POSITIONS.POSITIONS_STAFF]
       },
     ]
   },

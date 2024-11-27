@@ -118,8 +118,8 @@ const updateUser = async (req) => {
   } = body || {};
 
   let avatar;
-  if (req.file) {
-    avatar = req.file.path;
+  if (req.files && req.files.avatar && req.files.avatar.length > 0) {
+    avatar = req.files.avatar[0].path;
   } else {
     avatar = user.avatar;
   }
