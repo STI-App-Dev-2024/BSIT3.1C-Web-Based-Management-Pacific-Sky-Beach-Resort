@@ -190,7 +190,7 @@ const RoomsForm = () => {
           <form onSubmit={handleSubmit}>
             <Box marginBottom={4}>
               <Typography variant="h3" marginBottom={1}>
-                <CaretRightOutlined /> General Room Information
+                <CaretRightOutlined style={{ color: '#1677ff' }} /> General Room Information
               </Typography>
               <Box margin="1em">
                 <Typography variant='body1' marginBottom={1}>
@@ -321,7 +321,7 @@ const RoomsForm = () => {
             </Box>
             <Box marginBottom={4}>
               <Typography variant="h3" marginBottom={1}>
-                <CaretRightOutlined /> Bed Room Specifications
+                <CaretRightOutlined style={{ color: '#1677ff' }} /> Bed Room Specifications
               </Typography>
               <Grid container spacing={2} paddingInline="1em">
                 <Grid item xs={12} sm={6} md={6}>
@@ -457,7 +457,7 @@ const RoomsForm = () => {
             </Box>
             <Box marginBottom={4}>
               <Typography variant="h3" marginBottom={1}>
-                <CaretRightOutlined /> Room Images
+                <CaretRightOutlined style={{ color: '#1677ff' }} /> Room Images
               </Typography>
               <Box padding="0 1em">
                 <Box>
@@ -476,7 +476,7 @@ const RoomsForm = () => {
             </Box>
             <Box marginBottom={4}>
               <Typography variant="h3" marginBottom={1}>
-                <CaretRightOutlined /> Amenities
+                <CaretRightOutlined style={{ color: '#1677ff' }} /> Amenities
               </Typography>
               <Box padding="0 1em">
                 <FormControlLabel

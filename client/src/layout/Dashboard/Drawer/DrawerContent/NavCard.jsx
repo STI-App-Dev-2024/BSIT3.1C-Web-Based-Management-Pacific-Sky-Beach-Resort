@@ -26,7 +26,7 @@ export default function NavCard() {
           </Typography>
         </Stack>
         <AnimateButton>
-          <Button component={Link} target="_blank" href="#" variant="contained" color="primary" size="small">
+          <Button component={Link} target="_blank" href="/portal/website-tickets" variant="contained" color="primary" size="small">
             Contact Support
           </Button>
         </AnimateButton>

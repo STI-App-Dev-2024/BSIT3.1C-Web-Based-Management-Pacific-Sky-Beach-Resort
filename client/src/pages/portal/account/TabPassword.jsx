@@ -105,7 +105,7 @@ const TabPassword = () => {
             resetForm()
           } catch (error) {
             openSnackbar({
-              message: err.response.data.message,
+              message: error?.message,
               anchorOrigin: { vertical: 'top', horizontal: 'right' },
               alert: {
                 color: 'error'

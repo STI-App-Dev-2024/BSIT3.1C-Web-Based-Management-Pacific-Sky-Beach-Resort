@@ -12,6 +12,24 @@ const Rooms = Loadable(lazy(() => import('pages/portal/rooms/index')));
 const RoomsForm = Loadable(lazy(() => import('pages/portal/rooms/form')));
 const RoomDetails = Loadable(lazy(() => import('pages/portal/rooms/details')));
 
+// activities
+const Activities = Loadable(lazy(() => import('pages/portal/activities/index')));
+
+// press-release
+const PressRelease = Loadable(lazy(() => import('pages/portal/press-release/index')));
+
+// appointments
+const Appointments = Loadable(lazy(() => import('pages/portal/appointments/index')));
+
+// calendar
+const Calendar = Loadable(lazy(() => import('pages/portal/calendar/index')));
+
+// archives
+const Archives = Loadable(lazy(() => import('pages/portal/archives/index')));
+
+// website-tickets
+const WebsiteTickets = Loadable(lazy(() => import('pages/portal/website-tickets/index')));
+
 // human-resource
 const Staffs = Loadable(lazy(() => import('pages/portal/staffs/index')));
 
@@ -57,6 +75,30 @@ const MainRoutes = {
               ]
             },
           ]
+        },
+        {
+          path: 'activities',
+          element: <Activities />,
+        },
+        {
+          path: 'press-release',
+          element: <PressRelease />,
+        },
+        {
+          path: 'appointments',
+          element: <Appointments />,
+        },
+        {
+          path: 'calendar',
+          element: <Calendar />,
+        },
+        {
+          path: 'archives',
+          element: <Archives />,
+        },
+        {
+          path: 'website-tickets',
+          element: <WebsiteTickets />,
         },
         {
           path: 'staffs',
