@@ -6,35 +6,62 @@ import { HomeOutlined, SearchOutlined } from '@ant-design/icons/lib/icons';
 // assets
 
 import navItems from './nav-items/navItems';
+
 import Logo from 'components/logo/LogoMain';
 
-const Navbar = () => {
+const Navbar = ({ isHomepage }) => {
+
   const navigate = useNavigate();
+
+  const middleIndex = Math.floor(navItems.length / 2);
   return (
-    <Box
+    <Stack
       sx={{
-        backgroundColor: '#fff',
-        p: 2
+        position: isHomepage ? 'fixed' : 'sticky',
+        top: 1,
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingInline: 20,
+        alignItems: 'center',
+        zIndex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+
       }}
+
     >
-      <Container>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Box>
-            <Logo />
-          </Box>
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <HomeOutlined />
-            {navItems.map((nav) => (
-              <Box onClick={() => navigate(nav.link)} key={nav._id} sx={{ cursor: 'pointer' }}>
-                <Typography variant="caption">{nav.name}</Typography>
-              </Box>
-            ))}
-            <SearchOutlined />
+      {navItems.map((nav, index) => (
+        <React.Fragment key={nav._id}>
+          <Stack
+            onClick={() => navigate(nav.link)}
+            sx={{ cursor: 'pointer' }}
+          >
+            <Typography
+
+              style={{ fontWeight: 'bold' }}
+              variant="body2"
+              color="#ffff"
+            >
+              {nav.name}
+            </Typography>
           </Stack>
-        </Stack>
-      </Container>
-    </Box>
+
+          {index === middleIndex - 1 && (
+            <Stack
+              onClick={() => navigate('/')}
+              sx={{ cursor: 'pointer' }}
+            >
+              {<Logo />}
+            </Stack>
+          )}
+        </React.Fragment>
+      ))}
+    </Stack>
+
+
+
+
   );
-};
+}
 
 export default Navbar;

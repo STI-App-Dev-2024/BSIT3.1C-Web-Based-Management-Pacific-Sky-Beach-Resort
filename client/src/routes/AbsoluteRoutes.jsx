@@ -6,6 +6,7 @@ import Loadable from 'components/Loadable';
 import PageWrapper from 'layout/Wrapper';
 
 
+
 // render - absolute pages
 const Home = Loadable(lazy(() => import('pages/home/index')));
 const AboutUs = Loadable(lazy(() => import('pages/about-us/index')));
@@ -19,7 +20,7 @@ const AbsoluteRoutes = {
   children: [
     {
       path: '/',
-      element: <PageWrapper children={<Home />} />
+      element: <PageWrapper isHomePage={true} children={<Home />} />
     },
     {
       path: '/about-us',

@@ -5,7 +5,7 @@ import MainCard from 'components/MainCard';
 import SingleFileUpload from 'components/third-party/dropzone/FileUpload';
 import MultiFileUpload from 'components/third-party/dropzone/MultiFile';
 import { ErrorMessage, useFormik } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import currencyFormatter from 'utils/currencyFormatter';
 import { useTheme } from '@mui/material/styles'
@@ -16,6 +16,7 @@ import agent from 'api';
 import useAuth from 'hooks/useAuth';
 import Avatar from 'components/@extended/Avatar';
 import { BedOutline } from 'mdi-material-ui';
+import { useGetSingleRoom } from 'api/rooms';
 
 const initialValues = {
   roomName: '',
@@ -71,6 +72,8 @@ const RoomsForm = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
 
+  const [formValues, setFormValues] = useState(initialValues)
+
   const [isLoading, setIsLoading] = useState(false)
 
   const [bedConfigs, setBedConfigs] = useState({ bedType: null, bedCount: 0 })
@@ -83,11 +86,23 @@ const RoomsForm = () => {
   const formMode = queryParams.get('action');
   const isAddMode = formMode.toLocaleLowerCase() === 'add';
   const pageTitle = isAddMode ? 'Create' : 'Edit';
+  const roomId = queryParams.get(`roomId`)
+
+  const { room, roomLoading } = useGetSingleRoom(roomId)
+
+  useEffect(() => {
+    if (!isAddMode && roomId && !roomLoading) {
+      setFormValues({ ...room })
+      setValue(room?.roomType)
+      setBedDetails(room.bedDetails.map(bed => ({ bedType: bed.bedType, bedCount: bed.count })));
+    }
+  }, [roomId, isAddMode, roomLoading])
 
   const [value, setValue] = useState(null);
 
   const formik = useFormik({
-    initialValues,
+    initialValues: formValues,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       setIsLoading(true);
       try {
@@ -133,14 +148,23 @@ const RoomsForm = () => {
           });
         }
 
-        await agent.Rooms.createRoom(formData);
-
-        openSnackbar({
-          message: 'Room successfully created.',
-          anchorOrigin: { vertical: 'top', horizontal: 'right' },
-          alert: { color: 'success' },
-          duration: 3000,
-        });
+        if (isAddMode) {
+          await agent.Rooms.createRoom(formData);
+          openSnackbar({
+            message: 'Room successfully created.',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' },
+            alert: { color: 'success' },
+            duration: 3000,
+          });
+        } else {
+          await agent.Rooms.editRoom(roomId, formData);
+          openSnackbar({
+            message: 'Room successfully edited.',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' },
+            alert: { color: 'success' },
+            duration: 3000,
+          });
+        }
 
         navigate(`/portal/rooms`);
       } catch (error) {
@@ -172,8 +196,8 @@ const RoomsForm = () => {
     setFieldValue('price', value);
   };
 
-  const mergedBeds = Object.values(
-    bedDetails.reduce((acc, bed) => {
+  const mergedBeds = Object?.values(
+    bedDetails?.reduce((acc, bed) => {
       if (acc[bed.bedType]) {
         acc[bed.bedType].bedCount += Number(bed.bedCount);
       } else {
@@ -341,23 +365,41 @@ const RoomsForm = () => {
                       const { bedType, bedCount } = bed || {}
 
                       return (
-                        <ListItemButton divider sx={{ mb: 2 }}>
-                          <ListItemAvatar>
-                            <Avatar sx={{ color: 'primary.main', bgcolor: 'primary.lighter' }}>
-                              <BedOutline />
-                            </Avatar>
-                          </ListItemAvatar>
-                          <ListItemText
-                            primary={<Typography variant="subtitle1">
-                              {bedType}
-                            </Typography>}
-                          />
-                          <ListItemSecondaryAction>
-                            <Typography variant='h2'>
-                              {bedCount}
-                            </Typography>
-                          </ListItemSecondaryAction>
-                        </ListItemButton>
+                        <Box marginBlockEnd={2}>
+                          <ListItemButton divider >
+                            <ListItemAvatar>
+                              <Avatar sx={{ color: 'primary.main', bgcolor: 'primary.lighter' }}>
+                                <BedOutline />
+                              </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText
+                              primary={<Typography variant="subtitle1">
+                                {bedType}
+                              </Typography>}
+                            />
+                            <ListItemSecondaryAction>
+                              <Typography variant='h2'>
+                                {bedCount}
+                              </Typography>
+                            </ListItemSecondaryAction>
+                          </ListItemButton>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'flex-end'
+                            }}
+                          >
+                            <Button
+                              size='small'
+                              variant='contained'
+                              color='error'
+                              sx={{ mt: 1 }}
+                              onClick={() => setBedDetails(prevBedDetails => prevBedDetails?.filter((f) => f.bedType !== bedType))}
+                            >
+                              Remove
+                            </Button>
+                          </Box>
+                        </Box>
                       )
                     })}
                   </List>
