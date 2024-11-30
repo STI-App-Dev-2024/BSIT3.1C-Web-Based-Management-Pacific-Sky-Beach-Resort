@@ -1,6 +1,7 @@
 import conn from "../../config/db.js";
 import { v4 as uuidv4 } from "uuid";
 import undefinedValidator from '../../utils/undefinedValidator.js'
+import _ from "lodash";
 
 const pool = await conn();
 
@@ -163,13 +164,11 @@ const createRoom = async (req) => {
   }
 };
 
-
 const editRoom = async (req) => {
   try {
     const {
       roomId,
       roomName,
-      userId,
       capacity,
       roomType,
       price,
@@ -247,30 +246,45 @@ const editRoom = async (req) => {
       room.roomId,
     ]);
 
-    const oldBedDetails = JSON.stringify(room.bedDetails);
-    const newBedDetails = JSON.stringify(bedDetails);
-    const __bedDetails = undefinedValidator(oldBedDetails, newBedDetails);
-    const parsedBedDetails = JSON.parse(__bedDetails);
 
-    const roomBedQuery = `
-      INSERT INTO roombed(roomId, bedType, count) VALUES (?, ?, ?)
-    `;
-    for (const bed of parsedBedDetails) {
-      const { bedType, count } = bed;
-      await pool.query(roomBedQuery, [roomId, bedType, count]);
-    }
+    const transformedBedDetails = JSON.parse(bedDetails).map((item) => {
+      return {
+        bedType: item.bedType,
+        bedCount: item.bedCount
+      };
+    });
+
+    console.log(JSON.parse(bedDetails));
+    console.log(transformedBedDetails);
+    console.log(_.isEqual(transformedBedDetails, room.bedDetails))
 
     if (pictures.length > 0) {
-      const roomPicturesDeleteQuery = `
-        DELETE FROM roomsPictures WHERE roomId = ?
+      const existingPicturesQuery = `
+        SELECT picture FROM roomsPictures WHERE roomId = ?
       `;
-      await pool.query(roomPicturesDeleteQuery, [roomId]);
+      const [existingPictures] = await pool.query(existingPicturesQuery, [roomId]);
+      const existingPicturePaths = existingPictures.map((pic) => pic.picture);
 
-      const roomPicturesQuery = `
-        INSERT INTO roomsPictures(roomId, picture) VALUES (?, ?)
-      `;
-      for (const picture of pictures) {
-        await pool.query(roomPicturesQuery, [roomId, picture]);
+      const picturesToRemove = existingPicturePaths.filter((pic) => !pictures.includes(pic));
+
+      const newPictures = pictures.filter((pic) => !existingPicturePaths.includes(pic));
+
+      if (picturesToRemove.length > 0) {
+        const removePicturesQuery = `
+          DELETE FROM roomsPictures WHERE roomId = ? AND picture = ?
+        `;
+        for (const picture of picturesToRemove) {
+          await pool.query(removePicturesQuery, [roomId, picture]);
+        }
+      }
+
+      if (newPictures.length > 0) {
+        const roomPicturesQuery = `
+          INSERT INTO roomsPictures(roomId, picture) VALUES (?, ?)
+        `;
+        for (const picture of newPictures) {
+          await pool.query(roomPicturesQuery, [roomId, picture]);
+        }
       }
     }
 
