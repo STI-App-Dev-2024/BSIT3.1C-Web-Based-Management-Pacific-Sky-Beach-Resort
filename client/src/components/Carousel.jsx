@@ -7,10 +7,11 @@ const Carousel = ({ items = [] }) => {
 
     <MUICarousel
       indicators={false}
-      height={617}
+      height={'100dvh'}
       autoPlay={true}
+      interval={5000}
+      duration={1000}
       animation="fade"
-      navButtonsAlwaysVisible={false}
       navButtonsProps={{
         style: {
           borderRadius: 50
