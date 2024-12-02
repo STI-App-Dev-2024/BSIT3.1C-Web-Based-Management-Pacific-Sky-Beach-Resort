@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Stack, Typography, useMediaQuery } from '@mui/material'
 import Carousel from 'components/Carousel'
 
 import pic1 from 'src/assets/images/upload/pic1.jpg'
@@ -8,6 +8,7 @@ import pic3 from 'src/assets/images/upload/pic3.jpg'
 import pic4 from 'src/assets/images/upload/pic4.jpg'
 
 const Home = () => {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   return (
     <Stack
       sx={{
@@ -38,21 +39,31 @@ const Home = () => {
       <Box
         sx={{
           position: 'absolute',
-          top: '40%',
-          left: '10%',
           zIndex: 1,
-          maxWidth: '300px',
+          maxWidth: '350px',
+          top: '50%',
+          left: isMobile ? '50%' : '20%',
+          transform: 'translate(-50%, -50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: isMobile && 'center'
         }}
       >
-        <Typography mb={2} variant="h2" color="#fff">
-          Pacific Sky Beach
-        </Typography>
-        <Typography variant="body1" color="#fff">
-          “Pacific” means “family” in the ancient Sanskrit language, a return to meaningful family traditions is at the core of everything at Pacific Sky Beach.
-        </Typography>
-      </Box>
-
-    </Stack>
+        <Box sx={{
+          backgroundColor: 'rgba(0, 0, 0, 0.4)',
+          p: 2,
+          borderRadius: 2,
+        }}>
+          <Typography mb={2} variant="h2" color="#fff">
+            Pacific Sky Beach
+          </Typography>
+          <Typography variant="body1" color="#fff">
+            “Pacific” means “family” in the ancient Sanskrit language, a return to meaningful family traditions is at the core of everything at Pacific Sky Beach.
+          </Typography>
+        </Box></Box>
+    </Stack >
   )
 }
 

@@ -3,7 +3,7 @@ import { Box, Grid, Stack, Typography } from '@mui/material';
 
 const TwoColumn = ({ image, title, subtitle, caption, description, isInverted }) => {
   return (
-    <Grid container justifyContent="center" alignItems="center" display="flex" flexDirection={isInverted && 'row-reverse'}>
+    <Grid marginBottom={5} container justifyContent="center" alignItems="center" display="flex" flexDirection={isInverted && 'row-reverse'}>
       <Grid item sm={12} md={6}>
         <Box width="100%" marginTop={5} borderRadius={2} component="img" src={image} alt="About Us" />
       </Grid>
