@@ -6,7 +6,8 @@ import {
   authUser,
   updateUser,
   getSingleUserById,
-  changePassword
+  changePassword,
+  archiveUser
 } from '../../controllers/users/usersControllers.js'
 import {
   checkIfEmailAddressExist,
@@ -46,5 +47,7 @@ router.put(
   }),
   updateUser
 )
+
+router.post('/archive-user/:userId', archiveUser)
 
 export default router

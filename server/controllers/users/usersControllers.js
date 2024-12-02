@@ -68,6 +68,16 @@ const changePassword = expressAsync(async (req, res) => {
   }
 })
 
+const archiveUser = expressAsync(async (req, res) => {
+  try {
+    const response = await usersService.archiveUser(req.params.userId)
+    res.json(response)
+  } catch (error) {
+    console.error('Error in usersService:', error);
+    throw new Error(error)
+  }
+})
+
 export {
   authUser,
   getAllUsers,
@@ -75,5 +85,6 @@ export {
   registerUser,
   updateUser,
   deleteUser,
-  changePassword
+  changePassword,
+  archiveUser
 }
