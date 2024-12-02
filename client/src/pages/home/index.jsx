@@ -2,10 +2,12 @@ import React from 'react'
 import { Box, Stack, Typography, useMediaQuery } from '@mui/material'
 import Carousel from 'components/Carousel'
 
+
 import pic1 from 'src/assets/images/upload/pic1.jpg'
 import pic2 from 'src/assets/images/upload/pic2.jpg'
 import pic3 from 'src/assets/images/upload/pic3.jpg'
 import pic4 from 'src/assets/images/upload/pic4.jpg'
+
 
 const Home = () => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));

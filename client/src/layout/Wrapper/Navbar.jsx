@@ -22,6 +22,7 @@ const Navbar = () => {
   return (
     <React.Fragment>
       {!isMobile ? (
+
         <Stack
           sx={{
             position: 'sticky',
@@ -35,7 +36,7 @@ const Navbar = () => {
             backgroundColor: 'rgba(0, 0, 0, 0.5)'
           }}
         >
-          {navItems.map((nav, index) => (
+          {navItems.map((nav, index) => (nav.name !== 'Login' ? (
             <React.Fragment key={nav._id}>
               <Stack onClick={() => navigate(nav.link)} sx={{ cursor: 'pointer' }}>
                 <Typography style={{ fontWeight: 'bold' }} variant="body2" color="#fff">
@@ -48,7 +49,19 @@ const Navbar = () => {
                 </Stack>
               )}
             </React.Fragment>
+          ) : null
           ))}
+          <Button
+            variant='contained'
+            sx={{ borderRadius: 2 }}
+            onClick={() => {
+              navigate('/login');
+              setDrawerOpen(false);
+            }}
+          >
+            Login
+          </Button>
+
         </Stack>
       ) : (
         // Mobile Navbar
