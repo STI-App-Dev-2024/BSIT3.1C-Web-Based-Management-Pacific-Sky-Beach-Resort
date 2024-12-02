@@ -5,7 +5,7 @@ import TwoColumn from 'components/TwoColumn';
 
 const index = () => {
   return (
-    <React.Fragment>
+    <React.Fragment >
       <TitleTag subtitle="LEARN MORE ABOUT PACIFIC SKY" title="About Us" />
       <Container>
         <TwoColumn
