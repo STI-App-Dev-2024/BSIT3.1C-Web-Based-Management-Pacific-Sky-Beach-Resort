@@ -4,8 +4,9 @@ const bookedRoomsTable = `CREATE TABLE IF NOT EXISTS bookedRooms(
     customerId VARCHAR(250) NOT NULL,
     startDate DATE NOT NULL,
     endDate DATE NOT NULL,
-    FOREIGN KEY (roomId) REFERENCES rooms(roomId),
-    FOREIGN KEY (customerId) REFERENCES customers(customerId),
+    isReserved BOOLEAN DEFAULT FALSE,
+    -- FOREIGN KEY (roomId) REFERENCES rooms(roomId),
+    -- FOREIGN KEY (customerId) REFERENCES customers(customerId),
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );`;

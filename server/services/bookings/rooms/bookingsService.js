@@ -1,16 +1,17 @@
-import conn from '../../config/db.js';
+import conn from '../../../config/db.js';
 import { v4 as uuidv4 } from 'uuid';
-import undefinedValidator from '../../utils/undefinedValidator.js';
+import undefinedValidator from '../../../utils/undefinedValidator.js';
 
 const pool = await conn();
 
 const getAllBookings = async () => {
   try {
     const bookingsQuery = `
-  SELECT b.bookingId, r.roomName, CONCAT(c.customerFirstName,' ',customerLastName) AS CustomerName, b.startDate, b.endDate
+  SELECT b.bookingId, r.roomName, CONCAT(c.customerFirstName,' ',customerLastName) AS CustomerName,b.isReserved, b.startDate, b.endDate
   FROM bookedRooms b
   JOIN rooms r ON b.roomId = r.roomId
   JOIN customers c ON b.customerId = c.customerId
+  ORDER BY b.isReserved 
 `;
 
     const [bookings] = await pool.query(bookingsQuery);
@@ -24,7 +25,7 @@ const getAllBookings = async () => {
 const getSingleBookingById = async (bookingId) => {
   try {
     const bookingQuery = `
-      SELECT b.bookingId, r.roomName, CONCAT(c.customerFirstName,' ',customerLastName) AS CustomerName, b.startDate, b.endDate
+      SELECT b.bookingId, r.roomName, CONCAT(c.customerFirstName,' ',customerLastName) AS CustomerName,b.isReserved, b.startDate, b.endDate
       FROM bookedRooms b
       JOIN rooms r ON b.roomId = r.roomId
       JOIN customers c ON b.customerId = c.customerId
@@ -111,59 +112,80 @@ const deleteBooking = async (bookingId) => {
 }
 
 const archiveBooking = async (bookingId) => {
-    try {
-        const bookingQuery = `
-        SELECT *
-        FROM bookedRooms
-        WHERE bookingId = ?
-        `;
-    
-        const [booking] = await pool.query(bookingQuery, [bookingId]);
-    
-        if (!booking.length) {
-        throw new Error('Booking not found');
-        }
-    
-        const { roomId, customerId, startDate, endDate } = booking[0];
-    
-        const archiveQuery = `
-        INSERT INTO bookedRoomsArchive (bookingId, roomId, customerId, startDate, endDate)
-        VALUES (?, ?, ?, ?, ?)
-        `;
-    
-        await pool.query(archiveQuery, [bookingId, roomId, customerId, startDate, endDate]);
-    
-        await deleteBooking(bookingId);
-    
-        return { message: 'Booking archived successfully' };
-    } catch (error) {
-        throw new Error(error);
-    }
-    }
-
-    const updateBooking = async (payload) => {
-        try {
-          const {
-            bookingId,
-            roomId,
-            customerId,
-            startDate,
-            endDate
-          } = payload;
-      
-          const bookingQuery = `
-            UPDATE bookedRooms
-            SET roomId = ?, customerId = ?, startDate = ?, endDate = ?
-            WHERE bookingId = ?
-          `;
-      
-          await pool.query(bookingQuery, [roomId, customerId, startDate, endDate, bookingId]);
-      
-          return { message: 'Booking updated successfully' };
-        } catch (error) {
-          throw new Error(error);
-        }
+  try {
+      const bookingQuery = `
+      SELECT *
+      FROM bookedRooms
+      WHERE bookingId = ?
+      `;
+  
+      const [booking] = await pool.query(bookingQuery, [bookingId]);
+  
+      if (!booking.length) {
+      throw new Error('Booking not found');
       }
+  
+      const { roomId, customerId, startDate, endDate } = booking[0];
+  
+      const archiveQuery = `
+      INSERT INTO bookedRoomsArchive (bookingId, roomId, customerId, startDate, endDate)
+      VALUES (?, ?, ?, ?, ?)
+      `;
+  
+      await pool.query(archiveQuery, [bookingId, roomId, customerId, startDate, endDate]);
+  
+      await deleteBooking(bookingId);
+  
+      return { message: 'Booking archived successfully' };
+  } catch (error) {
+      throw new Error(error);
+  }
+}
+
+const updateBooking = async (payload) => {
+  try {
+    const {
+      bookingId,
+      roomId,
+      customerId,
+      startDate,
+      endDate
+    } = payload;
+
+    const bookingQuery = `
+      UPDATE bookedRooms
+      SET roomId = ?, customerId = ?, startDate = ?, endDate = ?
+      WHERE bookingId = ?
+    `;
+
+    await pool.query(bookingQuery, [roomId, customerId, startDate, endDate, bookingId]);
+
+    return { message: 'Booking updated successfully' };
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+const updateReservedStatus = async (payload) => {
+  try {
+    const { 
+      bookingId, 
+      isReserved 
+    } = payload;
+
+    const bookingQuery = `
+      UPDATE bookedRooms
+      SET isReserved = ?
+      WHERE bookingId = ?
+    `;
+
+    await pool.query(bookingQuery, [isReserved, bookingId]);
+
+    return { message: 'Booking updated successfully' };
+  } catch (error) {
+    throw new Error(error);
+  }
+}
 
 export default {
     getAllBookings,
@@ -172,5 +194,6 @@ export default {
     createBookingWithExistingCustomer,
     deleteBooking,
     archiveBooking,
-    updateBooking
+    updateBooking,
+    updateReservedStatus
 };

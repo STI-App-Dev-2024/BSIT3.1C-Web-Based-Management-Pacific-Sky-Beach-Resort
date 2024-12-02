@@ -1,5 +1,5 @@
 import expressAsync from "express-async-handler";
-import bookingsArchiveService from "../../services/bookings/bookingsArchiveService.js";
+import bookingsArchiveService from "../../../services/bookings/rooms/bookingsArchiveService.js";
 
 const getAllArchivedBookings = expressAsync(async (req, res, next) => {
     try {

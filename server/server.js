@@ -9,8 +9,8 @@ import roomsRoutes from "./routes/rooms/roomsRoutes.js";
 import appointmentsRoutes from "./routes/appointments/appointmentsRoutes.js";
 import pressReleaseRoutes from "./routes/press-release/pressReleaseRoutes.js";
 import contactsRoutes from './routes/contacts/contactsRoutes.js'
-import bookingsRoutes from './routes/bookings/bookingsRoutes.js'
-import bookingsArchiveRoutes from './routes/bookings/bookingsArchiveRoutes.js'
+import bookingsRoutes from './routes/bookings/rooms/bookingsRoutes.js'
+import bookingsArchiveRoutes from './routes/bookings/rooms/bookingsArchiveRoutes.js'
 import usersArchiveRoutes from './routes/users/usersArchiveRoutes.js'
 
 import tables from "./tables/tables.js";
