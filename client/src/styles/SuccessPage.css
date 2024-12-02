@@ -1,4 +1,6 @@
 .success-page-container {
+  text-align: center;
+
   img {
     margin: 0;
     padding: 0;
@@ -28,6 +30,7 @@
     margin: 0;
   }
 }
+
 .btn-section {
   h6 {
     color: #0070ff;
@@ -37,9 +40,11 @@
     border-bottom: 1px dotted #0070ff;
     cursor: pointer;
   }
-  h6:hover{
-    color:#70a2e2;
+
+  h6:hover {
+    color: #70a2e2;
   }
+
   p {
     color: #000000;
     font-size: 25px;
@@ -49,26 +54,28 @@
 }
 
 @media screen and (max-width: 600px) {
- .success-page-container{
-      h1 {
-        font-size: 2em;
-      }
-      h3 {
-        font-size: 1em;
-      }
-    
-      p {
-        font-size: 1em;
-      }
-
- }
-.btn-section{
-    h6 {
-        font-size: 1em;
-      }
-      
-      p {
-        font-size: 1em;
-      }
+  .success-page-container {
+    h1 {
+      font-size: 2em;
     }
+
+    h3 {
+      font-size: 1em;
+    }
+
+    p {
+      font-size: 1em;
+    }
+
+  }
+
+  .btn-section {
+    h6 {
+      font-size: 1em;
+    }
+
+    p {
+      font-size: 1em;
+    }
+  }
 }

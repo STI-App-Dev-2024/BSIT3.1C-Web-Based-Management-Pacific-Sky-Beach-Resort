@@ -12,7 +12,8 @@ const OfferCard = ({
   price,
   handleView,
   handleEdit,
-  handleDelete
+  handleDelete,
+  isOnPortal = true
 }) => {
 
   return (
@@ -27,54 +28,57 @@ const OfferCard = ({
           position: 'relative'
         }}
       >
-        <Stack
-          direction='row'
-          spacing={1}
-          sx={{
-            position: 'absolute',
-            zIndex: 999,
-            right: 10,
-            top: 10,
-            boxShadow: 5
-          }}
-        >
-          <IconButton
-            title='View'
-            style={{
-              backgroundColor: `#fff`,
+        {isOnPortal && (
+          <Stack
+            direction='row'
+            spacing={1}
+            sx={{
+              position: 'absolute',
+              zIndex: 999,
+              right: 10,
+              top: 10,
+              boxShadow: 5
             }}
-            color='primary'
-            onClick={handleView}
           >
-            <EyeOutlined />
-          </IconButton>
-          <IconButton
-            title='Edit'
-            style={{
-              backgroundColor: `#fff`,
-            }}
-            color='info'
-            onClick={handleEdit}
-          >
-            <EditOutlined />
-          </IconButton>
-          <IconButton
-            title='Delete'
-            style={{
-              backgroundColor: `#fff`,
-            }}
-            color='error'
-            onClick={handleDelete}
-          >
-            <DeleteOutlined />
-          </IconButton>
-        </Stack>
+            <IconButton
+              title='View'
+              style={{
+                backgroundColor: `#fff`,
+              }}
+              color='primary'
+              onClick={handleView}
+            >
+              <EyeOutlined />
+            </IconButton>
+
+            <IconButton
+              title='Edit'
+              style={{
+                backgroundColor: `#fff`,
+              }}
+              color='info'
+              onClick={handleEdit}
+            >
+              <EditOutlined />
+            </IconButton>
+            <IconButton
+              title='Delete'
+              style={{
+                backgroundColor: `#fff`,
+              }}
+              color='error'
+              onClick={handleDelete}
+            >
+              <DeleteOutlined />
+            </IconButton>
+          </Stack>
+        )}
         <Carousel
+          navButtonsAlwaysVisible
           indicators={false}
           height={300}
           autoPlay={false}
           animation="fade"
-          navButtonsAlwaysVisible={false}
           navButtonsProps={{
             style: {
               borderRadius: 50
@@ -88,13 +92,17 @@ const OfferCard = ({
             }
           }}
           sx={{
-            '&:hover .navButtons button': {
+            '.navButtons button': {
               backgroundColor: '#fff !important',
-              color: '#000'
+              color: '#333',
+            },
+            '&:hover .navButtons button': {
+              backgroundColor: '#333 !important',
+              color: '#fff'
             }
           }}
         >
-          {pictures.map((item) => (
+          {pictures?.map((item) => (
             <div
               style={{ height: `100%` }}
             >

@@ -3,12 +3,12 @@ import bookingsService from "../../../services/bookings/rooms/bookingsService.js
 import e from "express";
 
 const getAllBookings = expressAsync(async (req, res, next) => {
-  try {
-    const response = await bookingsService.getAllBookings();
-    res.json(response);
-  } catch (error) {
-    throw new Error(error);
-  }
+    try {
+        const response = await bookingsService.getAllBookings();
+        res.json(response);
+    } catch (error) {
+        throw new Error(error);
+    }
 });
 
 const getSingleBookingById = expressAsync(async (req, res, next) => {
@@ -22,7 +22,7 @@ const getSingleBookingById = expressAsync(async (req, res, next) => {
 
 const createBookingWithNewCustomer = expressAsync(async (req, res, next) => {
     try {
-        const response = await bookingsService.createBookingWithNewCustomer(req.body);
+        const response = await bookingsService.createBookingWithNewCustomer(req);
         res.json(response);
     } catch (error) {
         throw new Error(error);

@@ -31,7 +31,7 @@ const Navbar = () => {
             justifyContent: 'space-between',
             paddingInline: 20,
             alignItems: 'center',
-            zIndex: 1,
+            zIndex: 10,
             backgroundColor: 'rgba(0, 0, 0, 0.5)'
           }}
         >
