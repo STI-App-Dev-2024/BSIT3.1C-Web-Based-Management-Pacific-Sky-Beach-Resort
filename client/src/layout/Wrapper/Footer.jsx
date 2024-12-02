@@ -27,7 +27,7 @@ const Footer = () => {
       >
         <Grid item md={4} sm={12}>
           <Typography mb={2} variant="h4" color="#ffffff">
-            Address
+            Contact Information
           </Typography>
           {address.map((ad) => (
             <Stack key={ad.name} direction="row" alignItems="center" spacing={2} mb={1.5} >

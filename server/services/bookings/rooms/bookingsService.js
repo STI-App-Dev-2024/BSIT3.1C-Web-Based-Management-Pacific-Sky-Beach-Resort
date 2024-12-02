@@ -1,6 +1,11 @@
 import conn from '../../../config/db.js';
 import { v4 as uuidv4 } from 'uuid';
-import undefinedValidator from '../../../utils/undefinedValidator.js';
+import { sendEmail } from '../../../utils/sendNodeMail.js';
+import dateFormatter from '../../../utils/dateFormatter.js';
+import emailReservationCustomer from '../../../templates/booking/rooms/emailReservationCustomer.js';
+import emailReservationAdmin from '../../../templates/booking/rooms/emailReservationAdmin.js';
+import { COMPANY_EMAIL_ADDRESS } from '../../../constants/constants.js';
+
 
 const pool = await conn();
 
@@ -71,6 +76,26 @@ const createBookingWithNewCustomer = async (req) => {
             VALUES (?, ?, ?, ?, ?, ?)`;
 
     await pool.query(bookingQuery, [bookingId, roomId, customerId, startDate, endDate, reservationProof]);
+
+    const user_subject = `${customerFirstName} ${customerLastName} - Reservation Pending Approval`
+    const user_content = emailReservationCustomer({
+      customerFirstName,
+      customerLastName,
+      startDate: dateFormatter(startDate),
+      endDate: dateFormatter(endDate)
+    })
+
+    const admin_subject = `${customerFirstName} ${customerLastName} - Reserved a room`
+    const admin_content = emailReservationAdmin({
+      bookingId,
+      customerFirstName,
+      customerLastName,
+      startDate: dateFormatter(startDate),
+      endDate: dateFormatter(endDate)
+    })
+
+    await sendEmail(customerEmail, user_subject, user_content)
+    await sendEmail(COMPANY_EMAIL_ADDRESS, admin_subject, admin_content)
 
     return { message: `Room Booked with new customer`, bookingId: bookingId };
   } catch (error) {

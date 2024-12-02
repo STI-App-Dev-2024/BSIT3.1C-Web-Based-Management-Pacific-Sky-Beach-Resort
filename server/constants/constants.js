@@ -6,8 +6,11 @@ const PROD_HOST = 'https://pacificskybeachresort.com/'
 
 const HOST = process.env.NODE_ENV === `development` ? LOCAL_HOST : PROD_HOST
 
+const COMPANY_EMAIL_ADDRESS = process.env.NODE_ENV === `development` ? 'pacificskydev@gmail.com' : "pacificsky.beachresort2007@gmail.com"
+
 export {
   COMPANY_NAME,
   COMPANY_LOGO,
-  HOST
+  HOST,
+  COMPANY_EMAIL_ADDRESS
 }

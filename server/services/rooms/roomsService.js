@@ -254,10 +254,6 @@ const editRoom = async (req) => {
       };
     });
 
-    console.log(JSON.parse(bedDetails));
-    console.log(transformedBedDetails);
-    console.log(_.isEqual(transformedBedDetails, room.bedDetails))
-
     if (pictures.length > 0) {
       const existingPicturesQuery = `
         SELECT picture FROM roomsPictures WHERE roomId = ?

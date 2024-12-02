@@ -20,7 +20,7 @@ const quickLinks = [
     link: '/activities'
   },
   {
-    name: 'Abotu Us',
+    name: 'About Us',
     icon: mdiChevronRight,
     color: '#ffffff',
     link: '/about-us'

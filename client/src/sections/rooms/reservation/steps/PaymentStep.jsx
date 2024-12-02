@@ -86,13 +86,13 @@ const PaymentStep = ({
                 });
 
                 await agent.BookRooms.bookRooms(formData)
-                handleClose()
 
                 const items = ['customerData', 'paymentMethod']
                 for (const item of items) {
                   localStorage.removeItem(item)
                 }
 
+                handleClose()
                 navigate('/success/booking-room')
 
               } catch (error) {
