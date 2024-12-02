@@ -1,20 +1,37 @@
-import {mdiChevronRight  } from '@mdi/js';
+import { mdiChevronRight } from '@mdi/js';
+
 const quickLinks = [
   {
-    name: 'About Us',
+    name: 'Home',
     icon: mdiChevronRight,
-    color:'#ffffff' 
+    color: '#ffffff',
+    link: '/'
+  },
+  {
+    name: 'Rooms',
+    icon: mdiChevronRight,
+    color: '#ffffff',
+    link: '/rooms'
+  },
+  {
+    name: 'Activities',
+    icon: mdiChevronRight,
+    color: '#ffffff',
+    link: '/activities'
+  },
+  {
+    name: 'Abotu Us',
+    icon: mdiChevronRight,
+    color: '#ffffff',
+    link: '/about-us'
   },
   {
     name: 'Contact Us',
     icon: mdiChevronRight,
-    color:'#ffffff' 
+    color: '#ffffff',
+    link: '/contact-us'
   },
-  {
-    name: 'Pacific Sky Beach Portal',
-    icon: mdiChevronRight ,
-    color:'#ffffff' 
-  }
+
 ];
 
 export default quickLinks;

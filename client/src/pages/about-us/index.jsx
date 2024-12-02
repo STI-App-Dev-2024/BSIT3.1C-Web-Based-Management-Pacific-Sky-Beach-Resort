@@ -3,13 +3,16 @@ import { Container } from '@mui/material';
 import TitleTag from 'components/TitleTag';
 import TwoColumn from 'components/TwoColumn';
 
+import pic6 from '/src/assets/images/upload/pic6.jpeg'
+import pic5 from '/src/assets/images/upload/pic5.jpeg'
+
 const index = () => {
   return (
     <React.Fragment >
       <TitleTag subtitle="LEARN MORE ABOUT PACIFIC SKY" title="About Us" />
       <Container>
         <TwoColumn
-          image="https://th.bing.com/th/id/OIP.mGLrANuGJsE3elRgnUhb3QHaFj?rs=1&pid=ImgDetMain"
+          image={pic5}
           title="OUR VISION"
           subtitle="A force of good that brings economic awareness"
           caption="& financial solutions to create wealth for families."
@@ -18,7 +21,7 @@ const index = () => {
         />
         <TwoColumn
           isInverted={true}
-          image="https://th.bing.com/th/id/OIP.mGLrANuGJsE3elRgnUhb3QHaFj?rs=1&pid=ImgDetMain"
+          image={pic6}
           title="OUR MISSION"
           subtitle="To help re-enfroce"
           caption="& boost the value of a family's financial portfolio."

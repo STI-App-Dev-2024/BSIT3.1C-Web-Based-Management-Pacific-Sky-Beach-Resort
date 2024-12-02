@@ -47,10 +47,21 @@ const deleteRoom = expressAsync(async (req, res, next) => {
   }
 });
 
+const archiveRoom = expressAsync(async (req, res, next) => {
+  try {
+    const response = await roomsService.archiveRoom(req.params.roomId);
+    res.json(response);
+  } catch (error) {
+    console.error("Error in usersService:", error);
+    throw new Error(error);
+  }
+});
+
 export {
   getAllRooms,
   getSingleRoomById,
   createRoom,
   editRoom,
-  deleteRoom
+  deleteRoom,
+  archiveRoom,
 };

@@ -1,31 +1,25 @@
-import { mdiMapMarker, mdiPhone, mdiEmail  } from '@mdi/js';
+import { mdiMapMarker, mdiPhone, mdiEmail } from '@mdi/js';
 
 const address = [
-  { 
+  {
 
-    name: '3601 W Sahara Ave suite 207 Las Vegas, NV 89102',
+    name: 'Sitio Fuerto Brgy. Poblacion Morong Bataan',
     icon: mdiMapMarker,
     color: '#ff0000'
   },
   {
-    name: ' 41-22 Fuller Place 3rd Floor, Flushing, NY 11355',
-    icon: mdiMapMarker,
-     color: '#ff0000'
-  },
-  {
-    name: '17800 Castleton St Suite 583 Industry, CA 91748',
-    icon: mdiMapMarker,
-     color: '#ff0000'
-  },
-  {
-    name: '702-983-3332',
+    name: '09956057797',
     icon: mdiPhone,
     color: '#ffffff'
   },
   {
-    name: 'info@pacificskybeach.net',
+    name: '09128909447',
+    color: '#ffffff'
+  },
+  {
+    name: 'pacificsky.beachresort2007@gmail.com',
     icon: mdiEmail,
-     color: '#ffffff'
+    color: '#ffffff'
   }
 ];
 

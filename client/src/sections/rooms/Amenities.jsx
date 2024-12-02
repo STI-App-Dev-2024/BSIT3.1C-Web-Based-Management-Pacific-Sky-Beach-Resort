@@ -42,14 +42,14 @@ const Amenities = ({ amenities }) => {
 
   return (
     <React.Fragment>
-      <MainCard title="Amenities" content={false} style={{ marginBlock: '1em', height: '100%' }}>
+      <MainCard title="Amenities" content={false} style={{ height: '100%' }}>
         <Grid container spacing={2} marginBlock={2} padding={2}>
           <AmenityItem title="Wifi" icon={mdiWifi} availability={hasWifi} />
           <AmenityItem title="Shower" icon={mdiShower} availability={hasShower} />
           <AmenityItem title="Air Conditioning" icon={mdiAirConditioner} availability={hasAircon} />
           <AmenityItem title="Heater" icon={mdiRadiator} availability={hasHeater} />
         </Grid>
-        <Stack marginTop={2} direction="row" justifyContent="center">
+        <Stack marginBlock={2} direction="row" justifyContent="center">
           <Button variant="contained" size="small" onClick={() => setOpen(true)}>
             View all amenities
           </Button>

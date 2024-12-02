@@ -11,6 +11,7 @@ import UserCard from 'components/UserCard';
 import { useGetSingleUser } from 'api/users';
 import { useNavigate } from 'react-router';
 import Amenities from './Amenities';
+import Reservation from './reservation/Reservation';
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -33,6 +34,8 @@ const SingleRoomPage = ({
   });
 
   const [hoveredImage, setHoveredImage] = useState(null);
+  const [openForm, setOpenForm] = useState(false)
+
 
   const {
     roomName,
@@ -63,37 +66,26 @@ const SingleRoomPage = ({
 
   return (
     <React.Fragment>
-      <Dialog
-        open={openConfigs.open}
-        onClose={() => setOpenConfigs({ open: false, selectedPicture: `` })}
-        fullWidth
-        maxWidth='sm'
-      >
-        <Box>
-          <img
-            src={openConfigs.selectedPicture}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', margin: 0 }}
-          />
-        </Box>
-      </Dialog>
       {!isOnPortal && (
         <Typography variant='h2'>
           {roomName}
         </Typography>
       )}
-      <Stack direction='row' justifyContent='flex-end' alignItems='center'>
-        <Button
-          color='info'
-          variant='contained'
-          size='small'
-          startIcon={<EditOutlined />}
-          onClick={() => navigate(`/portal/rooms/form?action=edit&roomId=${roomId}`)}
-        >
-          Edit
-        </Button>
-      </Stack>
-      <Alert variant='standard' color={Boolean(isOccupied) ? 'warning' : 'success'} sx={{ my: 2 }}>
-        {Boolean(isOccupied) ? 'Not Available for booking right now.' : 'Available for booking.'}
+      {isOnPortal && (
+        <Stack direction='row' justifyContent='flex-end' alignItems='center'>
+          <Button
+            color='info'
+            variant='contained'
+            size='small'
+            startIcon={<EditOutlined />}
+            onClick={() => navigate(`/portal/rooms/form?action=edit&roomId=${roomId}`)}
+          >
+            Edit
+          </Button>
+        </Stack>
+      )}
+      <Alert variant='standard' color={Boolean(isOccupied) ? 'info' : 'success'} sx={{ my: 2 }}>
+        {Boolean(isOccupied) ? 'Not Available for booking right now.' : 'Available for booking today.'}
       </Alert>
       <Stack>
         <ImageList
@@ -120,14 +112,38 @@ const SingleRoomPage = ({
             </ImageListItem>
           ))}
         </ImageList>
-        <MainCard style={{ marginBottom: '1em' }} >
-          <Typography variant='h4'>
-            Description
-          </Typography>
-          <Typography variant='caption'>
-            {description}
-          </Typography>
-        </MainCard>
+        <Grid container spacing={2} sx={{ marginBottom: '1em' }}>
+          <Grid item xs={12} sm={12} md={isOnPortal ? 12 : 8}>
+            <MainCard style={{ height: '100%' }}>
+              <Typography variant='h4'>
+                Description
+              </Typography>
+              <Typography variant='caption'>
+                {description}
+              </Typography>
+            </MainCard>
+          </Grid>
+          {!isOnPortal && (
+            <Grid item xs={12} sm={12} md={4}>
+              <MainCard>
+                <Stack alignItems='center' >
+                  <Typography variant='h3'>
+                    Book a Reservation
+                  </Typography>
+                  <Button
+                    variant='contained'
+                    size='small'
+                    sx={{ my: 2 }}
+                    fullWidth
+                    onClick={() => setOpenForm(true)}
+                  >
+                    Reserve
+                  </Button>
+                </Stack>
+              </MainCard>
+            </Grid>
+          )}
+        </Grid>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12} md={8}>
             <MainCard title='General Information' style={{ height: '100%' }}>
@@ -165,43 +181,71 @@ const SingleRoomPage = ({
                   </Box>
                 </Grid>
               </Grid>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={12} md={6}>
-                  <Box padding={1}>
-                    <LabeledValue
-                      title="Room ID"
-                      subTitle={<Typography>{roomId}</Typography>}
-                      icon={<Icon path={mdiIdCard} size={1} />}
-                    />
-                  </Box>
+              {isOnPortal && (
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={12} md={6}>
+                    <Box padding={1}>
+                      <LabeledValue
+                        title="Room ID"
+                        subTitle={<Typography>{roomId}</Typography>}
+                        icon={<Icon path={mdiIdCard} size={1} />}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={6}>
+                    <Box padding={1}>
+                      <LabeledValue
+                        title="Created At"
+                        subTitle={<ConvertDate dateString={createdAt} />}
+                        icon={<Icon path={mdiCalendarBlankOutline} size={1} />}
+                      />
+                    </Box>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={12} md={6}>
-                  <Box padding={1}>
-                    <LabeledValue
-                      title="Created At"
-                      subTitle={<ConvertDate dateString={createdAt} />}
-                      icon={<Icon path={mdiCalendarBlankOutline} size={1} />}
-                    />
-                  </Box>
-                </Grid>
-              </Grid>
+              )}
             </MainCard>
           </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <UserCard user={user} isLoading={isLoading} title="Created By" />
-          </Grid>
+          {isOnPortal ? (
+            <Grid item xs={12} sm={12} md={4}>
+              <UserCard user={user} isLoading={isLoading} title="Created By" />
+            </Grid>
+          ) : (
+            <Grid item md={4}>
+              <Amenities amenities={amenities} />
+            </Grid>
+          )}
         </Grid>
-        <Grid container spacing={2}>
-          <Grid item md={8}>
-            <MainCard content={false} style={{ marginBlock: '1em', height: '100%' }} >
-              Bookings List
-            </MainCard>
+        {isOnPortal && (
+          <Grid container spacing={2}>
+            <Grid item md={8}>
+              <MainCard content={false} style={{ marginBlock: '1em', height: '100%' }}  >
+                Bookings List
+              </MainCard>
+            </Grid>
+            <Grid item md={4} style={{ marginBlock: '1em', height: '100%' }}>
+              <Amenities amenities={amenities} />
+            </Grid>
           </Grid>
-          <Grid item md={4}>
-            <Amenities amenities={amenities} />
-          </Grid>
-        </Grid>
+        )}
       </Stack>
+      <Reservation
+        open={openForm}
+        onClose={() => setOpenForm(false)}
+        roomData={roomData}
+      />
+      <Dialog
+        open={openConfigs.open}
+        onClose={() => setOpenConfigs({ open: false, selectedPicture: `` })}
+        fullWidth
+        maxWidth='sm'
+      >
+        <Box>
+          <img
+            src={openConfigs.selectedPicture}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', margin: 0 }}
+          />
+        </Box>
+      </Dialog>
     </React.Fragment >
   );
 };
