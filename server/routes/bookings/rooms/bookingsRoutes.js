@@ -29,6 +29,6 @@ router.post("/create-booking-with-new-customer",
 router.post("/create-booking-with-existing-customer", createBookingWithExistingCustomer);
 router.put("/:bookingId", updateBooking);
 router.post("/archive-booking/:bookingId", archiveBooking);
-router.put("/update-reserver-status/:bookingId", adminAuth, updateReservedStatus);
+router.put("/update-reservation-status/:bookingId", updateReservedStatus);
 
 export default router;

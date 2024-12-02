@@ -67,7 +67,7 @@ const updateBooking = expressAsync(async (req, res, next) => {
 
 const updateReservedStatus = expressAsync(async (req, res, next) => {
     try {
-        const response = await bookingsService.updateReservedStatus(req.body);
+        const response = await bookingsService.updateReservedStatus(req);
         res.json(response);
     } catch (error) {
         throw new Error(error);

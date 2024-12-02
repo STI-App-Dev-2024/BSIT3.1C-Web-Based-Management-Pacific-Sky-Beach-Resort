@@ -37,6 +37,9 @@ const Staffs = Loadable(lazy(() => import('pages/portal/staffs/index')));
 const EditProfile = Loadable(lazy(() => import('pages/portal/profile/EditProfile')));
 const ViewProfile = Loadable(lazy(() => import('pages/portal/profile/ViewProfile')));
 
+// reservations
+const RoomReservations = Loadable(lazy(() => import('pages/portal/reservations/room-reservations/index')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -73,6 +76,15 @@ const MainRoutes = {
                   element: <RoomDetails />,
                 }
               ]
+            },
+          ]
+        },
+        {
+          path: 'reservations',
+          children: [
+            {
+              path: 'rooms',
+              element: <RoomReservations />,
             },
           ]
         },

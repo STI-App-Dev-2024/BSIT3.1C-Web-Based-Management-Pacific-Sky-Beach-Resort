@@ -11,7 +11,8 @@ import {
   CalendarMonthOutline,
   AccountGroup,
   TicketOutline,
-  ArchiveArrowDownOutline
+  ArchiveArrowDownOutline,
+  BookClock
 } from 'mdi-material-ui'
 
 // constants
@@ -31,7 +32,8 @@ const mdi_icons = {
   CalendarMonthOutline,
   AccountGroup,
   TicketOutline,
-  ArchiveArrowDownOutline
+  ArchiveArrowDownOutline,
+  BookClock
 }
 
 const icons = {
@@ -99,6 +101,23 @@ const modules = [
         icon: icons.Swim,
         breadcrumbs: false,
         access: [POSITIONS.POSITIONS_STAFF, POSITIONS.POSITIONS_MASTER_ADMIN]
+      },
+    ]
+  },
+  {
+    id: 'group-reservations',
+    title: 'Reservations',
+    type: 'group',
+    access: [POSITIONS.POSITIONS_MASTER_ADMIN],
+    children: [
+      {
+        id: 'room-reservations',
+        title: 'Room Reservations',
+        type: 'item',
+        url: '/portal/reservations/rooms',
+        icon: icons.BookClock,
+        breadcrumbs: false,
+        access: [POSITIONS.POSITIONS_MASTER_ADMIN]
       },
     ]
   },

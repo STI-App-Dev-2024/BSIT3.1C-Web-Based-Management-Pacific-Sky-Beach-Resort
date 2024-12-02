@@ -5,18 +5,18 @@ import dateFormatter from '../../../utils/dateFormatter.js';
 import emailReservationCustomer from '../../../templates/booking/rooms/emailReservationCustomer.js';
 import emailReservationAdmin from '../../../templates/booking/rooms/emailReservationAdmin.js';
 import { COMPANY_EMAIL_ADDRESS } from '../../../constants/constants.js';
-
+import roomsService from '../../rooms/roomsService.js';
+import emailUpdateStatus from '../../../templates/booking/rooms/emailUpdateStatus.js';
 
 const pool = await conn();
 
 const getAllBookings = async () => {
   try {
     const bookingsQuery = `
-  SELECT b.bookingId, r.roomName, CONCAT(c.customerFirstName,' ',customerLastName) AS CustomerName,b.isReserved, b.startDate, b.endDate
+  SELECT b.bookingId, r.roomName, CONCAT(c.customerFirstName,' ',customerLastName) AS customerName,b.isReserved, b.startDate, b.endDate
   FROM bookedRooms b
   JOIN rooms r ON b.roomId = r.roomId
   JOIN customers c ON b.customerId = c.customerId
-  ORDER BY b.isReserved 
 `;
 
     const [bookings] = await pool.query(bookingsQuery);
@@ -30,11 +30,18 @@ const getAllBookings = async () => {
 const getSingleBookingById = async (bookingId) => {
   try {
     const bookingQuery = `
-      SELECT b.bookingId, r.roomName, CONCAT(c.customerFirstName,' ',customerLastName) AS CustomerName,b.isReserved, b.startDate, b.endDate
+      SELECT 
+        b.*, 
+        r.roomName, 
+        c.customerFirstName, 
+        c.customerLastName, 
+        c.customerEmail, 
+        c.customerPhone, 
+        c.customerAddress
       FROM bookedRooms b
       JOIN rooms r ON b.roomId = r.roomId
       JOIN customers c ON b.customerId = c.customerId
-      WHERE bookingId = ?
+      WHERE b.bookingId = ?
     `;
 
     const [booking] = await pool.query(bookingQuery, [bookingId]);
@@ -43,11 +50,27 @@ const getSingleBookingById = async (bookingId) => {
       throw new Error('Booking not found');
     }
 
-    return booking;
+    const roomId = booking[0].roomId;
+
+    const roomInformation = await roomsService.getSingleRoomById(roomId);
+
+    const customerInformation = {
+      customerId: booking[0].customerId,
+      customerFirstName: booking[0].customerFirstName,
+      customerLastName: booking[0].customerLastName,
+      customerEmail: booking[0].customerEmail,
+      customerPhone: booking[0].customerPhone,
+      customerAddress: booking[0].customerAddress,
+    };
+
+    const { customerId, customerFirstName, customerLastName, customerEmail, customerPhone, customerAddress, ...bookedRooms } = booking[0];
+
+    return { bookedRooms, roomInformation, customerInformation };
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message || 'Error retrieving booking');
   }
-}
+};
+
 
 const createBookingWithNewCustomer = async (req) => {
   try {
@@ -194,12 +217,10 @@ const updateBooking = async (payload) => {
   }
 }
 
-const updateReservedStatus = async (payload) => {
+const updateReservedStatus = async (req) => {
   try {
-    const {
-      bookingId,
-      isReserved
-    } = payload;
+    const { isReserved } = req.body || {};
+    const { bookingId } = req.params || {};
 
     const bookingQuery = `
       UPDATE bookedRooms
@@ -208,6 +229,30 @@ const updateReservedStatus = async (payload) => {
     `;
 
     await pool.query(bookingQuery, [isReserved, bookingId]);
+
+    const bookedRoomInfo = await getSingleBookingById(bookingId)
+
+    const {
+      customerInformation,
+      startDate,
+      endDate
+    } = bookedRoomInfo || {}
+
+    const {
+      customerFirstName,
+      customerLastName,
+      customerEmail
+    } = customerInformation || {}
+
+    const subject = `${customerFirstName} ${customerLastName} - Reservation status`
+    const content = emailUpdateStatus({
+      customerFirstName,
+      customerLastName,
+      startDate: dateFormatter(startDate),
+      endDate: dateFormatter(endDate)
+    })
+
+    await sendEmail(customerEmail, subject, content)
 
     return { message: 'Booking updated successfully' };
   } catch (error) {

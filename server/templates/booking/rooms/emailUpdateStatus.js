@@ -1,11 +1,10 @@
 import { COMPANY_LOGO, COMPANY_NAME, HOST } from "../../../constants/constants.js";
 
-const emailReservationAdmin = ({
+const emailUpdateStatus = ({
   customerFirstName,
   customerLastName,
   startDate,
   endDate,
-  bookingId
 }) => {
   return `
 <!DOCTYPE html>
@@ -13,7 +12,7 @@ const emailReservationAdmin = ({
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>New Reservation Pending Approval</title>
+    <title>Reservation Confirmed</title>
   </head>
   <body style="margin: 0; padding: 0; background-color: #f9f9f9; font-family: Arial, sans-serif;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f9f9f9; margin: 0; padding: 20px 0;">
@@ -31,32 +30,23 @@ const emailReservationAdmin = ({
             </tr>
             <tr>
               <td align="center" style="font-size: 24px; font-weight: bold; color: #333333; padding-bottom: 10px;">
-                New Reservation Pending Approval
+                Reservation Confirmed
               </td>
             </tr>
             <tr>
               <td style="font-size: 16px; color: #555555; line-height: 1.6; padding-bottom: 20px; text-align: left;">
+                <p>Dear ${customerFirstName} ${customerLastName},</p>
                 <p>
-                  A new reservation has been submitted by <strong>${customerFirstName} ${customerLastName}</strong>. Here are the details of the reservation:
+                  We are pleased to inform you that your reservation with ${COMPANY_NAME} has been successfully booked!
                 </p>
                 <p><strong>Check-in:</strong> ${startDate}</p>
                 <p><strong>Check-out:</strong> ${endDate}</p>
                 <p>
-                  Please log in to the admin portal to review and take the necessary action on this pending reservation.
+                  Please make sure to arrive on time for check-in. If you have any changes to your plans, kindly inform us in advance.
                 </p>
                 <p>
-                  If you have any questions or need assistance, feel free to reach out to our support team.
+                  We look forward to welcoming you and ensuring your stay is as comfortable as possible.
                 </p>
-              </td>
-            </tr>
-            <tr>
-              <td align="center" style="padding-bottom: 20px;">
-                <a
-                  href="${HOST}/portal/reservations"
-                  style="display: inline-block; background-color: #0077b6; color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 16px;"
-                >
-                  VIEW RESERVATION
-                </a>
               </td>
             </tr>
             <tr>
@@ -81,4 +71,4 @@ const emailReservationAdmin = ({
 </html>`;
 };
 
-export default emailReservationAdmin;
+export default emailUpdateStatus;
