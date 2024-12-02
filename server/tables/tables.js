@@ -31,7 +31,7 @@ const tables = async (dbConnection) => {
     // users
     usersTable,
     usersArchiveTable,
-    
+
     // rooms
     roomsTable,
     roomsPictures,

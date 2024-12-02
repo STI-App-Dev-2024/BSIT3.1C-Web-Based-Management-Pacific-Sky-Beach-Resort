@@ -133,6 +133,6 @@ const Navbar = () => {
       </Drawer>
     </React.Fragment>
   );
-};
+}
 
 export default Navbar;
