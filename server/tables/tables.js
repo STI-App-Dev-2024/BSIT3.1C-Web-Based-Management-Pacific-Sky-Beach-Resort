@@ -1,5 +1,6 @@
 // users
 import usersTable from './users/usersTable.js';
+import usersArchiveTable from './users/usersArchiveTable.js';
 
 // rooms
 import roomsTable from './rooms/roomsTable.js';
@@ -29,7 +30,8 @@ const tables = async (dbConnection) => {
   const queries = [
     // users
     usersTable,
-
+    usersArchiveTable,
+    
     // rooms
     roomsTable,
     roomsPictures,

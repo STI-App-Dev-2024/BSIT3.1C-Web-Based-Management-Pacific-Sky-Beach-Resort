@@ -11,6 +11,7 @@ import pressReleaseRoutes from "./routes/press-release/pressReleaseRoutes.js";
 import contactsRoutes from './routes/contacts/contactsRoutes.js'
 import bookingsRoutes from './routes/bookings/bookingsRoutes.js'
 import bookingsArchiveRoutes from './routes/bookings/bookingsArchiveRoutes.js'
+import usersArchiveRoutes from './routes/users/usersArchiveRoutes.js'
 
 import tables from "./tables/tables.js";
 import conn from "./config/db.js";
@@ -39,6 +40,7 @@ app.use(`/api/${process.env.API_VERSION}/press-release`, pressReleaseRoutes);
 app.use(`/api/${process.env.API_VERSION}/contacts`, contactsRoutes);
 app.use(`/api/${process.env.API_VERSION}/bookings`, bookingsRoutes);
 app.use(`/api/${process.env.API_VERSION}/bookings-archive`, bookingsArchiveRoutes);
+app.use(`/api/${process.env.API_VERSION}/users-archive`, usersArchiveRoutes);
 
 app.get(`/`, (req, res) => {
   res.send(`Server is running on Port ${PORT}...`);

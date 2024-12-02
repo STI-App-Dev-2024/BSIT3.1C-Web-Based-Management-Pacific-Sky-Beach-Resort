@@ -198,6 +198,34 @@ const changePassword = async (body) => {
   return 'Password updated successfully';
 };
 
+const archiveUser = async (userId) => {
+  const user = await getSingleUserById(userId);
+
+  const archiveQuery = `
+    INSERT INTO usersArchive (userId, firstName, lastName, emailAddress, password, avatar, mobileNumber, position, bio, createdAt, updatedAt)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  const values = [
+    user.userId,
+    user.firstName,
+    user.lastName,
+    user.emailAddress,
+    user.password,
+    user.avatar,
+    user.mobileNumber,
+    user.position,
+    user.bio,
+    user.createdAt,
+    user.updatedAt
+  ];
+
+  await pool.query(archiveQuery, values);
+  await deleteUser(userId);
+
+  return `User has been archived successfully.`;
+};
+
 export default {
   authUser,
   getAllUsers,
@@ -205,5 +233,6 @@ export default {
   registerUser,
   updateUser,
   deleteUser,
-  changePassword
+  changePassword,
+  archiveUser
 }
