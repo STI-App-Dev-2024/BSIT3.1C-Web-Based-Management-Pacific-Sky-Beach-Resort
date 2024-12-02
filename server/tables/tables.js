@@ -7,6 +7,10 @@ import roomsTable from './rooms/roomsTable.js';
 import roomsPictures from './rooms/roomsPicturesTable.js';
 import roomBedTable from './rooms/roomBedTable.js';
 import roomBathroomTable from './rooms/roomBathroomTable.js';
+import roomsArchiveTable from './rooms/roomsArchiveTable.js';
+import roomBedArchiveTable from './rooms/roomBedArchiveTable.js';
+import roomBathroomArchiveTable from './rooms/roomBathroomArchiveTable.js';
+import roomsPicturesArchiveTable from './rooms/roomPicturesArchiveTable.js';
 
 // appointments
 import appointmentsTable from './appointments/appointmentsTable.js';
@@ -37,6 +41,10 @@ const tables = async (dbConnection) => {
     roomsPictures,
     roomBedTable,
     roomBathroomTable,
+    roomsArchiveTable,
+    roomsPicturesArchiveTable,
+    roomBedArchiveTable,
+    roomBathroomArchiveTable,
 
     // appointments
     appointmentsTable,

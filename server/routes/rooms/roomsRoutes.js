@@ -5,6 +5,7 @@ import {
   deleteRoom,
   getAllRooms,
   editRoom,
+  archiveRoom
 } from "../../controllers/rooms/roomsControllers.js";
 import createUploadMiddleware from "../../middleware/multer/uploadMiddleware.js";
 import { protect } from '../../middleware/authMiddleware.js'
@@ -35,6 +36,11 @@ router.put(
     ],
   }),
   editRoom
+);
+
+router.post(
+  "/archive-room/:roomId",
+  archiveRoom
 );
 
 export default router;

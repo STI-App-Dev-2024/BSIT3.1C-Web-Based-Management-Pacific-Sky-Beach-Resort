@@ -319,10 +319,102 @@ const deleteRoom = async (roomId) => {
   }
 };
 
+const archiveRoom = async (roomId) => {
+  try {
+    await pool.query('START TRANSACTION');
+    const room = await getSingleRoomById(roomId);
+
+    const roomValues = [
+      room.roomId,
+      room.userId,
+      room.roomName,
+      room.capacity,
+      room.roomType,
+      room.price,
+      room.thumbnail,
+      room.isOccupied,
+      room.description,
+      room.hasWifi,
+      room.hasKitchen,
+      room.hasTV,
+      room.hasShower,
+      room.hasAircon,
+      room.hasGrill,
+      room.hasRefrigerator,
+      room.hasHeater,
+    ];
+
+    const archiveRoomQuery = `
+    INSERT INTO roomsArchive(
+        roomId, userId, roomName, capacity, roomType, price, thumbnail, isOccupied, description,
+        hasWifi, hasKitchen, hasTV, hasShower, hasAircon, hasGrill, hasRefrigerator, hasHeater
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    await pool.query(archiveRoomQuery, roomValues);
+
+    const bedQuery = `
+      SELECT * FROM roombed WHERE roomId = ?
+    `;
+
+    const [bedDetails] = await pool.query(bedQuery, [roomId]);
+
+    const archiveBedQuery = `
+      INSERT INTO roomBedArchive(roomId, bedType, count) VALUES (?, ?, ?)
+    `;
+
+    for (const bed of bedDetails) {
+      const {roomId, bedType, count} = bed;
+      await pool.query(archiveBedQuery, [roomId, bedType, count]);
+    }
+    
+    const bathroomQuery = `
+    SELECT * FROM roomBathroom WHERE roomId = ?
+  `;
+
+    const [bathroomDetails] = await pool.query(bathroomQuery, [roomId]);
+
+    const archiveBathroomQuery = `
+      INSERT INTO roomBathroomArchive(roomId, bathRoomType, count) VALUES (?, ?, ?)
+    `;
+
+    for (const bathroom of bathroomDetails) {
+      const {roomId, bathRoomType, count} = bathroom;
+      await pool.query(archiveBathroomQuery, [roomId, bathRoomType, count]);
+    }
+
+    const picturesQuery = `
+      SELECT picture FROM roomsPictures WHERE roomId = ?
+    `;
+
+    const [pictures] = await pool.query(picturesQuery, [roomId]);
+
+    const archivePicturesQuery = `
+      INSERT INTO roomsPicturesArchive(roomId, picture) VALUES (?, ?)
+    `;
+    
+    for (const picture of pictures) {
+      await pool.query(archivePicturesQuery, [roomId, picture.picture]);
+    }
+    
+    await deleteRoom(roomId);
+
+    await pool.query('COMMIT');
+
+    return 'Room archived successfully';
+
+  } catch (error) {
+    await pool.query('ROLLBACK');
+    throw new Error(error.message);
+  }
+}
+
 export default {
   getAllRooms,
   getSingleRoomById,
   createRoom,
   editRoom,
   deleteRoom,
+  archiveRoom,
 };
