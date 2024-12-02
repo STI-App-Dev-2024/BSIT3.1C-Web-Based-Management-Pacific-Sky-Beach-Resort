@@ -20,7 +20,7 @@ const proof = {
   reservationProof: [],
 }
 
-const Reservation = ({ open, onClose }) => {
+const Reservation = ({ open, onClose, bookings }) => {
   const [activeStep, setActiveStep] = useState(0);
 
   const [customerData, setCustomerData] = useState(customer)
@@ -59,6 +59,7 @@ const Reservation = ({ open, onClose }) => {
             activeStep={activeStep}
             steps={steps}
             handleBack={handleBack}
+            bookings={bookings}
           />
         );
       case 2:

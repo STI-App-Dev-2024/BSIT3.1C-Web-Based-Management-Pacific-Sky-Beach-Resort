@@ -27,6 +27,45 @@ const getAllBookings = async () => {
   }
 }
 
+const getBookingByRoomId = async (roomId) => {
+  try {
+    // SQL query with JOIN to fetch booking and customer information
+    const query = `
+      SELECT 
+        b.bookingId, 
+        b.roomId, 
+        b.customerId, 
+        b.startDate, 
+        b.endDate, 
+        b.reservationProof, 
+        b.isReserved, 
+        b.createdAt, 
+        b.updatedAt,
+        c.customerFirstName, 
+        c.customerLastName, 
+        c.customerEmail, 
+        c.customerPhone, 
+        c.customerAddress
+      FROM bookedRooms b
+      JOIN customers c ON b.customerId = c.customerId
+      WHERE b.roomId = ?
+    `;
+
+    // Execute the query with the provided roomId
+    const [bookings] = await pool.query(query, [roomId]);
+
+    // If no bookings are found
+    if (!bookings.length) {
+      return []
+    }
+
+    // Return the bookings along with the customer details
+    return bookings;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
 const getSingleBookingById = async (bookingId) => {
   try {
     const bookingQuery = `
@@ -262,6 +301,7 @@ const updateReservedStatus = async (req) => {
 
 export default {
   getAllBookings,
+  getBookingByRoomId,
   getSingleBookingById,
   createBookingWithNewCustomer,
   createBookingWithExistingCustomer,

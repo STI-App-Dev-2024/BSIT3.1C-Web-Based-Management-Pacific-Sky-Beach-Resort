@@ -9,9 +9,11 @@ import currencyFormatter from 'utils/currencyFormatter';
 import ConvertDate from 'components/ConvertDate';
 import UserCard from 'components/UserCard';
 import { useGetSingleUser } from 'api/users';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import Amenities from './Amenities';
 import Reservation from './reservation/Reservation';
+import CalendarComponent from 'components/Calendar';
+import { useGetBookingsByRoomId } from 'api/booking/book-rooms';
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -28,15 +30,6 @@ const SingleRoomPage = ({
 }) => {
   const navigate = useNavigate()
 
-  const [openConfigs, setOpenConfigs] = useState({
-    open: false,
-    selectedPicture: ''
-  });
-
-  const [hoveredImage, setHoveredImage] = useState(null);
-  const [openForm, setOpenForm] = useState(false)
-
-
   const {
     roomName,
     pictures,
@@ -51,6 +44,35 @@ const SingleRoomPage = ({
     isOccupied,
     amenities
   } = roomData || {};
+
+  const { roomBookings } = useGetBookingsByRoomId(roomId)
+
+  const [openConfigs, setOpenConfigs] = useState({
+    open: false,
+    selectedPicture: ''
+  });
+
+  const [hoveredImage, setHoveredImage] = useState(null);
+  const [openForm, setOpenForm] = useState(false)
+
+  const transformedRoomBookings = roomBookings?.map((item) => {
+
+    const {
+      customerFirstName,
+      customerLastName,
+      startDate,
+      endDate,
+      isReserved
+    } = item || {}
+
+    return {
+      startDate,
+      endDate,
+      title: `${customerFirstName} ${customerLastName}`,
+      isReserved: Boolean(isReserved)
+    }
+
+  })
 
   const { user, isLoading } = useGetSingleUser(userId)
 
@@ -219,7 +241,9 @@ const SingleRoomPage = ({
           <Grid container spacing={2}>
             <Grid item md={8}>
               <MainCard content={false} style={{ marginBlock: '1em', height: '100%' }}  >
-                Bookings List
+                <CalendarComponent
+                  bookings={transformedRoomBookings}
+                />
               </MainCard>
             </Grid>
             <Grid item md={4} style={{ marginBlock: '1em', height: '100%' }}>
@@ -232,6 +256,7 @@ const SingleRoomPage = ({
         open={openForm}
         onClose={() => setOpenForm(false)}
         roomData={roomData}
+        bookings={transformedRoomBookings}
       />
       <Dialog
         open={openConfigs.open}

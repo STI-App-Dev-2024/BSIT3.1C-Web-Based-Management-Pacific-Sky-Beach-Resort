@@ -31,6 +31,23 @@ export const useGetAllBookings = () => {
   return memoizedValue
 }
 
+export const useGetBookingsByRoomId = (roomId) => {
+  const { data, isLoading, error, mutate } = useSWR(roomId ? `/${endpoints.key}/room/${roomId}` : null, fetcher, options)
+
+  const memoizedValue = useMemo(
+    () => ({
+      roomBookings: data,
+      isLoading,
+      mutate,
+      error
+    }),
+
+    [data, error, isLoading, mutate]
+  );
+
+  return memoizedValue
+}
+
 export const useGetSingleBookingById = (bookingId) => {
   const { data, isLoading, error, mutate } = useSWR(bookingId ? `/${endpoints.key}/${bookingId}` : null, fetcher, options)
 

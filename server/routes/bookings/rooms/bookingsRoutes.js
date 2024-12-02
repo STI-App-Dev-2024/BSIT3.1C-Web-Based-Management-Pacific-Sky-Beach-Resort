@@ -9,12 +9,14 @@ import {
   archiveBooking,
   updateBooking,
   updateReservedStatus,
+  getBookingByRoomId
 } from "../../../controllers/bookings/rooms/bookingsController.js";
 import createUploadMiddleware from '../../../middleware/multer/uploadMiddleware.js'
 
 const router = express.Router();
 
 router.get("/", getAllBookings);
+router.get("/room/:roomId", getBookingByRoomId);
 router.get("/:bookingId", getSingleBookingById);
 router.delete("/:bookingId", deleteBooking);
 router.post("/create-booking-with-new-customer",

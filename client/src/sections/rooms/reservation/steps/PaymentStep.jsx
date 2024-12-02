@@ -1,5 +1,5 @@
 import { InfoCircleOutlined } from '@ant-design/icons'
-import { Button, Grid, Stack, Tooltip, Typography } from '@mui/material'
+import { Alert, Button, Grid, Stack, Tooltip, Typography } from '@mui/material'
 import SingleFileUpload from 'components/third-party/dropzone/FileUpload'
 import { Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
@@ -10,6 +10,7 @@ import LoadingButton from 'components/@extended/LoadingButton'
 import { useSnackbar } from 'contexts/SnackbarContext'
 import agent from 'api'
 import { useNavigate, useParams } from 'react-router'
+import * as Yup from 'yup'
 
 const PaymentStep = ({
   activeStep,
@@ -43,8 +44,15 @@ const PaymentStep = ({
     logo
   } = data || {}
 
+  const validationSchema = Yup.object().shape({
+    reservationProof: Yup.mixed().required('Proof of transaction is required.')
+  })
+
   return (
     <React.Fragment>
+      <Alert severity='warning'>
+        Please pay the minimum reservation fee of 1000 PHP for admin approval. Amounts below this will be denied.
+      </Alert>
       <Grid container spacing={2} marginBlock={2}>
         <Grid item md={6}>
           <OptionCard
@@ -69,6 +77,7 @@ const PaymentStep = ({
           </Typography>
           <Formik
             initialValues={{ reservationProof: '' }}
+            validationSchema={validationSchema}
             onSubmit={async (data) => {
               setLoading(true)
               try {
@@ -97,7 +106,7 @@ const PaymentStep = ({
 
               } catch (error) {
                 openSnackbar({
-                  message: err?.message,
+                  message: error?.message,
                   anchorOrigin: { vertical: 'top', horizontal: 'right' },
                   alert: { color: 'error' },
                   duration: 6000,
@@ -126,7 +135,7 @@ const PaymentStep = ({
                       <LoadingButton
                         disableElevation
                         loading={loading}
-                        disabled={loading}
+                        disabled={loading || !values.reservationProof}
                         loadingPosition="start"
                         variant="contained"
                         sx={{ my: 3, ml: 1 }}

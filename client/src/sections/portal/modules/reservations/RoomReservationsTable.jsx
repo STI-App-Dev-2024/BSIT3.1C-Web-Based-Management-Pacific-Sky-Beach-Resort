@@ -17,8 +17,8 @@ const RoomReservationsTable = () => {
   const { roomBookings, isLoading, mutate } = useGetAllBookings()
   const [loading, setLoading] = useState(false)
 
-  const [confirmConfigs, setConfirmConfigs] = useState({ open: true, bookingId: '' })
-  const [viewConfigs, setViewConfigs] = useState({ open: true, bookingId: '' })
+  const [confirmConfigs, setConfirmConfigs] = useState({ open: false, bookingId: '' })
+  const [viewConfigs, setViewConfigs] = useState({ open: false, bookingId: '' })
 
   const handleConfirm = async () => {
     setLoading(true)

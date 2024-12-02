@@ -11,6 +11,15 @@ const getAllBookings = expressAsync(async (req, res, next) => {
     }
 });
 
+const getBookingByRoomId = expressAsync(async (req, res, next) => {
+    try {
+        const response = await bookingsService.getBookingByRoomId(req.params.roomId);
+        res.json(response);
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
 const getSingleBookingById = expressAsync(async (req, res, next) => {
     try {
         const response = await bookingsService.getSingleBookingById(req.params.bookingId);
@@ -76,6 +85,7 @@ const updateReservedStatus = expressAsync(async (req, res, next) => {
 
 export {
     getAllBookings,
+    getBookingByRoomId,
     getSingleBookingById,
     createBookingWithNewCustomer,
     createBookingWithExistingCustomer,
