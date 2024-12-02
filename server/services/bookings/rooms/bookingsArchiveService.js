@@ -1,5 +1,4 @@
-import conn from '../../config/db.js';
-import undefinedValidator from '../../utils/undefinedValidator.js';
+import conn from '../../../config/db.js';
 
 const pool = await conn();
 

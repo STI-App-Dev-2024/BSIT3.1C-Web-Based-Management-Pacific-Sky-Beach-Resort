@@ -1,5 +1,5 @@
 import expressAsync from "express-async-handler";
-import bookingsService from "../../services/bookings/bookingsService.js";
+import bookingsService from "../../../services/bookings/rooms/bookingsService.js";
 import e from "express";
 
 const getAllBookings = expressAsync(async (req, res, next) => {
@@ -65,6 +65,15 @@ const updateBooking = expressAsync(async (req, res, next) => {
     }
 });
 
+const updateReservedStatus = expressAsync(async (req, res, next) => {
+    try {
+        const response = await bookingsService.updateReservedStatus(req.body);
+        res.json(response);
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
 export {
     getAllBookings,
     getSingleBookingById,
@@ -72,5 +81,6 @@ export {
     createBookingWithExistingCustomer,
     deleteBooking,
     archiveBooking,
-    updateBooking
+    updateBooking,
+    updateReservedStatus
 };

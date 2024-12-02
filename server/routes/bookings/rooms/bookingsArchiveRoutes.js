@@ -4,7 +4,7 @@ import {
   getSingleArchivedBookingById,
   deleteArchivedBooking,
   restoreBooking,
-} from "../../controllers/bookings/bookingsArchiveController.js";
+} from "../../../controllers/bookings/rooms/bookingsArchiveController.js";
 
 const router = express.Router();
 
