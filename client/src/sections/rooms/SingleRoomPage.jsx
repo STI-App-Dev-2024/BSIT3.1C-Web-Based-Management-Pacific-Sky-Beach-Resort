@@ -4,7 +4,7 @@ import { mdiAccountGroup, mdiCalendarBlankOutline, mdiCard, mdiCurrencyPhp, mdiF
 import { Alert, Box, Button, Dialog, Grid, ImageList, ImageListItem, Stack, Typography } from '@mui/material';
 import LabeledValue from 'components/LabeledValue';
 import MainCard from 'components/MainCard';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import currencyFormatter from 'utils/currencyFormatter';
 import ConvertDate from 'components/ConvertDate';
 import UserCard from 'components/UserCard';
@@ -41,7 +41,6 @@ const SingleRoomPage = ({
     roomId,
     createdAt,
     userId,
-    isOccupied,
     amenities
   } = roomData || {};
 
@@ -106,9 +105,6 @@ const SingleRoomPage = ({
           </Button>
         </Stack>
       )}
-      <Alert variant='standard' color={Boolean(isOccupied) ? 'info' : 'success'} sx={{ my: 2 }}>
-        {Boolean(isOccupied) ? 'Not Available for booking right now.' : 'Available for booking today.'}
-      </Alert>
       <Stack>
         <ImageList
           sx={{ width: `100%`, height: 400, objectFit: 'cover' }}

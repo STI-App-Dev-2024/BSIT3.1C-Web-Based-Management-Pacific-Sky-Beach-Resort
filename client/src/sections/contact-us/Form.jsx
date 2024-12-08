@@ -61,7 +61,6 @@ const Form = () => {
                   Send
                 </Button>
               </Stack>
-              <pre>{JSON.stringify(values, null, 2)}</pre>
             </form>
           );
         }}
